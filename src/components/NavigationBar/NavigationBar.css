@@ -1,0 +1,6 @@
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure it is above other elements */
+}

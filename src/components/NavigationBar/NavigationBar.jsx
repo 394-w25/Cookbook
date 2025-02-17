@@ -1,4 +1,5 @@
 import React from 'react';
+import "./NavigationBar.css";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
@@ -9,7 +10,7 @@ import Diversity1 from '@mui/icons-material/Diversity1';
 
 function NavigationBar() {
   return (
-    <BottomNavigation showLabels>
+    <BottomNavigation className="bottom-nav" showLabels>
         <BottomNavigationAction label="home" icon={<HomeIcon />} />
         <BottomNavigationAction label="recipe box" icon={<RestaurantIcon />} />
         <BottomNavigationAction label="add recipe" icon={<AddCircleOutlineIcon />} />
