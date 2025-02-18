@@ -6,6 +6,7 @@ import { CardContent } from '../ui/CardContent';
 import { Alert } from '../ui/Alert';
 import './cameraComponent.css';
 import PhotoUpload from '../PhotoUpload/UploadPhoto';  // Import the new PhotoUpload component
+import NavigationBar from '../NavigationBar/NavigationBar';
 
 export default function RecipeCamera() {
   const [image, setImage] = useState(null);
@@ -79,6 +80,7 @@ export default function RecipeCamera() {
           </div>
         </CardContent>
       </Card>
+      <NavigationBar />
     </div>
   );
 }

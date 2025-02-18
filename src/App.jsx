@@ -9,7 +9,8 @@ import {
   Navigate,
 } from 'react-router-dom';
 import Recipe from './components/Recipe/Recipe';
-
+import AddRecipe from './components/AddRecipe/AddRecipe';
+import RecipeCamera from './components/cameraComponent/cameraComponent';
 
 
 const App = () => {
@@ -18,6 +19,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<SignIn />} />
         <Route path="/home" element={<HomeScreen />} />
+        <Route path="/AddRecipe" element={<AddRecipe />} />
+        <Route path="/cameraComponent" element={<RecipeCamera />} />
       </Routes>
     </Router>
   );
