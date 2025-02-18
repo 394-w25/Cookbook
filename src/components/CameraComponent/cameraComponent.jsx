@@ -7,12 +7,28 @@ import { Alert } from '../ui/Alert';
 import './cameraComponent.css';
 import PhotoUpload from '../PhotoUpload/UploadPhoto';  // Import the new PhotoUpload component
 import NavigationBar from '../NavigationBar/NavigationBar';
+import axios from "axios";
+
+const fetchOpenAIData = async (base64Image) => {
+  try {
+      const response = await axios.post("https://us-central1-generationalcookbook.cloudfunctions.net/sendOpenAIAPIRequest", {image: base64Image });
+      return response.data;
+  } catch (error) {
+      console.error("Axios Network Error:", error);
+  }
+};
 
 export default function RecipeCamera() {
   const [image, setImage] = useState(null);
   const cameraRef = useRef(null);
   const [error, setError] = useState('');
   const [hasPermission, setHasPermission] = useState(false);
+  const [data, setData] = useState("");
+
+  const handleFetch = async (base64Image) => {
+      const result = await fetchOpenAIData(base64Image);
+      setData(result);
+  };
 
   useEffect(() => {
     const requestPermission = async () => {
@@ -36,6 +52,8 @@ export default function RecipeCamera() {
         setImage(photo);
         console.log("Base64 Image:", base64Image);
         setError('');
+
+        handleFetch(base64Image);
       }
     } catch {
       setError('Error capturing photo. Please retry.');
