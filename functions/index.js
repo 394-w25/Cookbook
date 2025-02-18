@@ -10,7 +10,7 @@ const cors = require("cors")({ origin: true });
 //   response.send("Hello from Firebase!");
 // });
 
-exports.callThirdPartyAPI = functions.https.onRequest((req, res) => {
+exports.sendOpenAIAPIRequest = functions.https.onRequest((req, res) => {
     cors(req, res, async () => {
         try {
             const apiResponse = await axios.get("https://catfact.ninja/fact", {
