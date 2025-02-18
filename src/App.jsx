@@ -1,26 +1,25 @@
 import './App.css';
-import HomeScreen from './components/HomeScreen/HomeScreen';
-import CameraComponent from './components/CameraComponent/cameraComponent';
-import SignIn from './components/SignIn/SignIn';
+import HomeScreen from '@/components/Navigation/Screens/HomeScreen/HomeScreen';
+import SignInScreen from '@/components/Navigation/Screens/SignInScreen/SignInScreen';
+import AddRecipeScreen from '@/components/Navigation/Screens/AddRecipeScreen/AddRecipeScreen';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
 } from 'react-router-dom';
-import Recipe from './components/Recipe/Recipe';
-import AddRecipe from './components/AddRecipe/AddRecipe';
-import RecipeCamera from './components/CameraComponent/cameraComponent';
-
+import MainLayout from '@/components/Navigation/MainLayout';
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<SignIn />} />
-        <Route path="/home" element={<HomeScreen />} />
-        <Route path="/AddRecipe" element={<AddRecipe />} />
-        <Route path="/cameraComponent" element={<RecipeCamera />} />
+        <Route path="/" element={<SignInScreen />} />
+
+        {/* wrap all other routes with MainLayout to have navbar */}
+        <Route element={<MainLayout />}>
+          <Route path="/home" element={<HomeScreen />} />
+          <Route path="/AddRecipe" element={<AddRecipeScreen />} />
+        </Route>
       </Routes>
     </Router>
   );

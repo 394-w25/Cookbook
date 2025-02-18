@@ -1,8 +1,7 @@
-// Recipe.jsx
 import * as React from 'react';
 import { Card, CardContent, CardMedia, Typography, CardActionArea, CardHeader } from '@mui/material';
 
-function Recipe({
+function RecipeComponent({
     title,
     category,
     creator,
@@ -43,4 +42,4 @@ function Recipe({
   );
 }
 
-export default Recipe;  // Make sure you're using 'default' export here
+export default RecipeComponent;

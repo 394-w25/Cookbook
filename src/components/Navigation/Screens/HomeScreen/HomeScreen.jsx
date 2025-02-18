@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import NavigationBar from '../NavigationBar/NavigationBar';
-import RecipeCamera from '../CameraComponent/cameraComponent';
-import Recipe from '../Recipe/Recipe';  // Import the Recipe component
+import NavigationBar from '@/components/Navigation/NavigationBar/NavigationBar';
+import CameraComponent from '@/components/Photo/CameraComponent/cameraComponent';
+import RecipeComponent from '@/components/Recipe/RecipeComponent';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../../utilities/firebase';
+import { db } from '@/utilities/firebase';
 
 function HomeScreen() {
   const [recipes, setRecipes] = useState([]);  // State to store the fetched recipes
@@ -28,12 +28,9 @@ function HomeScreen() {
 
   return (
     <div>
-      <RecipeCamera />
-      
-      {/* Render each recipe dynamically */}
       {recipes.length > 0 ? (
         recipes.map((recipe) => (
-          <Recipe
+          <RecipeComponent
             key={recipe.id}
             title={recipe.Title}         // Pass the Title from the recipe data
             category={recipe.Category}   // Pass the Category from the recipe data
@@ -45,8 +42,6 @@ function HomeScreen() {
       ) : (
         <p>Loading recipes...</p>  // Display a loading message while fetching data
       )}
-      
-      <NavigationBar />
     </div>
   );
 }

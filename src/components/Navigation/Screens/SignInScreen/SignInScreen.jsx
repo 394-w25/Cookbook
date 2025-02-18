@@ -1,15 +1,14 @@
 import React from 'react';
-import "./SignIn.css";
-import logo from "../../assets/images/cookbook-logo.png";
+import "./SignInScreen.css";
+import logo from "@/assets/images/cookbook-logo.png";
 import { Container } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 
 // import { signInWithGooglePopup } from "../../utilities/firebase";
-import { signInWithGoogle } from "../../../utilities/firebase";
+import { signInWithGoogle } from "@/utilities/firebase"
+import { createUserDocIfNotExists } from "@/utilities/createUserDocIfNotExists";
 
-import { createUserDocIfNotExists } from "../../../utilities/createUserDocIfNotExists";
-
-const SignIn = () => {
+const SignInScreen = () => {
   const navigate = useNavigate();
 
   const logGoogleUser = async () => {
@@ -36,4 +35,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignInScreen;

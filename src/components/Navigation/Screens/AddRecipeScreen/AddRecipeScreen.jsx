@@ -1,23 +1,21 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; 
-import NavigationBar from '../NavigationBar/NavigationBar';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import './AddRecipe.css'; 
+import './AddRecipeScreen.css'; 
+import CameraComponent from '@/components/Photo/CameraComponent/cameraComponent';
 
-function AddRecipe() {
+function AddRecipeScreen() {
 
-  const navigate = useNavigate();
   return (
     <div className="container">
-      <button 
+      {/* <button 
         className="button"
         onClick={() => navigate("/cameraComponent")} // Navigate to /cameraComponent
       >
         <CameraAltIcon /> Use Camera
-      </button>
-      <NavigationBar />
+      </button> */}
+      <CameraComponent/>
     </div>
   );
 }
 
-export default AddRecipe;
+export default AddRecipeScreen;
