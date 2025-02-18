@@ -1,39 +1,41 @@
+// Recipe.jsx
 import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import CardActionArea from '@mui/material/CardActionArea';
-import CardHeader from '@mui/material/CardHeader';
-import "./Recipe.css";
+import { Card, CardContent, CardMedia, Typography, CardActionArea, CardHeader } from '@mui/material';
 
 function Recipe({
     title,
-    imageURL,
-    description,
-    ingredients,
-    steps
+    category,
+    creator,
+    date,
+    recipeText
 }) {
+  console.log("Rendering recipe:", { title, category, creator, date, recipeText });
+
+  const formattedDate = date ? new Date(date.seconds * 1000).toLocaleDateString() : "No date available";
+
   return (
     <Card sx={{ maxWidth: 345 }} className="recipe-card">
       <CardActionArea>
-      <CardHeader
+        <CardHeader
           title={title}
-          subheader={description}
+          subheader={category}
           sx={{ textAlign: 'center' }}
         />
         <CardMedia
           component="img"
           height="500"
-          image={imageURL}
+          image={"default-image.jpg"}
           alt="recipe image"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {ingredients}
+            Created by: {creator}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {steps}
+            Date: {formattedDate}
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            {recipeText}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -41,4 +43,4 @@ function Recipe({
   );
 }
 
-export default Recipe;
+export default Recipe;  // Make sure you're using 'default' export here
