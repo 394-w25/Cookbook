@@ -4,6 +4,7 @@ import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { CardContent } from '../ui/CardContent'
 import { Alert } from '../ui/Alert';
+import './cameraComponent.css';
 
 export default function RecipeCamera() {
   const [image, setImage] = useState(null);
@@ -40,7 +41,8 @@ export default function RecipeCamera() {
   return (
     <div className="flex flex-col items-center space-y-4 p-4">
       {error && <Alert variant="destructive">{error}</Alert>}
-      <Card className="w-full max-w-md">
+      {/* <Card className="w-full max-w-md"> */}
+      <Card className="camera-card">
         <CardContent className="flex flex-col items-center">
           {hasPermission ? (
             !image ? (
