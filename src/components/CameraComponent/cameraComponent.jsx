@@ -32,13 +32,16 @@ export default function RecipeCamera() {
     try {
       const photo = cameraRef.current?.takePhoto();
       if (photo) {
+        const base64Image = photo.split(",")[1];
         setImage(photo);
+        console.log("Base64 Image:", base64Image);
         setError('');
       }
     } catch {
       setError('Error capturing photo. Please retry.');
     }
   };
+  
 
   const handleImageUpload = (uploadedImage) => {
     setImage(uploadedImage);
