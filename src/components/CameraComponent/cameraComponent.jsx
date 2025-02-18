@@ -2,9 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import { Camera } from 'react-camera-pro';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
-import { CardContent } from '../ui/CardContent'
+import { CardContent } from '../ui/CardContent';
 import { Alert } from '../ui/Alert';
 import './cameraComponent.css';
+import PhotoUpload from '../PhotoUpload/UploadPhoto';  // Import the new PhotoUpload component
 
 export default function RecipeCamera() {
   const [image, setImage] = useState(null);
@@ -38,10 +39,18 @@ export default function RecipeCamera() {
     }
   };
 
+  const handleImageUpload = (uploadedImage) => {
+    setImage(uploadedImage);
+    setError('');
+  };
+
+  const handleUploadError = (errorMessage) => {
+    setError(errorMessage);
+  };
+
   return (
     <div className="flex flex-col items-center space-y-4 p-4">
       {error && <Alert variant="destructive">{error}</Alert>}
-      {/* <Card className="w-full max-w-md"> */}
       <Card className="camera-card">
         <CardContent className="flex flex-col items-center">
           {hasPermission ? (
@@ -55,9 +64,13 @@ export default function RecipeCamera() {
           )}
           <div className="mt-4 space-x-2">
             {!image ? (
-              <Button onClick={handleCapture} disabled={!hasPermission}>
-                Capture Recipe
-              </Button>
+              <>
+                <Button onClick={handleCapture} disabled={!hasPermission}>
+                  Capture Recipe
+                </Button>
+                {/* PhotoUpload Component to upload a photo from local machine */}
+                <PhotoUpload onUpload={handleImageUpload} onError={handleUploadError} />
+              </>
             ) : (
               <Button onClick={() => setImage(null)} variant="destructive">
                 Retake
