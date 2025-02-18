@@ -1,7 +1,7 @@
 import React from 'react';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import './AddRecipeScreen.css'; 
-import CameraComponent from '@/components/Photo/CameraComponent/cameraComponent';
+import CameraComponent from '@/components/Photo/CameraComponent/CameraComponent';
 
 function AddRecipeScreen() {
 
