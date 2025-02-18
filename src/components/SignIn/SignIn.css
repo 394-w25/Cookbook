@@ -1,0 +1,33 @@
+.signin-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+  }
+  
+  .logo {
+    display: block;
+    margin: 0 auto 20px auto;
+    max-width: 300px;
+    height: auto;
+  }
+
+    .signin-button {
+    background-color: #4285f4;
+    color: #ffffff;
+    padding: 16px 20px;
+    font-size: 1.25rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    }
+
+    .signin-button:hover {
+    background-color: #357ae8;
+    }
+    

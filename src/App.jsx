@@ -1,11 +1,13 @@
 import './App.css';
 import HomeScreen from './components/HomeScreen/HomeScreen';
 import CameraComponent from './components/CameraComponent/cameraComponent';
+import SignIn from './components/SignIn/SignIn';
 import Recipe from './components/Recipe/Recipe';
 
 const App = () => {
   return (
     <div className="App">
+      <SignIn />
       <HomeScreen />
       <CameraComponent />
       <Recipe 
