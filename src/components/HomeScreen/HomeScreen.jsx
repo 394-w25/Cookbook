@@ -28,16 +28,6 @@ function HomeScreen() {
 
   return (
     <div>
-<<<<<<< HEAD
-      {/* <RecipeCamera /> */}
-      <Recipe 
-        title="Samosa's"
-        imageURL="https://picsum.photos/200"
-        description="Great Indian appetizer"
-        ingredients="white potatoes, salt to taste, red pepper"
-        steps="1. Boil potatoes until soft. 2. Combine rest of ingredients to..."
-      />
-=======
       <RecipeCamera />
       
       {/* Render each recipe dynamically */}
@@ -56,7 +46,6 @@ function HomeScreen() {
         <p>Loading recipes...</p>  // Display a loading message while fetching data
       )}
       
->>>>>>> 3e80c8e (linking recipe card to database)
       <NavigationBar />
     </div>
   );
