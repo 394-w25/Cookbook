@@ -2,5 +2,15 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    z-index: 1000; /* Ensure it is above other elements */
+    z-index: 1000;
+    font-family: var(--primary-font) !important; /* Apply the font here */
+}
+
+.bottom-nav a {
+    font-family: var(--primary-font); /* Ensure links also use the font */
+}
+
+/* Apply font to individual BottomNavigationAction labels */
+.bottom-nav .MuiBottomNavigationAction-label {
+    font-family: var(--primary-font) !important;
 }

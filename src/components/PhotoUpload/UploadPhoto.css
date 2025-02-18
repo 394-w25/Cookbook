@@ -1,0 +1,46 @@
+/* More specific selector */
+div .custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Green background */
+    color: rgb(255, 255, 255);
+    font-family: var(--primary-font); /* Custom font */
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    border: 2px solid #000000; /* Black border */
+    box-sizing: border-box; /* Ensure padding doesn't affect box size */
+    position: relative;
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+/* Underline effect on hover */
+div .custom-file-upload:hover {
+    background-color: #45a049; /* Darker green on hover */
+    border-color: #45a049; /* Change border color on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slightly stronger shadow on hover */
+}
+
+div .custom-file-upload:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #000000; /* Black underline */
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+div .custom-file-upload:hover:before {
+    transform: scaleX(1); /* Underline appears on hover */
+}
+
+/* Focus effect for accessibility */
+div .custom-file-upload:focus {
+    outline: none;
+    border-color: #333333; /* Darker border on focus */
+    box-shadow: 0 0 0 3px rgba(72, 195, 72, 0.6); /* Add a green outline on focus */
+}

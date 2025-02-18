@@ -19,12 +19,19 @@ const PhotoUpload = ({ onUpload, onError }) => {
 
   return (
     <div className="flex flex-col items-center">
+      {/* File Input hidden */}
       <input
         type="file"
         accept="image/*"
         onChange={handleFileUpload}
-        className="mt-2"
+        id="file-upload"
+        style={{ display: 'none' }} // Hide the default file input
       />
+
+      {/* Custom Button */}
+      <label htmlFor="file-upload" className="custom-file-upload">
+        Upload Photo
+      </label>
     </div>
   );
 };
