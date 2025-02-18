@@ -30,7 +30,7 @@ const PhotoUpload = ({ onUpload, onError }) => {
 
       {/* Custom Button */}
       <label htmlFor="file-upload" className="custom-file-upload">
-        Upload Photo
+        Click Here to Upload Photo
       </label>
     </div>
   );
