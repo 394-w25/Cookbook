@@ -1,6 +1,6 @@
 import './App.css';
 import HomeScreen from './components/HomeScreen/HomeScreen';
-import CameraComponent from './components/CameraComponent/camera_component';
+import CameraComponent from './components/CameraComponent/cameraComponent';
 
 const App = () => {
   return (
