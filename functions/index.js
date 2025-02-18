@@ -21,6 +21,7 @@ exports.sendOpenAIAPIRequest = functions.https.onRequest(async (req, res) => {
                         content: [
                             {
                                 type: "text",
+                                //Use the prompt in ./prompts
                                 text: "Extract and format the text from this image into a structured recipe with title, ingredients, and instructions.",
                             },
                             {
@@ -32,6 +33,7 @@ exports.sendOpenAIAPIRequest = functions.https.onRequest(async (req, res) => {
                         ],
                     }
                 ],
+                // Need to increase, it's cutting off some
                 max_tokens: 300,
                 temperature: 0.5
             };

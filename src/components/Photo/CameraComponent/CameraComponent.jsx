@@ -6,32 +6,34 @@ import { CardContent } from '@/components/Common/CardContent';
 import { Alert } from '@/components/Common/Alert';
 import './CameraComponent.css';
 import PhotoUploadComponent from '../PhotoUploadComponent/PhotoUploadComponent';
-import axios from "axios";
+import axios from 'axios';
 
 const fetchOpenAIData = async (base64Image) => {
   try {
-      const response = await axios.post("https://us-central1-generationalcookbook.cloudfunctions.net/sendOpenAIAPIRequest", {
-          image: base64Image
-      });
-
-      return response.data;
+    const response = await axios.post(
+      'https://us-central1-generationalcookbook.cloudfunctions.net/sendOpenAIAPIRequest',
+      { image: base64Image }
+    );
+    return response.data;
   } catch (error) {
-      console.error("Axios Network Error:", error);
+    console.error('Axios Network Error:', error);
+    throw error;
   }
 };
 
 export default function CameraComponent() {
   const [image, setImage] = useState(null);
-  const cameraRef = useRef(null);
   const [error, setError] = useState('');
   const [hasPermission, setHasPermission] = useState(false);
-  const [data, setData] = useState("");
+  const [data, setData] = useState('');
+
+  const cameraRef = useRef(null);
 
   useEffect(() => {
     const requestPermission = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        stream.getTracks().forEach(track => track.stop());
+        stream.getTracks().forEach((track) => track.stop());
         setHasPermission(true);
         setError('');
       } catch (err) {
@@ -41,19 +43,27 @@ export default function CameraComponent() {
     requestPermission();
   }, []);
 
+  const processImage = async (base64Image) => {
+    try {
+      const result = await fetchOpenAIData(base64Image);
+      setData(result.choices[0]?.message?.content || 'No text extracted.');
+      console.log('OpenAI result:', result);
+    } catch (err) {
+      setError('Error processing image. Please retry.');
+      console.error(err);
+    }
+  };
+
   const handleCapture = async () => {
     try {
       if (cameraRef.current) {
         const photo = cameraRef.current.takePhoto();
         if (photo) {
-          const base64Image = photo.split(",")[1];
-          setImage(photo);
           setError('');
-          console.log("Base64 Image:", base64Image);
+          setImage(photo);
 
-          const result = await fetchOpenAIData(base64Image);
-          setData(result);
-          console.log(result);
+          const base64Image = photo.split(',')[1]; // remove the data URI prefix
+          await processImage(base64Image);
         }
       }
     } catch {
@@ -61,48 +71,73 @@ export default function CameraComponent() {
     }
   };
 
-  const handleImageUpload = (uploadedImage) => {
-    setImage(uploadedImage);
-    setError('');
+  const handleImageUpload = async (base64DataUrl) => {
+    try {
+      setError('');
+      setImage(base64DataUrl);
+
+      // Remove the data URI prefix to get raw base64
+      const base64Image = base64DataUrl.split(',')[1] || '';
+      await processImage(base64Image);
+    } catch (err) {
+      setError('Error uploading image.');
+      console.error(err);
+    }
   };
 
   const handleUploadError = (errorMessage) => {
     setError(errorMessage);
   };
 
+  const handleRetake = () => {
+    setImage(null);
+    setData('');
+  };
+
   return (
     <div className="camera-container">
       {error && <Alert variant="destructive">{error}</Alert>}
+
       <Card className="camera-card">
         <CardContent className="camera-content">
           {hasPermission ? (
             !image ? (
               <Camera ref={cameraRef} className="camera-preview" aspectRatio={16 / 9} />
             ) : (
-              <img src={image} alt="Captured Recipe" className="captured-image" />
+              <img src={image} alt="Captured or Uploaded Recipe" className="captured-image" />
             )
           ) : (
             <p className="text-red-500">Awaiting camera access...</p>
           )}
-          
+
           <div className="button-container">
             {!image ? (
               <>
                 <Button onClick={handleCapture} className="capture-button">
                   Capture Recipe
                 </Button>
-                <PhotoUploadComponent 
-                  onUpload={handleImageUpload} 
-                  onError={handleUploadError} 
+                <PhotoUploadComponent
+                  onUpload={handleImageUpload}
+                  onError={handleUploadError}
                   className="upload-button"
                 />
               </>
             ) : (
-              <Button onClick={() => setImage(null)} className="capture-button" variant="destructive">
+              <Button
+                onClick={handleRetake}
+                className="capture-button"
+                variant="destructive"
+              >
                 Retake
               </Button>
             )}
           </div>
+
+          {data && (
+            <pre className="text-xs text-gray-500 mt-2 whitespace-pre-wrap">
+              {data}
+            </pre>
+          )}
         </CardContent>
       </Card>
     </div>
