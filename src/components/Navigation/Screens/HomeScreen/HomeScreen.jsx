@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import NavigationBar from '@/components/Navigation/NavigationBar/NavigationBar';
-import CameraComponent from '@/components/Photo/CameraComponent/cameraComponent';
 import RecipeComponent from '@/components/Recipe/RecipeComponent';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/utilities/firebase';
