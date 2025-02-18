@@ -40,3 +40,14 @@
 button {
   font-size: calc(10px + 2vmin);
 }
+
+@font-face {
+  font-family: 'PatrickHand';
+  src: url('/src/assets/fonts/PatrickHand-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'PatrickHand', sans-serif;
+}
