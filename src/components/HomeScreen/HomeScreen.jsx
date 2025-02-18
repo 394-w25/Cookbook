@@ -7,7 +7,7 @@ import Recipe from '../Recipe/Recipe';
 function HomeScreen() {
   return (
     <div>
-      <RecipeCamera />
+      {/* <RecipeCamera /> */}
       <Recipe 
         title="Samosa's"
         imageURL="https://picsum.photos/200"
