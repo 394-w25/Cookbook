@@ -2,62 +2,51 @@ const functions = require("firebase-functions");
 const axios = require("axios");
 const cors = require("cors")({ origin: true });
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+const API_KEY = functions.config().openai.key;  // Store API key in Firebase environment variables
 
-const API_KEY = functions.config().api.key;
-
-// Helper function to encode an image to base64
-const encodeImage = (imagePath) => {
-    const imageBuffer = fs.readFileSync(imagePath); // Read the image as a buffer
-    return imageBuffer.toString('base64'); // Convert the buffer to a base64 string
-};
-
-exports.sendOpenAIAPIRequest = functions.https.onRequest((req, res) => {
+exports.sendOpenAIAPIRequest = functions.https.onRequest(async (req, res) => {
     cors(req, res, async () => {
         try {
-            // Encode the image to base64
-            const base64Image = encodeImage(imagePath);
+            const { image } = req.body; // Receive base64 image string from frontend
+
+            if (!image) {
+                return res.status(400).json({ error: "No image provided" });
+            }
 
             const requestBody = {
-                model: "gpt-4o-mini",  // You can use other models like text-curie-001, etc.
+                model: "gpt-4o",
                 messages: [
                     {
                         role: "user",
                         content: [
                             {
                                 type: "text",
-                                text: "Parse the text in this image and output a list with each index being each line of text in the image.", // Your prompt
+                                text: "Extract and format the text from this image into a structured recipe with title, ingredients, and instructions.",
                             },
                             {
                                 type: "image_url",
                                 image_url: {
-                                    url: `data:image/jpeg;base64,${base64Image}`, // Add the base64 image in the format
+                                    url: `data:image/jpeg;base64,${image}`, // Use base64 data from frontend
                                 },
                             },
                         ],
                     }
                 ],
-                max_tokens: 100,  // Limits the number of tokens in the response
-                temperature: 0.7,  // Controls the randomness of the output
-                top_p: 1,  // Controls diversity via nucleus sampling
-                n: 1,  // Number of completions to generate
+                max_tokens: 300,
+                temperature: 0.5
             };
 
-            const apiResponse = await axios.post("https://api.openai.com/v1/completions", requestBody, {
-                headers: { "Authorization": `Bearer ${API_KEY}`, 
-                            "Content-Type": 'application/json' },
+            const apiResponse = await axios.post("https://api.openai.com/v1/chat/completions", requestBody, {
+                headers: {
+                    "Authorization": `Bearer ${API_KEY}`,
+                    "Content-Type": "application/json",
+                },
             });
 
             res.status(200).json(apiResponse.data);
         } catch (error) {
-            console.error("Error calling API:", error);
-            res.status(500).json({ error: "Failed to fetch data" });
+            console.error("Error calling OpenAI API:", error);
+            res.status(500).json({ error: "Failed to process image" });
         }
     });
 });

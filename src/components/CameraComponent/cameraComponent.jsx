@@ -5,18 +5,41 @@ import { Card } from '../ui/Card';
 import { CardContent } from '../ui/CardContent';
 import { Alert } from '../ui/Alert';
 import './cameraComponent.css';
-import PhotoUpload from '../PhotoUpload/UploadPhoto';  // Import the new PhotoUpload component
+import PhotoUpload from '../PhotoUpload/UploadPhoto';
 import NavigationBar from '../NavigationBar/NavigationBar';
 import axios from "axios";
 
 const fetchOpenAIData = async (base64Image) => {
   try {
-      const response = await axios.post("https://us-central1-generationalcookbook.cloudfunctions.net/sendOpenAIAPIRequest", {image: base64Image });
+      const response = await axios.post("https://us-central1-generationalcookbook.cloudfunctions.net/sendOpenAIAPIRequest", {
+          image: base64Image
+      });
+
       return response.data;
   } catch (error) {
       console.error("Axios Network Error:", error);
   }
 };
+
+const handleCapture = async () => {
+  try {
+    const photo = cameraRef.current?.takePhoto();
+    if (photo) {
+      const base64Image = photo.split(",")[1];
+      setImage(photo);
+      setError('');
+
+      console.log("Base64 Image:", base64Image);
+
+      const result = await fetchOpenAIData(base64Image);
+      setData(result);
+      console.log(result);
+    }
+  } catch {
+    setError('Error capturing photo. Please retry.');
+  }
+};
+
 
 export default function RecipeCamera() {
   const [image, setImage] = useState(null);
@@ -24,11 +47,6 @@ export default function RecipeCamera() {
   const [error, setError] = useState('');
   const [hasPermission, setHasPermission] = useState(false);
   const [data, setData] = useState("");
-
-  const handleFetch = async (base64Image) => {
-      const result = await fetchOpenAIData(base64Image);
-      setData(result);
-  };
 
   useEffect(() => {
     const requestPermission = async () => {
@@ -43,22 +61,6 @@ export default function RecipeCamera() {
     };
     requestPermission();
   }, []);
-
-  const handleCapture = () => {
-    try {
-      const photo = cameraRef.current?.takePhoto();
-      if (photo) {
-        const base64Image = photo.split(",")[1];
-        setImage(photo);
-        console.log("Base64 Image:", base64Image);
-        setError('');
-
-        handleFetch(base64Image);
-      }
-    } catch {
-      setError('Error capturing photo. Please retry.');
-    }
-  };
   
 
   const handleImageUpload = (uploadedImage) => {
@@ -90,7 +92,6 @@ export default function RecipeCamera() {
                 <Button onClick={handleCapture} disabled={!hasPermission}>
                   Capture Recipe
                 </Button>
-                {/* PhotoUpload Component to upload a photo from local machine */}
                 <PhotoUpload onUpload={handleImageUpload} onError={handleUploadError} />
               </>
             ) : (
