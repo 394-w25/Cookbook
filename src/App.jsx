@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom';
 import Recipe from './components/Recipe/Recipe';
 import AddRecipe from './components/AddRecipe/AddRecipe';
-import RecipeCamera from './components/cameraComponent/cameraComponent';
+import RecipeCamera from './components/CameraComponent/cameraComponent';
 
 
 const App = () => {
