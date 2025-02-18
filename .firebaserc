@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "generational-cookbook-c5229"
-  }
+    "default": "generational-cookbook-c5229",
+    "staging": "generationalcookbook"
+  },
+  "targets": {}
 }

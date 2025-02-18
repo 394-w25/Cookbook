@@ -10,12 +10,10 @@ const cors = require("cors")({ origin: true });
 //   response.send("Hello from Firebase!");
 // });
 
-const API_KEY = functions.config().thirdparty.apikey; 
-
 exports.callThirdPartyAPI = functions.https.onRequest((req, res) => {
     cors(req, res, async () => {
         try {
-            const apiResponse = await axios.get("https://api.example.com/data", {
+            const apiResponse = await axios.get("https://catfact.ninja/fact", {
                 headers: { "Authorization": `Bearer YOUR_API_KEY` }
             });
 
