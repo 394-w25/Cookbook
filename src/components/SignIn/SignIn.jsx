@@ -10,7 +10,7 @@ import { signInWithGoogle } from "../../../utilities/firebase";
 import { createUserDocIfNotExists } from "../../../utilities/createUserDocIfNotExists";
 
 const SignIn = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const logGoogleUser = async () => {
     try {
@@ -20,7 +20,7 @@ const SignIn = () => {
       await createUserDocIfNotExists(response.user);
 
       // 2) navigate to feed
-      // navigate("/feed");
+      navigate("/home");
     } catch (error) {
       console.error("Error signing in with Google: ", error);
     }
