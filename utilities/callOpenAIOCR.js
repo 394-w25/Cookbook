@@ -3,6 +3,7 @@
 import OpenAI from "openai";
 const openai = new OpenAI();
 import { getFunctions, httpsCallable } from "firebase/functions";
+import axios from "axios";
 
 const functions = getFunctions();
 const sendOpenAIAPIRequest = httpsCallable(functions, 'sendOpenAIAPIRequest');
