@@ -7,6 +7,7 @@ import { Alert } from '@/components/Common/Alert';
 import './CameraComponent.css';
 import PhotoUploadComponent from '../PhotoUploadComponent/PhotoUploadComponent';
 import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
 
 const fetchOpenAIData = async (base64Image) => {
   try {
@@ -135,7 +136,7 @@ export default function CameraComponent() {
 
           {data && (
             <pre className="text-xs text-gray-500 mt-2 whitespace-pre-wrap">
-              {data}
+              <ReactMarkdown>{data}</ReactMarkdown>
             </pre>
           )}
         </CardContent>
