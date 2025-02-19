@@ -9,6 +9,7 @@ import PhotoUploadComponent from '../PhotoUploadComponent/PhotoUploadComponent';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import { CircularProgress, Box } from '@mui/material';
+import Questions from '../../Recipe/Questions/Questions';
 
 const fetchOpenAIData = async (base64Image) => {
   try {
@@ -29,6 +30,7 @@ export default function CameraComponent() {
   const [hasPermission, setHasPermission] = useState(false);
   const [data, setData] = useState('');
   const [sentRequest, setSentRequest] = useState(false);
+  const [showQuestions, setShowQuestions] = useState(false);
 
   const cameraRef = useRef(null);
 
@@ -83,6 +85,7 @@ export default function CameraComponent() {
       // Remove the data URI prefix to get raw base64
       const base64Image = base64DataUrl.split(',')[1] || '';
       await processImage(base64Image);
+      setShowQuestions(true);
     } catch (err) {
       setError('Error uploading image.');
       console.error(err);
@@ -146,6 +149,9 @@ export default function CameraComponent() {
               <CircularProgress />
             </Box> : null
           }
+          {showQuestions && (
+            <Questions />
+          )}          
         </CardContent>
       </Card>
     </div>
