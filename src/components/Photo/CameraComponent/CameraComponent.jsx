@@ -8,6 +8,7 @@ import './CameraComponent.css';
 import PhotoUploadComponent from '../PhotoUploadComponent/PhotoUploadComponent';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
+import { CircularProgress, Box } from '@mui/material';
 
 const fetchOpenAIData = async (base64Image) => {
   try {
@@ -27,6 +28,7 @@ export default function CameraComponent() {
   const [error, setError] = useState('');
   const [hasPermission, setHasPermission] = useState(false);
   const [data, setData] = useState('');
+  const [sentRequest, setSentRequest] = useState(false);
 
   const cameraRef = useRef(null);
 
@@ -46,6 +48,7 @@ export default function CameraComponent() {
 
   const processImage = async (base64Image) => {
     try {
+      setSentRequest(true);
       const result = await fetchOpenAIData(base64Image);
       setData(result.choices[0]?.message?.content || 'No text extracted.');
       console.log('OpenAI result:', result);
@@ -93,6 +96,7 @@ export default function CameraComponent() {
   const handleRetake = () => {
     setImage(null);
     setData('');
+    setSentRequest(false);
   };
 
   return (
@@ -134,11 +138,14 @@ export default function CameraComponent() {
             )}
           </div>
 
-          {data && (
+          {data ? 
             <pre className="text-xs text-gray-500 mt-2 whitespace-pre-wrap">
               <ReactMarkdown>{data}</ReactMarkdown>
-            </pre>
-          )}
+            </pre> : sentRequest ?
+            <Box sx={{ display: 'flex' }}>
+              <CircularProgress />
+            </Box> : null
+          }
         </CardContent>
       </Card>
     </div>
