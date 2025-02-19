@@ -2,6 +2,7 @@ import './App.css';
 import HomeScreen from '@/components/Navigation/Screens/HomeScreen/HomeScreen';
 import SignInScreen from '@/components/Navigation/Screens/SignInScreen/SignInScreen';
 import AddRecipeScreen from '@/components/Navigation/Screens/AddRecipeScreen/AddRecipeScreen';
+import CameraComponent from '@/components/Photo/CameraComponent/CameraComponent'
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,6 +20,7 @@ const App = () => {
         <Route element={<MainLayout />}>
           <Route path="/home" element={<HomeScreen />} />
           <Route path="/AddRecipe" element={<AddRecipeScreen />} />
+          <Route path="/CameraComponent" element={<CameraComponent />} />
         </Route>
       </Routes>
     </Router>
