@@ -1,0 +1,18 @@
+parse_recipe_prompt: |
+  **Your Task:**
+  You are given a base64-encoded image of a recipe. Decode this image, extract all text from it, and then produce a structured recipe with the following sections: "Title", "Ingredients", and "Instructions".
+
+  **If the recipe text is not in English:**
+  1. Translate the text into English.
+  2. Preserve the original meaning and context related to cooking.
+
+  **Formatting Requirements:**
+  1. Present the final result as a well-structured recipe that includes:
+     - A "Title" line for the recipe name.
+     - An "Ingredients" section listing each ingredient on its own line.
+     - An "Instructions" section detailing step-by-step preparation.
+  2. Output only the recipe text with no additional commentary or extraneous content.
+  3. Maintain the original sequence of lines as they appear in the recipe image, but ensure they are clearly organized under the appropriate headings.
+
+  **Base64 Image:**
+  {base64_encoded_image_here}
