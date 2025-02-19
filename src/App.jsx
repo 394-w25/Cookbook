@@ -15,7 +15,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<SignInScreen />} />
 
-        {/* wrap all other routes with MainLayout to have navbar */}
+        {/* wrap all other routes with MainLayout to have top bar and navbar */}
         <Route element={<MainLayout />}>
           <Route path="/home" element={<HomeScreen />} />
           <Route path="/AddRecipe" element={<AddRecipeScreen />} />

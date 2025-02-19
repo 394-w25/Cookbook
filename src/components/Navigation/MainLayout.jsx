@@ -1,5 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
-import NavigationBar from "@/components/Navigation/NavigationBar/NavigationBar";
+import NavigationBar from "./NavigationBar/NavigationBar";
+import TopBar from "./TopBar/TopBar";
+import "./MainLayout.css";
 
 const MainLayout = () => {
   const location = useLocation();
@@ -8,9 +10,11 @@ const MainLayout = () => {
 
   return (
     <div>
-      <Outlet />
-      {/* Show NavigationBar only if not on SignInScreen */}
-      {showNav && <NavigationBar />}
+      <TopBar />
+      <div className="main-content">
+        <Outlet />
+      </div>
+      {showNav && <NavigationBar />} {/* Show NavigationBar only if not on SignInScreen */}
     </div>
   );
 };
