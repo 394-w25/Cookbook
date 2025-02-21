@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     min-height: 10vh; /* Ensure full height */
     padding-top: 5em; /* Consistent spacing from the top */
     padding-bottom: 5em; /* Consistent spacing from the bottom */
