@@ -8,8 +8,7 @@ function AddRecipeScreen() {
 
   return (
     <div className="container">
-      <h1 className="title">add recipe</h1>
-      <p className="description">How do you want to input your recipe?</p>
+      <h1 className="title">How do you want to input your recipe?</h1>
 
       <div className="button-group">
         <div className="button-container">
