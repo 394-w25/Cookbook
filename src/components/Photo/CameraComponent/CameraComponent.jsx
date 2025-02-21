@@ -1,14 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { Camera } from 'react-camera-pro';
-import { Button } from '@/components/Common/Button';
-import { Card } from '@/components/Common/Card';
-import { CardContent } from '@/components/Common/CardContent';
-import { Alert } from '@/components/Common/Alert';
 import './CameraComponent.css';
 import PhotoUploadComponent from '../PhotoUploadComponent/PhotoUploadComponent';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-import { CircularProgress, Box } from '@mui/material';
+import { CircularProgress, Box, Alert, Card, CardContent, Button } from '@mui/material';
 import Questions from '../../Recipe/Questions/Questions';
 
 const fetchOpenAIData = async (base64Image) => {
