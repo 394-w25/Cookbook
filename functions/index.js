@@ -23,27 +23,33 @@ exports.sendOpenAIAPIRequest = functions.https.onRequest((req, res) => {
                             {
                                 type: "text",
                                 text: `
-                                    **Your Task:**
+                                    # Your Task
 
-                                    Please parse the text in the provided image of a recipe, which is encoded in base64 format, and output a list where each index represents one line of text from the recipe. Make sure to maintain the exact order of lines as they appear in the image.
+                                    Please parse the text in the provided image of a recipe, which is encoded in base64 format, and output the extracted text in **Markdown format**, using appropriate **headings, subheadings, lists, and formatting** to maintain clarity and structure.
 
-                                    **Instructions:**
+                                    ## Instructions
 
-                                    1. **Extract Text Line by Line:**
-                                        - Decode the provided base64 encoded image and extract the text from the recipe.
-                                        - Ensure that each line of text is captured separately as an individual entry in the list.
-                                        - Maintain the correct order of lines as they appear in the recipe.
+                                    ### 1. Extract Text Line by Line
+                                    - Decode the provided base64-encoded image and extract the text from the recipe.
+                                    - Ensure that each line of text is captured separately while preserving the correct order.
+                                    
+                                    ### 2. Formatting
+                                    - Use **Markdown** to structure the output properly:
+                                        - Recipe **title** as "# Title"
+                                        - **Section headers** (e.g., Ingredients, Instructions) as "## Section Name"
+                                        - Ingredients and steps formatted as **bullet points ("-" or "1.")**
+                                        - Maintain **bold** and *italic* text where applicable.
 
-                                    2. **Formatting:**
-                                        - Each line should be a separate entry in the list.
-                                        - Preserve any special characters, measurements, ingredients, and instructions exactly as they appear.
+                                    ### 3. Preserve Structure
+                                    - Maintain the natural structure of the recipe, ensuring that:
+                                        - **Ingredients** appear under "## Ingredients"
+                                        - **Step-by-step instructions** appear under "## Instructions"
+                                        - Any **additional sections** (e.g., "Notes," "Serving Suggestions") are preserved.
 
-                                    3. **Preserve Structure:**
-                                        - Maintain the structure of the recipe, such as the ingredients list, step-by-step instructions, and any headings (e.g., "Ingredients," "Instructions").
-
-                                    4. **Language Handling:**
-                                        - If the recipe is written in a foreign language, translate it into **English** while ensuring accuracy in ingredient names, measurements, and instructions.
-                                        - Maintain the original formatting and structure while providing the English translation.
+                                    ### 4. Language Handling
+                                    - If the recipe is written in a **foreign language**, translate it into **English**.
+                                    - Ensure **accuracy** in ingredient names, measurements, and instructions.
+                                    - Maintain the original **formatting and structure** while providing the English translation.
 
                                     **The base64 encoded image for you to process is in the image section**
                                 `,
