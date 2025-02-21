@@ -19,7 +19,7 @@ const SignInScreen = () => {
       await createUserDocIfNotExists(response.user);
 
       // 2) navigate to feed
-      navigate("/home");
+      navigate("/AddRecipe");
     } catch (error) {
       console.error("Error signing in with Google: ", error);
     }
