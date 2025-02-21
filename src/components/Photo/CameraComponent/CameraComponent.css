@@ -1,14 +1,16 @@
 .camera-container {
-    margin-top: 25em;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 10vh;
+    min-height: 10vh; /* Ensure full height */
+    padding-top: 5em; /* Consistent spacing from the top */
+    padding-bottom: 5em; /* Consistent spacing from the bottom */
     gap: 10px;
 }
 
 .camera-card {
+    transition: all 0.3s ease-in-out;
     width: 100%;
     max-width: 500px; /* Increase card size */
     background: white;
@@ -83,4 +85,12 @@
 
 .upload-button:hover {
     background-color: #388E3C;
+}
+
+.markdown-output {
+    font-size: 1.2rem; /* Smaller text */
+    color: #202226; /* Gray color */
+    margin-top: 0px;
+    white-space: pre-wrap; /* Preserve whitespace */
+    text-align: center; /* Centered text */
 }

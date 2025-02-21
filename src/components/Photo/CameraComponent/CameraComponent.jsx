@@ -142,7 +142,7 @@ export default function CameraComponent() {
           </div>
 
           {data ? 
-            <pre className="text-xs text-gray-500 mt-2 whitespace-pre-wrap">
+            <pre className='markdown-output'>
               <ReactMarkdown>{data}</ReactMarkdown>
             </pre> : sentRequest ?
             <Box sx={{ display: 'flex' }}>
