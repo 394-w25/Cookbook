@@ -17,5 +17,4 @@ parse_recipe_prompt: |
   3. **Preserve Structure:**
      - Maintain the structure of the recipe, such as the ingredients list, step-by-step instructions, and any headings (e.g., "Ingredients," "Instructions").
 
-  **Here is the base64 encoded image for you to process:**
-  {base64_encoded_image_here}
+  **The base64 encoded image for you to process is in the image section**

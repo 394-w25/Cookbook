@@ -1,7 +1,6 @@
 import React from 'react';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import './AddRecipeScreen.css'; 
-import CameraComponent from '@/components/Photo/CameraComponent/CameraComponent';
 import { useNavigate } from 'react-router-dom';
 
 function AddRecipeScreen() {
