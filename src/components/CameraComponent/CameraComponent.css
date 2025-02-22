@@ -125,6 +125,11 @@
 .image-wrapper {
     position: relative;
   }
+
+  /* Shrinks after scanning */
+.image-wrapper.shrink {
+    width: 60%;
+}
   
   .captured-image {
     width: 100%;
@@ -158,9 +163,9 @@
   
   .recipe-text-area textarea {
     width: 100%;
-    max-height: 200px; /* so it doesn't push content too far down */
+    min-height: 180px;
+    max-height: 400px; /* so it doesn't push content too far down */
     overflow-y: auto;  /* allow scrolling within text area */
-    padding: 10px;
     font-family: var(--primary-font, sans-serif); /* use global font if available */
     font-size: 1rem;
     border: 1px solid #ccc;

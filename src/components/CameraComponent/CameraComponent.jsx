@@ -145,7 +145,7 @@ export default function CameraComponent() {
             !image ? (
               <Camera ref={cameraRef} className="camera-preview" aspectRatio={1} />
             ) : (
-              <div className="image-wrapper">
+              <div className={`image-wrapper ${showEditableText ? 'shrink' : ''}`}>
                 <img
                   src={image}
                   alt="Captured or Uploaded Recipe"
@@ -195,9 +195,10 @@ export default function CameraComponent() {
                 <button className="upload-button" onClick={handleRetake}>
                   Retake
                 </button>
+                {showEditableText && (
                 <button className="next-button" onClick={handleNext}>
                   Next
-                </button>
+                </button>)}
               </div>
             </>
           )}
