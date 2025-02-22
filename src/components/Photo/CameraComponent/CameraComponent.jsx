@@ -156,8 +156,9 @@ export default function CameraComponent() {
             </Box> : null
           }
           {showQuestions && (
-            <Questions />
-          )}           */}
+            <Questions recipeText={data} />
+          )} 
+          */}         
         </CardContent>
       </Card>
     </div>
