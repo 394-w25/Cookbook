@@ -82,3 +82,49 @@ exports.sendOpenAIAPIRequest = functions.https.onRequest((req, res) => {
         }
     });
 });
+
+exports.writejournal = functions.https.onRequest(async (req, res) => {
+    cors(req, res, async () => {
+        try {
+            const { answers } = req.body; // Receive answers as array from frontend
+
+            if (answers.length !== 3) {
+                return res.status(400).json({ error: "Need 3 answers" });
+            }
+            
+            const requestBody = {
+                model: "gpt-4o-mini",
+                messages: [
+                    {
+                        role: "system",
+                        content: `You are an experienced chef who can summarize answers to questions from user input. 
+                        You are writing a journal entry based on answers. Make the entry feel organic while maintaining correctness based on the answers.`,
+                    },
+                    {
+                        role: "user",
+                        content: `Here are my answers to the questions:
+                            Q: Who invented this recipe and when is it usually made?
+                            A: ${answers[0]}
+                            Q: What is a memory that you associate with this recipe?
+                            A: ${answers[1]}
+                            Q: What makes this recipe unique in your family?
+                            A: ${answers[2]}`
+                    }
+                ],
+                max_tokens: 1024,
+            };
+
+            const apiResponse = await axios.post("https://api.openai.com/v1/chat/completions", requestBody, {
+                headers: {
+                    "Authorization": `Bearer ${API_KEY}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            res.status(200).json({ journal: apiResponse.data.choices[0].message.content });
+        } catch (error) {
+            console.error("Error calling OpenAI API:", error);
+            res.status(500).json({ error: "Failed to process answers" });
+        }
+    });
+});
