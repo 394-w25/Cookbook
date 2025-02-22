@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import { Box, Button, Card, CardContent, Alert } from '@mui/material';
 import Questions from '../../Questions/Questions';
 import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const fetchOpenAIData = async (base64Image) => {
   try {
@@ -186,16 +187,16 @@ export default function CameraComponent() {
               >
                 Retake
               </Button>
-              <Button onClick={() => navigate("/prompts")}>
+              {/* <Button onClick={() => navigate("/prompts")}>
                 Next
-              </Button>
+              </Button> */}
             </div>
           )}
 
 
-          {/* 
-            If you want to show results or questions after image is processed, 
-            uncomment these:
+          
+            {/* If you want to show results or questions after image is processed, 
+            uncomment these: */}
             
             {data ? (
               <pre className='markdown-output'>
@@ -210,7 +211,7 @@ export default function CameraComponent() {
             {showQuestions && (
               <Questions recipeText={data} />
             )}
-          */}
+         
         </CardContent>
       </Card>
     </div>
