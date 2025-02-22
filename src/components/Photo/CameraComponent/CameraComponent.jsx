@@ -1,12 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Camera } from 'react-camera-pro';
 import './CameraComponent.css';
-import '../PhotoUploadComponent/PhotoUploadComponent.css';
-import PhotoUploadComponent from '../PhotoUploadComponent/PhotoUploadComponent';
-// import { Button } from '@/components/Common/Button';
-// import { Card } from '@/components/Common/Card';
-// import { CardContent } from '@/components/Common/CardContent';
-// import { Alert } from '@/components/Common/Alert';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import { CircularProgress, Box, Button, Card, CardContent, Alert } from '@mui/material';
@@ -38,6 +32,44 @@ export default function CameraComponent() {
 
   const cameraRef = useRef(null);
 
+  const fileInputRef = useRef(null);
+
+  const handleImageUpload = async (base64DataUrl) => {
+    try {
+      setError('');
+      setImage(base64DataUrl);
+  
+      // Remove the data URI prefix to get raw base64
+      const base64Image = base64DataUrl.split(',')[1] || '';
+      await processImage(base64Image);
+      setShowQuestions(true);
+    } catch (err) {
+      setError('Error uploading image.');
+      console.error(err);
+    }
+  };
+  
+  const handleUploadError = (errorMessage) => {
+    setError(errorMessage);
+  };
+  
+  const handleFileUpload = (event) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        handleImageUpload(reader.result);
+      };
+      console.log("file uploaded!")
+      reader.onerror = () => {
+        handleUploadError('Error uploading the file. Please try again.');
+      };
+      reader.readAsDataURL(file);
+    } else {
+      handleUploadError('No file selected.');
+    }
+  };
+
   useEffect(() => {
     const requestPermission = async () => {
       try {
@@ -51,6 +83,10 @@ export default function CameraComponent() {
     };
     requestPermission();
   }, []);
+
+  const openFileDialog = () => {
+    fileInputRef.current.click(); // Programmatically open the file picker
+  };
 
   const processImage = async (base64Image) => {
     try {
@@ -81,25 +117,6 @@ export default function CameraComponent() {
     }
   };
 
-  const handleImageUpload = async (base64DataUrl) => {
-    try {
-      setError('');
-      setImage(base64DataUrl);
-
-      // Remove the data URI prefix to get raw base64
-      const base64Image = base64DataUrl.split(',')[1] || '';
-      await processImage(base64Image);
-      setShowQuestions(true);
-    } catch (err) {
-      setError('Error uploading image.');
-      console.error(err);
-    }
-  };
-
-  const handleUploadError = (errorMessage) => {
-    setError(errorMessage);
-  };
-
   const handleRetake = () => {
     setImage(null);
     setData('');
@@ -114,7 +131,7 @@ export default function CameraComponent() {
         <CardContent className="camera-content">
           {hasPermission ? (
             !image ? (
-              <Camera ref={cameraRef} className="camera-preview" aspectRatio={16 / 9} />
+              <Camera ref={cameraRef} className="camera-preview" aspectRatio={1} />
             ) : (
               <img src={image} alt="Captured or Uploaded Recipe" className="captured-image" />
             )
@@ -128,10 +145,25 @@ export default function CameraComponent() {
                 <Button onClick={handleCapture} className="upload-button">
                   Capture Recipe
                 </Button>
-                <PhotoUploadComponent
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileUpload}
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                  />
+                  <Button onClick={openFileDialog} className="upload-button">
+                    Upload Photo
+                  </Button>
+                </div>
+                {/* <label htmlFor="file-upload" className="upload-button">
+                  Upload Photo
+                </label> */}
+                {/* <PhotoUploadComponent
                   onUpload={handleImageUpload}
                   onError={handleUploadError}
-                />
+                /> */}
               </>
             ) : (
               <div className="retake-next-buttons">
