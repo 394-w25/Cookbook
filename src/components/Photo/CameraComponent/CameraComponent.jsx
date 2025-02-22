@@ -88,17 +88,31 @@ export default function CameraComponent() {
     fileInputRef.current.click(); // Programmatically open the file picker
   };
 
+  // const processImage = async (base64Image) => {
+  //   try {
+  //     setSentRequest(true);
+  //     const result = await fetchOpenAIData(base64Image);
+  //     setData(result.choices[0]?.message?.content || 'No text extracted.');
+  //     console.log('OpenAI result:', result);
+  //   } catch (err) {
+  //     setError('Error processing image. Please retry.');
+  //     console.error(err);
+  //   }
+  // };
   const processImage = async (base64Image) => {
     try {
       setSentRequest(true);
       const result = await fetchOpenAIData(base64Image);
-      setData(result.choices[0]?.message?.content || 'No text extracted.');
-      console.log('OpenAI result:', result);
+      
+      const extractedText = result.choices[0]?.message?.content || 'No text extracted.';
+      setData(extractedText); 
+  
+      console.log('OpenAI result:', extractedText); // Debugging output
     } catch (err) {
       setError('Error processing image. Please retry.');
       console.error(err);
     }
-  };
+  };  
 
   const handleCapture = async () => {
     try {
@@ -122,6 +136,16 @@ export default function CameraComponent() {
     setData('');
     setSentRequest(false);
   };
+
+  const handleNext = () => {
+    if (!data || data.trim() === "") {
+      console.error("Data is empty. Cannot navigate.");
+      return;
+    }
+  
+    console.log("Navigating with data:", data);
+    navigate("/prompts", { state: { data } });
+  };  
 
   return (
     <div className="camera-container">
@@ -174,7 +198,8 @@ export default function CameraComponent() {
               >
                 Retake
               </Button>
-              <Button onClick={() => navigate("/prompts")}>Next</Button>
+              {/* <Button onClick={() => navigate("/prompts", { state: { data } })}>Next</Button> */}
+              <Button onClick={handleNext}>Next</Button>
               </div>
             )}
           </div>
