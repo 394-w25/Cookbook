@@ -169,9 +169,9 @@ export default function CameraComponent() {
                   ref={fileInputRef}
                   style={{ display: 'none' }}
                 />
-                <Button onClick={openFileDialog} className="upload-button">
+                <button onClick={openFileDialog} className="upload-button">
                   Upload Photo
-                </Button>
+                </button>
               </div>
 
               {/* Circle capture button with no text */}
@@ -180,15 +180,12 @@ export default function CameraComponent() {
           ) : (
             /* If an image is present, show Retake / Next */
             <div className="retake-next-buttons">
-              <Button
-                onClick={handleRetake}
-                variant="destructive"
-              >
-                Retake
-              </Button>
-              <Button onClick={() => navigate("/prompts")}>
+              <button className="upload-button" onClick={handleRetake}>
+                Redo
+              </button>
+              <button className="next-button" onClick={() => navigate("/prompts")}>
                 Next
-              </Button>
+              </button>
             </div>
           )}
 

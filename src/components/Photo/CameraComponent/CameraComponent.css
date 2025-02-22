@@ -4,13 +4,14 @@
     align-items: center;
     justify-content: flex-start;
     min-height: 10vh;
-    padding-top: 6em; /* Spacing from top */
+    padding-top: 3em; /* Spacing from top */
     padding-bottom: 5em;
+    border-radius: 15px;
     gap: 10px;
-  }
-  
-  .camera-card {
-    position: relative; /* If you need absolute positioning inside */
+}
+
+.camera-card {
+    position: relative; /* Allows absolute positioning inside */
     transition: all 0.3s ease-in-out;
     width: 100%;
     max-width: 500px;
@@ -18,99 +19,119 @@
     padding: 20px;
     border-radius: 15px;
     text-align: center;
-  }
-  
-  .camera-content {
+}
+
+.camera-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 25px;
-  }
-  
-  /* Square camera preview */
-  .camera-preview {
+}
+
+/* Square camera preview */
+.camera-preview {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.captured-image {
     width: 100%;
     aspect-ratio: 1 / 1;
     border-radius: 15px;
     object-fit: cover;
-  }
-  
-  .captured-image {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    border-radius: 15px;
-    object-fit: cover;
-  }
-  
-  /* The container for the upload + capture circle side by side */
-  .button-container {
+}
+
+/* 
+   Container for the upload + capture circle button
+   Capture is centered, upload stays on the left 
+*/
+.button-container {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: left; /* ensures both are centered horizontally in the row */
+    justify-content: space-between; /* Upload stays left, capture is centered */
     width: 100%;
-    gap: 100px;
-  }
-  
-  /* The center wrapper for file upload */
-  .capture-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  /* Circle capture button with no text inside */
-  .capture-circle-button {
+    position: relative;
+}
+
+/* Upload button should stay in the left corner */
+.upload-wrapper {
+    position: relative;
+}
+
+/* 
+   Capture button centered inside button-container 
+   A larger circle with a camera icon inside
+*/
+.capture-circle-button {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: gray; 
-    border: none;
+    background-color: white;
+    border: 2px solid black;
     cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  /* Darken on hover */
-  .capture-circle-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* If you want an active/click effect */
-  .capture-circle-button:active {
-    background-color: #004088;
-  }
-  
-  /* MUI upload button styling overrides */
-  .upload-button {
-    background-color: #28a745 !important;
-    color: #fff !important;
-    text-transform: none !important; /* remove uppercase if desired */
-    border-radius: 6px !important;
-    padding: 8px 16px !important;
-    font-size: 14px !important;
-  }
-  
-  .upload-button:hover {
-    background-color: #218838 !important;
-  }
-  
-  .retake-next-buttons {
+    transition: background-color 0.2s ease, transform 0.2s ease;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  /* For side-by-side retake/next, use:
-  .retake-next-buttons {
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+/* Change background & icon color on hover */
+.capture-circle-button:hover {
+    background-color: black;
+}
+
+.capture-circle-button:hover::before {
+    color: white;
+}
+
+/* Optional: Active/click effect */
+.capture-circle-button:active {
+    transform: translateX(-50%) scale(0.95);
+}
+
+/* Upload button styling */
+.upload-button {
+    background-color: white;
+    color: black;
+    border: 2px solid white;
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.next-button {
+    background-color: rgb(116, 135, 255);
+    color: white;
+    border: 2px solid white;
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.upload-button:hover {
+    background-color: black;
+    color: white;
+}
+
+.next-button:hover {
+    background-color: rgb(63, 73, 139);;
+    color: white;
+}
+
+/* Retake/Next buttons stacked */
+.retake-next-buttons {
+    display: flex;
+    position: relative;
     flex-direction: row;
-    justify-content: space-between;
-  }
-  */
-  
-  .markdown-output {
-    font-size: 1.2rem;
-    color: #202226;
-    margin-top: 0px;
-    white-space: pre-wrap;
-    text-align: center;
-  }
-  
+    gap: 325px;
+}

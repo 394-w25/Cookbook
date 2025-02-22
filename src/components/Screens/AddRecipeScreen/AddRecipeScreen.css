@@ -4,11 +4,12 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  text-align: center;
 }
 
 .button-group {
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   gap: 15px;
   margin-top: 20px;
@@ -30,12 +31,7 @@
   color: white;
 }
 
-.camera-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
+
 
 .bottom-nav {
   display: flex;

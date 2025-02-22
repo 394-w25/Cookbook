@@ -9,10 +9,10 @@ function AddRecipeScreen() {
   return (
     <div className="container">
       <h1 className="title">How do you want to input your recipe?</h1>
-        <button className="button" onClick={() => navigate("/cameraComponent")}>
-          Use a photo
-        </button>
-      </div>
+      <button className="button" onClick={() => navigate("/cameraComponent")}>
+        Use a photo
+      </button>
+    </div>
   );
 }
 
