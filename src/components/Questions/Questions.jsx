@@ -101,17 +101,14 @@ function Questions({ recipeText }) {
     const handleSubmit = async () => {
         try {
             setLoading(true);
-            const res = await fetch ("https://news-menu.onrender.com/writejournal", {
-                method: "POST",
-                body: JSON.stringify({ answers }),
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            })
 
-            const entry = await res.json();
-            // console.log(entry);
-            setJournal(entry.journal || "Could not generate journal entry.");
+            const res = await axios.post('https://us-central1-generationalcookbook.cloudfunctions.net/writejournal',
+                { answers: answers }
+            );
+
+            console.log(res);
+
+            setJournal(res.data.journal || "Could not generate journal entry.");
             setShowFields(false);
             setLoading(false);
         }
