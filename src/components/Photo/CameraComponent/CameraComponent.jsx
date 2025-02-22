@@ -2,11 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import { Camera } from 'react-camera-pro';
 import './CameraComponent.css';
 import axios from 'axios';
-import ReactMarkdown from 'react-markdown';
-import { Box, Button, Card, CardContent, Alert, CircularProgress } from '@mui/material';
-import Questions from '../../Questions/Questions';
+import { Card, CardContent, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
+// Call your Cloud Function that processes the image with OpenAI
 const fetchOpenAIData = async (base64Image) => {
   try {
     const response = await axios.post(
@@ -25,14 +24,12 @@ export default function CameraComponent() {
   const [error, setError] = useState('');
   const [hasPermission, setHasPermission] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  
-  // For the "scanning" overlay
+
+  // Tracking overlay for scanning
   const [scanning, setScanning] = useState(false);
-  
   // The extracted text from the first OpenAI call
   const [extractedText, setExtractedText] = useState('');
-  
-  // Whether we have finished scanning and are showing the editable text
+  // Whether we show the editable text area
   const [showEditableText, setShowEditableText] = useState(false);
 
   const navigate = useNavigate();
@@ -60,16 +57,16 @@ export default function CameraComponent() {
   // Process the base64 image with OpenAI
   const processImage = async (base64Image) => {
     try {
-      setScanning(true); // Start scanning
+      setScanning(true); // Start scanning => show overlay
       const result = await fetchOpenAIData(base64Image);
       const text = result.choices[0]?.message?.content || 'No text extracted.';
       setExtractedText(text);
-      setShowEditableText(true); // Now show the editable text
+      setShowEditableText(true);
     } catch (err) {
       setError('Error processing image. Please retry.');
       console.error(err);
     } finally {
-      setScanning(false); // Stop scanning
+      setScanning(false);
     }
   };
 
@@ -103,7 +100,6 @@ export default function CameraComponent() {
     }
   };
 
-  // Called when user chooses a file
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -120,21 +116,18 @@ export default function CameraComponent() {
     }
   };
 
-  // "Retake" means user discards current image & text
   const handleRetake = () => {
     setImage(null);
     setExtractedText('');
     setShowEditableText(false);
   };
 
-  // When user clicks "Next," go to prompts
-  // We pass the "edited" text along to the next route
+  // “Next” => pass user’s final text + image to prompts
   const handleNext = () => {
     if (!extractedText || extractedText.trim() === "") {
       console.error("No extracted text. Cannot proceed.");
       return;
     }
-    // Navigate to prompts, passing the user-edited text
     navigate("/prompts", { state: { data: extractedText, image } });
   };
 
@@ -142,30 +135,25 @@ export default function CameraComponent() {
     <div className="camera-container">
       <Card className="camera-card">
         <CardContent className="camera-content">
-
-          {/* 1) Show loading while checking camera permission */}
           {isLoading ? (
+            // Show spinner while checking camera
             <div className="loading-container">
               <CircularProgress />
               <p>Awaiting camera access...</p>
             </div>
           ) : hasPermission ? (
-            /* 2) If we have no image yet, show camera or show captured image */
             !image ? (
               <Camera ref={cameraRef} className="camera-preview" aspectRatio={1} />
             ) : (
-              /* Show captured or uploaded image 
-                 We can "gray it out" if scanning is true */
               <div className="image-wrapper">
                 <img
                   src={image}
                   alt="Captured or Uploaded Recipe"
-                  className={`captured-image ${scanning ? "grayscale" : ""}`}
+                  className={`captured-image ${scanning ? 'darken' : ''}`}
                 />
-                {/* Scanning overlay */}
                 {scanning && (
                   <div className="scanning-overlay">
-                    <CircularProgress style={{ color: "white" }} />
+                    <CircularProgress style={{ color: "white", marginBottom: "10px" }} />
                     <p>Scanning...</p>
                   </div>
                 )}
@@ -175,9 +163,8 @@ export default function CameraComponent() {
             <p className="text-red-500">Camera access denied</p>
           )}
 
-          {/* 3) Button area */}
+          {/* Button area */}
           {!image ? (
-            /* No image => allow uploading or capturing */
             <div className="button-container">
               <div className="upload-wrapper">
                 <input
@@ -194,19 +181,16 @@ export default function CameraComponent() {
               <button onClick={handleCapture} className="capture-circle-button" />
             </div>
           ) : (
-            /* If an image is present => show either the editable text or final retake/next buttons */
             <>
-              {showEditableText ? (
-                /* Show text area to let user edit the extracted text */
-                <div style={{ width: "100%", marginTop: "1rem" }}>
+              {showEditableText && (
+                <div className="recipe-text-area">
                   <textarea
-                    style={{ width: "100%", height: "200px", padding: "10px" }}
                     value={extractedText}
                     onChange={(e) => setExtractedText(e.target.value)}
+                    placeholder="Edit your recipe text here..."
                   />
                 </div>
-              ) : null}
-
+              )}
               <div className="retake-next-buttons">
                 <button className="upload-button" onClick={handleRetake}>
                   Retake
@@ -218,9 +202,7 @@ export default function CameraComponent() {
             </>
           )}
 
-          {/* Error message at the bottom */}
           {error && <div className="error-message">{error}</div>}
-
         </CardContent>
       </Card>
     </div>

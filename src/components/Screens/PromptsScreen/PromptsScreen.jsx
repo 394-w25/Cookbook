@@ -1,17 +1,13 @@
-// src/components/Questions/Questions.jsx
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Box, CircularProgress } from '@mui/material';
-import RecipePage from '../RecipePage/RecipePage';
+import { useLocation } from "react-router-dom";
+import { CircularProgress } from '@mui/material';
+import RecipeScreen from '../RecipeScreen/RecipeScreen';
+import './PromptsScreen.css';
 
 export default function Questions() {
   const location = useLocation();
-  const navigate = useNavigate();
-  
-  // The user-edited recipe text from the camera page
-  const [recipeText] = useState(location.state?.data || "");
-  // The original uploaded/taken image
-  const [image] = useState(location.state?.image || null);
+  const recipeText = location.state?.data || "";
+  const originalImage = location.state?.image || null;
 
   const prompts = [
     "Who invented this recipe and when is it usually made?",
@@ -20,10 +16,9 @@ export default function Questions() {
   ];
 
   const [answers, setAnswers] = useState(Array(prompts.length).fill(""));
-  const [journalEntry, setJournalEntry] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const [showRecipePage, setShowRecipePage] = useState(false);
+  const [journalEntry, setJournalEntry] = useState("");
+  const [showRecipeScreen, setShowRecipeScreen] = useState(false);
 
   const handleSubmit = async () => {
     try {
@@ -37,37 +32,37 @@ export default function Questions() {
       setJournalEntry(entry.journal || "Could not generate journal entry.");
       setLoading(false);
 
-      // Show final recipe page
-      setShowRecipePage(true);
+      setShowRecipeScreen(true);
     } catch (err) {
-      console.error('Error creating journal: ' + err);
+      console.error("Error creating journal: " + err);
       setLoading(false);
     }
   };
 
-  if (showRecipePage) {
-    // Render the final recipe page
+  if (showRecipeScreen) {
+    // Render the final recipe with:
+    // 1) original image
+    // 2) user-edited recipe text
+    // 3) the journal entry
     return (
-      <RecipePage
+      <RecipeScreen
         recipeText={recipeText}
         journalEntry={journalEntry}
-        image={image}
+        image={originalImage}
       />
     );
   }
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h2>Answer These Questions</h2>
-      <p>You can provide additional family context about your recipe!</p>
+    <div className="prompts-container">
+      <h1>What's the Story?</h1>
+      <p>Tell us more about your family’s memories & context for this recipe!</p>
 
       {prompts.map((prompt, idx) => (
-        <div key={idx} style={{ marginBottom: '1rem' }}>
+        <div key={idx} className="prompt-block">
           <strong>{idx + 1}. {prompt}</strong>
-          <br />
           <textarea
             rows={3}
-            style={{ width: '100%', marginTop: '5px' }}
             onChange={(e) => {
               const updated = [...answers];
               updated[idx] = e.target.value;
@@ -78,11 +73,11 @@ export default function Questions() {
       ))}
 
       {loading ? (
-        <Box>
-          <CircularProgress />
-        </Box>
+        <CircularProgress />
       ) : (
-        <button onClick={handleSubmit}>Submit</button>
+        <button className="submit-button" onClick={handleSubmit}>
+          Generate Final Recipe
+        </button>
       )}
     </div>
   );

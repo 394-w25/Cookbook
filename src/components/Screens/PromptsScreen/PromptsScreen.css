@@ -1,58 +1,37 @@
-/* Ensure the card itself has margins */
-/* .container {
-    position: relative;
-    width: 100vw;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  
-    background-color: white;
-} */
-
-/* Ensure the container expands with content */
-.container {
-    position: relative;
-    width: 100vw;
-    min-height: 100vh; /* Allows expansion beyond viewport height */
-    margin: 0;
-    padding: 2rem; /* Adds some space around the content */
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Prevents content from getting cut off */
-  
-    background-color: white;
+.prompts-container {
+  max-width: 600px; 
+  margin: 0 auto;
+  text-align: left;
+  font-family: var(--primary-font, sans-serif);
+  padding: 2rem;
 }
 
-.prompt-card {
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    max-height: none;
-  
-    border-radius: 0;
-    box-shadow: none;
-    background: transparent; /* so camera/image shows behind, or you can use a translucent color */
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
+.prompt-block {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
 
-  .prompt-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    padding: 0; /* override any built-in padding */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+.prompt-block textarea {
+  margin-top: 0.5rem;
+  padding: 8px;
+  resize: none;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
