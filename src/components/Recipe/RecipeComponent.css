@@ -1,21 +1,6 @@
-/* Card styling */
-.container {
-  flex-direction: row !important;  /* Ensure children are displayed horizontally (left to right) */
-  display: flex;
-  justify-content: flex-start !important; /* Align children to the left side */
-  align-items: center; /* Optional: Center children vertically */
-  gap: 10px; /* Optional: Adds space between the items */
-}
-
-
 .recipe-card {
-    margin-top: 100px;
     max-width: 345px;
-    border-radius: 8px;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-    background-color: #f8f8f8;
-    margin-left: 50px;
+    margin: 20px;
   }
   
   .recipe-card:hover {

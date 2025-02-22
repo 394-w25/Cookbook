@@ -3,6 +3,8 @@ import RecipeComponent from '@/components/Recipe/RecipeComponent';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/utilities/firebase';
 import { Timestamp } from 'firebase/firestore';  // Import Timestamp to handle it explicitly
+import { Box } from '@mui/material';
+import "./HomeScreen.css";
 
 function HomeScreen() {
   const [recipes, setRecipes] = useState([]);  // State to store the fetched recipes
@@ -47,7 +49,7 @@ function HomeScreen() {
   }, []);  // Empty dependency array ensures this runs only once when the component mounts
 
   return (
-    <div>
+    <Box className="recipes-list">
       {recipes.length > 0 ? (
         recipes.map((recipe) => (
           <RecipeComponent
@@ -64,7 +66,7 @@ function HomeScreen() {
       ) : (
         <p>Loading recipes...</p>  // Display a loading message while fetching data
       )}
-    </div>
+    </Box>
   );
 }
 

@@ -18,7 +18,7 @@ function RecipeComponent({
   const formattedDate = date.toString()
 
   return (
-    <div className='container'>
+    <div>
       <Card className="recipe-card">
         <CardActionArea>
           <CardHeader
