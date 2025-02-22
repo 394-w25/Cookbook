@@ -1,15 +1,15 @@
 import './App.css';
-import HomeScreen from '@/components/Navigation/Screens/HomeScreen/HomeScreen';
-import SignInScreen from '@/components/Navigation/Screens/SignInScreen/SignInScreen';
-import AddRecipeScreen from '@/components/Navigation/Screens/AddRecipeScreen/AddRecipeScreen';
-import CameraComponent from '@/components/Photo/CameraComponent/CameraComponent'
-import PromptsScreen from './components/PromptsScreen/PromptsScreen';
+import HomeScreen from "./components/Screens/HomeScreen/HomeScreen";
+import SignInScreen from './components/Screens/SignInScreen/SignInScreen';
+import AddRecipeScreen from './components/Screens/AddRecipeScreen/AddRecipeScreen';
+import CameraComponent from './components/Photo/CameraComponent/CameraComponent';
+import Questions from './components/Questions/Questions';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
 } from 'react-router-dom';
-import MainLayout from '@/components/Navigation/MainLayout';
+import MainLayout from '@/components/MainLayout/MainLayout';
 
 const App = () => {
   return (
@@ -22,7 +22,7 @@ const App = () => {
           <Route path="/home" element={<HomeScreen />} />
           <Route path="/AddRecipe" element={<AddRecipeScreen />} />
           <Route path="/CameraComponent" element={<CameraComponent />} />
-          <Route path="/prompts" element={<PromptsScreen />} />
+          <Route path="/prompts" element={<Questions />} />
         </Route>
       </Routes>
     </Router>

@@ -3,90 +3,114 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    min-height: 10vh; /* Ensure some minimum height */
-    padding-top: 6em; /* Consistent spacing from the top */
-    padding-bottom: 5em; /* Consistent spacing from the bottom */
+    min-height: 10vh;
+    padding-top: 6em; /* Spacing from top */
+    padding-bottom: 5em;
     gap: 10px;
-}
-
-.camera-card {
+  }
+  
+  .camera-card {
+    position: relative; /* If you need absolute positioning inside */
     transition: all 0.3s ease-in-out;
     width: 100%;
-    max-width: 500px; /* Increase card size */
+    max-width: 500px;
     background: white;
     padding: 20px;
     border-radius: 15px;
     text-align: center;
-}
-
-.camera-content {
+  }
+  
+  .camera-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 25px;
-}
-
-/* 
-   Use aspect-ratio to ensure a perfect square.
-   - We let width fill 100% of the container (up to max-width of camera-card).
-   - aspect-ratio: 1/1 ensures a square shape.
-   - object-fit: cover keeps it cropped nicely.
-*/
-.camera-preview {
+  }
+  
+  /* Square camera preview */
+  .camera-preview {
     width: 100%;
     aspect-ratio: 1 / 1;
     border-radius: 15px;
     object-fit: cover;
-    /* Remove max-height for a pure square:
-       max-height: 500px;  <-- remove or comment out
-    */
-}
-
-.captured-image {
+  }
+  
+  .captured-image {
     width: 100%;
     aspect-ratio: 1 / 1;
     border-radius: 15px;
     object-fit: cover;
-    /* Same here:
-       max-height: 500px;  <-- remove or comment out
-    */
-}
-
-.button-container {
+  }
+  
+  /* The container for the upload + capture circle side by side */
+  .button-container {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 20px;
+    justify-content: left; /* ensures both are centered horizontally in the row */
     width: 100%;
-}
-
-.capture-button {
-    width: 70%; /* Adjust as desired for button size */
-    max-width: 350px;
-    padding: 8px 20px;
-    font-size: 18px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center;
+    gap: 100px;
+  }
+  
+  /* The center wrapper for file upload */
+  .capture-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Circle capture button with no text inside */
+  .capture-circle-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: gray; 
     border: none;
-    transition: all 0.3s ease;
-}
-
-.capture-button:hover {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  /* Darken on hover */
+  .capture-circle-button:hover {
     background-color: #0056b3;
-}
-
-.markdown-output {
-    font-size: 1.2rem; /* Smaller text */
-    color: #202226;    /* Gray color */
-    margin-top: 0px;
-    white-space: pre-wrap; /* Preserve whitespace */
-    text-align: center;    /* Centered text */
-}
-
-.retake-next-buttons {
+  }
+  
+  /* If you want an active/click effect */
+  .capture-circle-button:active {
+    background-color: #004088;
+  }
+  
+  /* MUI upload button styling overrides */
+  .upload-button {
+    background-color: #28a745 !important;
+    color: #fff !important;
+    text-transform: none !important; /* remove uppercase if desired */
+    border-radius: 6px !important;
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+  }
+  
+  .upload-button:hover {
+    background-color: #218838 !important;
+  }
+  
+  .retake-next-buttons {
     display: flex;
     flex-direction: column;
-}
+    gap: 10px;
+  }
+  
+  /* For side-by-side retake/next, use:
+  .retake-next-buttons {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  */
+  
+  .markdown-output {
+    font-size: 1.2rem;
+    color: #202226;
+    margin-top: 0px;
+    white-space: pre-wrap;
+    text-align: center;
+  }
+  

@@ -3,7 +3,7 @@ import { Camera } from 'react-camera-pro';
 import './CameraComponent.css';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-import { CircularProgress, Box, Button, Card, CardContent, Alert } from '@mui/material';
+import { Box, Button, Card, CardContent, Alert } from '@mui/material';
 import Questions from '../../Questions/Questions';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,17 +29,19 @@ export default function CameraComponent() {
   const [showQuestions, setShowQuestions] = useState(false);
 
   const navigate = useNavigate();
-
   const cameraRef = useRef(null);
-
   const fileInputRef = useRef(null);
+
+  // Upload logic
+  const handleUploadError = (errMessage) => {
+    setError(errMessage);
+  };
 
   const handleImageUpload = async (base64DataUrl) => {
     try {
       setError('');
       setImage(base64DataUrl);
-  
-      // Remove the data URI prefix to get raw base64
+
       const base64Image = base64DataUrl.split(',')[1] || '';
       await processImage(base64Image);
       setShowQuestions(true);
@@ -48,11 +50,7 @@ export default function CameraComponent() {
       console.error(err);
     }
   };
-  
-  const handleUploadError = (errorMessage) => {
-    setError(errorMessage);
-  };
-  
+
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -60,7 +58,6 @@ export default function CameraComponent() {
       reader.onloadend = () => {
         handleImageUpload(reader.result);
       };
-      console.log("file uploaded!")
       reader.onerror = () => {
         handleUploadError('Error uploading the file. Please try again.');
       };
@@ -70,6 +67,11 @@ export default function CameraComponent() {
     }
   };
 
+  const openFileDialog = () => {
+    fileInputRef.current.click();
+  };
+
+  // Camera / permission logic
   useEffect(() => {
     const requestPermission = async () => {
       try {
@@ -84,21 +86,6 @@ export default function CameraComponent() {
     requestPermission();
   }, []);
 
-  const openFileDialog = () => {
-    fileInputRef.current.click(); // Programmatically open the file picker
-  };
-
-  // const processImage = async (base64Image) => {
-  //   try {
-  //     setSentRequest(true);
-  //     const result = await fetchOpenAIData(base64Image);
-  //     setData(result.choices[0]?.message?.content || 'No text extracted.');
-  //     console.log('OpenAI result:', result);
-  //   } catch (err) {
-  //     setError('Error processing image. Please retry.');
-  //     console.error(err);
-  //   }
-  // };
   const processImage = async (base64Image) => {
     try {
       setSentRequest(true);
@@ -122,7 +109,7 @@ export default function CameraComponent() {
           setError('');
           setImage(photo);
 
-          const base64Image = photo.split(',')[1]; // remove the data URI prefix
+          const base64Image = photo.split(',')[1]; 
           await processImage(base64Image);
         }
       }
@@ -155,67 +142,75 @@ export default function CameraComponent() {
         <CardContent className="camera-content">
           {hasPermission ? (
             !image ? (
-              <Camera ref={cameraRef} className="camera-preview" aspectRatio={1} />
+              <Camera
+                ref={cameraRef}
+                className="camera-preview"
+                aspectRatio={1}
+              />
             ) : (
-              <img src={image} alt="Captured or Uploaded Recipe" className="captured-image" />
+              <img 
+                src={image} 
+                alt="Captured or Uploaded Recipe" 
+                className="captured-image" 
+              />
             )
           ) : (
             <p className="text-red-500">Awaiting camera access...</p>
           )}
 
-          <div className="button-container">
-            {!image ? (
-              <>
-                <Button onClick={handleCapture} className="upload-button">
-                  Capture Recipe
-                </Button>
-                <div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileUpload}
-                    ref={fileInputRef}
-                    style={{ display: 'none' }}
-                  />
-                  <Button onClick={openFileDialog} className="upload-button">
-                    Upload Photo
-                  </Button>
-                </div>
-                {/* <label htmlFor="file-upload" className="upload-button">
+          {/* If no image, show upload button (left) + circle capture button (center). */}
+          {!image ? (
+            <div className="button-container">
+              <div className="upload-wrapper">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                />
+                <Button onClick={openFileDialog} className="upload-button">
                   Upload Photo
-                </label> */}
-                {/* <PhotoUploadComponent
-                  onUpload={handleImageUpload}
-                  onError={handleUploadError}
-                /> */}
-              </>
-            ) : (
-              <div className="retake-next-buttons">
+                </Button>
+              </div>
+
+              {/* Circle capture button with no text */}
+              <button onClick={handleCapture} className="capture-circle-button" />
+            </div>
+          ) : (
+            /* If an image is present, show Retake / Next */
+            <div className="retake-next-buttons">
               <Button
                 onClick={handleRetake}
-                // className="capture-button"
                 variant="destructive"
               >
                 Retake
               </Button>
-              {/* <Button onClick={() => navigate("/prompts", { state: { data } })}>Next</Button> */}
-              <Button onClick={handleNext}>Next</Button>
-              </div>
-            )}
-          </div>
+              <Button onClick={() => navigate("/prompts")}>
+                Next
+              </Button>
+            </div>
+          )}
 
-          {/* {data ? 
-            <pre className='markdown-output'>
-              <ReactMarkdown>{data}</ReactMarkdown>
-            </pre> : sentRequest ?
-            <Box sx={{ display: 'flex' }}>
-              <CircularProgress />
-            </Box> : null
-          }
-          {showQuestions && (
-            <Questions recipeText={data} />
-          )} 
-          */}         
+
+          {/* 
+            If you want to show results or questions after image is processed, 
+            uncomment these:
+            
+            {data ? (
+              <pre className='markdown-output'>
+                <ReactMarkdown>{data}</ReactMarkdown>
+              </pre>
+            ) : sentRequest ? (
+              <Box sx={{ display: 'flex' }}>
+                <CircularProgress />
+              </Box>
+            ) : null}
+
+            {showQuestions && (
+              <Questions recipeText={data} />
+            )}
+          */}
         </CardContent>
       </Card>
     </div>

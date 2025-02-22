@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
-import NavigationBar from "./NavigationBar/NavigationBar";
-import TopBar from "./TopBar/TopBar";
+import NavigationBar from "@/components/NavigationBar/NavigationBar";
+import TopBar from "@/components/TopBar/TopBar";
+import "./MainLayout.css";
 
 const MainLayout = () => {
   const location = useLocation();
