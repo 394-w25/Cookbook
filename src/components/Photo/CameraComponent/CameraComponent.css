@@ -166,5 +166,6 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     resize: none; /* user can't resize the box, only scroll */
+    box-sizing: border-box; /* padding and border are included in width */
   }
   
