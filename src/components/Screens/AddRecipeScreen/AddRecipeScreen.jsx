@@ -7,10 +7,10 @@ function AddRecipeScreen() {
   const navigate = useNavigate();
 
   return (
-    <div className="container">
-      <h1 className="title">How do you want to input your recipe?</h1>
+    <div className="recipescreen-container">
+      <h1>How do you want to input your recipe?</h1>
       <button className="button" onClick={() => navigate("/cameraComponent")}>
-        Use a photo
+        Use a photo {<CameraAltIcon></CameraAltIcon>}
       </button>
     </div>
   );
