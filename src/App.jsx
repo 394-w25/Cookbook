@@ -2,7 +2,7 @@ import './App.css';
 import HomeScreen from "./components/Screens/HomeScreen/HomeScreen";
 import SignInScreen from './components/Screens/SignInScreen/SignInScreen';
 import AddRecipeScreen from './components/Screens/AddRecipeScreen/AddRecipeScreen';
-import CameraComponent from './components/Photo/CameraComponent/CameraComponent';
+import CameraComponent from './components/CameraComponent/CameraComponent';
 import PromptsScreen from './components/Screens/PromptsScreen/PromptsScreen';
 import {
   BrowserRouter as Router,
