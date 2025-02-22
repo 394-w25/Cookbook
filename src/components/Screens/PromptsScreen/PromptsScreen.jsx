@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import { useLocation } from "react-router-dom";
 import ReactMarkdown from 'react-markdown'
-import Questions from '../Questions/Questions'
+import Questions from '../../Questions/Questions'
 import { Card, CardContent } from '@mui/material';
 
 // function PromptsScreen() {
