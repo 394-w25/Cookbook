@@ -25,6 +25,8 @@ function HomeScreen() {
           data.Date.toDate().toString() : 
           data.Date || "No valid date";  // Handle cases where Date is not a Timestamp
         
+        const imageUrl = data.Image || "default-image-url";  // Fallback image URL (e.g., a placeholder image)
+        
         recipesData.push({
           id: doc.id,
           title: data.Title,
@@ -33,6 +35,7 @@ function HomeScreen() {
           date: formattedDate,  // Use the formatted date
           recipeText: data.Recipe,
           cookbook: data.cookbook,
+          image: imageUrl
         });
       });
 
@@ -55,6 +58,7 @@ function HomeScreen() {
             date={recipe.date}           // Pass the formatted Date
             recipeText={recipe.recipeText}   // Pass the Recipe text/steps
             cookbook={recipe.cookbook}   // Pass the cookbook text
+            image = {recipe.image}
           />
         ))
       ) : (
