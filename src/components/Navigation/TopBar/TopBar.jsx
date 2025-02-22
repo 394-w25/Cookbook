@@ -5,7 +5,7 @@ import "./TopBar.css"
 function TopBar() {
   return (
     <AppBar className="top-bar">
-      add recipe
+      Generational Cookbook
     </AppBar>
   )
 }

@@ -1,11 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 import { Camera } from 'react-camera-pro';
 import './CameraComponent.css';
+import '../PhotoUploadComponent/PhotoUploadComponent.css';
 import PhotoUploadComponent from '../PhotoUploadComponent/PhotoUploadComponent';
+// import { Button } from '@/components/Common/Button';
+// import { Card } from '@/components/Common/Card';
+// import { CardContent } from '@/components/Common/CardContent';
+// import { Alert } from '@/components/Common/Alert';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-import { CircularProgress, Box, Alert, Card, CardContent, Button } from '@mui/material';
-import Questions from '../../Recipe/Questions/Questions';
+import { CircularProgress, Box, Button, Card, CardContent, Alert } from '@mui/material';
+import Questions from '../../Questions/Questions';
+import { useNavigate } from 'react-router-dom';
 
 const fetchOpenAIData = async (base64Image) => {
   try {
@@ -27,6 +33,8 @@ export default function CameraComponent() {
   const [data, setData] = useState('');
   const [sentRequest, setSentRequest] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
+
+  const navigate = useNavigate();
 
   const cameraRef = useRef(null);
 
@@ -117,27 +125,29 @@ export default function CameraComponent() {
           <div className="button-container">
             {!image ? (
               <>
-                <Button onClick={handleCapture} className="capture-button">
+                <Button onClick={handleCapture} className="upload-button">
                   Capture Recipe
                 </Button>
                 <PhotoUploadComponent
                   onUpload={handleImageUpload}
                   onError={handleUploadError}
-                  className="upload-button"
                 />
               </>
             ) : (
+              <div className="retake-next-buttons">
               <Button
                 onClick={handleRetake}
-                className="capture-button"
+                // className="capture-button"
                 variant="destructive"
               >
                 Retake
               </Button>
+              <Button onClick={() => navigate("/prompts")}>Next</Button>
+              </div>
             )}
           </div>
 
-          {data ? 
+          {/* {data ? 
             <pre className='markdown-output'>
               <ReactMarkdown>{data}</ReactMarkdown>
             </pre> : sentRequest ?
@@ -147,7 +157,7 @@ export default function CameraComponent() {
           }
           {showQuestions && (
             <Questions />
-          )}          
+          )}           */}
         </CardContent>
       </Card>
     </div>

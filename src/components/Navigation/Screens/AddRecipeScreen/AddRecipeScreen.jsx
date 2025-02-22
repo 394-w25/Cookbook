@@ -9,32 +9,10 @@ function AddRecipeScreen() {
   return (
     <div className="container">
       <h1 className="title">How do you want to input your recipe?</h1>
-
-      <div className="button-group">
-        <div className="button-container">
-          <button className="button" onClick={() => navigate("/cameraComponent")}>
-            Use a photo
-          </button>
-        </div>
+        <button className="button" onClick={() => navigate("/cameraComponent")}>
+          Use a photo
+        </button>
       </div>
-
-      <nav className="bottom-nav">
-        <div className="nav-container">
-          <button className="nav-button" onClick={() => navigate("/home")}>
-            Home
-          </button>
-          <button className="nav-button" onClick={() => navigate("/recipeBox")}>
-            Recipe Box
-          </button>
-          <button className="nav-button" onClick={() => navigate("/addRecipe")}>
-            Add Recipe
-          </button>
-          <button className="nav-button" onClick={() => navigate("/myFamily")}>
-            My Family
-          </button>
-        </div>
-      </nav>
-    </div>
   );
 }
 

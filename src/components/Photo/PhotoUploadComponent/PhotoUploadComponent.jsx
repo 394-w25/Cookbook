@@ -1,4 +1,5 @@
 import React from 'react';
+import './PhotoUploadComponent.css';
 
 const PhotoUploadComponent = ({ onUpload, onError }) => {
   const handleFileUpload = (event) => {
@@ -8,6 +9,7 @@ const PhotoUploadComponent = ({ onUpload, onError }) => {
       reader.onloadend = () => {
         onUpload(reader.result);
       };
+      console.log("file uploaded!")
       reader.onerror = () => {
         onError('Error uploading the file. Please try again.');
       };

@@ -1,3 +1,64 @@
+/* Card styling */
 .recipe-card {
-    margin: 50px;
-}
+    margin-top: 100px;
+    max-width: 345px;
+    border-radius: 8px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    background-color: #f8f8f8;
+    margin-left: 50px;
+  }
+  
+  .recipe-card:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Header styling */
+  .recipe-card-header {
+    text-align: center;
+    background-color: white;
+    color: white !important;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 16px;
+  }
+
+  .recipe-card-header .MuiCardHeader-subheader {
+    color: black;
+    size: 250px;
+  }
+
+
+  
+
+  
+  /* Image styling */
+  .recipe-card-media {
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  /* Content styling */
+  .recipe-card-content {
+    padding: 24px;
+  }
+  
+  /* Typography for chef */
+  .recipe-card-creator {
+    color: black !important;
+    background-color: white;
+  }
+  
+  /* Date typography */
+  .recipe-card-date {
+    color: black;
+    background-color: white;
+    margin-bottom: 16px;
+  }
+  
+  /* Recipe text styling */
+  .recipe-card-text {
+    color: #212121;
+    line-height: 1.6;
+  }
+  

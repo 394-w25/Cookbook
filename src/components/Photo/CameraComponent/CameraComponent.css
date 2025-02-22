@@ -1,63 +1,81 @@
 .camera-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+  
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    min-height: 10vh; /* Ensure full height */
-    padding-top: 5em; /* Consistent spacing from the top */
-    padding-bottom: 5em; /* Consistent spacing from the bottom */
-    gap: 10px;
-}
+    justify-content: center;
+  
+    background-color: white;
+  }
 
-.camera-card {
-    transition: all 0.3s ease-in-out;
+  .camera-card {
     width: 100%;
-    max-width: 500px; /* Increase card size */
-    background: white;
-    padding: 100px;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    text-align: center;
-}
+    height: 100%;
+    max-width: none;
+    max-height: none;
+  
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent; /* so camera/image shows behind, or you can use a translucent color */
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
-.camera-content {
+  .camera-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0; /* override any built-in padding */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 25px;
-}
+    justify-content: center;
+  }
 
-.camera-preview {
+  .camera-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 500px; /* Much bigger camera */
-    max-height: 500px;
-    border-radius: 15px;
+    height: 100%;
+    object-fit: cover; /* fill entire area */
+  }
+
+  .captured-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-}
+  }
 
-.captured-image {
-    width: 100%;
-    height: 500px; /* Bigger captured image */
-    border-radius: 15px;
-    object-fit: cover;
-}
-
-.button-container {
+  .button-container {
+    position: absolute;
+    left: 0;
+    right: 0;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 20px;
-    width: 100%;
-}
+    justify-content: center;
+    gap: 1rem;
+  }
 
-.capture-button {
-    width: 100%; /* Capture button is wide */
-    max-width: 500px;
-    padding: 20px 30px; /* Bigger button size */
-    font-size: 22px; /* Larger text */
+  .capture-button {
+    width: 70%; /* Upload button is smaller */
+    max-width: 350px;
+    padding: 8px 20px; /* Smaller than capture button */
+    font-size: 18px;
     background-color: #007bff;
     color: white;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
     text-align: center;
     border: none;
@@ -68,24 +86,6 @@
     background-color: #0056b3;
 }
 
-.upload-button {
-    width: 70%; /* Upload button is smaller */
-    max-width: 350px;
-    padding: 8px 20px; /* Smaller than capture button */
-    font-size: 18px;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center;
-    border: none;
-    transition: all 0.3s ease;
-    margin-top: 10px; /* Space it out from capture button */
-}
-
-.upload-button:hover {
-    background-color: #388E3C;
-}
 
 .markdown-output {
     font-size: 1.2rem; /* Smaller text */
@@ -93,4 +93,9 @@
     margin-top: 0px;
     white-space: pre-wrap; /* Preserve whitespace */
     text-align: center; /* Centered text */
+}
+
+.retake-next-buttons {
+    display: flex;
+    flex-direction: column;
 }

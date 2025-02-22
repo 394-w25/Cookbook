@@ -1,39 +1,60 @@
 import * as React from 'react';
 import { Card, CardContent, CardMedia, Typography, CardActionArea, CardHeader } from '@mui/material';
+import './RecipeComponent.css';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 
 function RecipeComponent({
     title,
     category,
     creator,
     date,
-    recipeText
+    recipeText,
+    cookbook
 }) {
-  console.log("Rendering recipe:", { title, category, creator, date, recipeText });
+  console.log("Rendering recipe:", { title, category, creator, date, recipeText, cookbook });
 
-  const formattedDate = date ? new Date(date.seconds * 1000).toLocaleDateString() : "No date available";
+  const formattedDate = date.toString()
 
   return (
-    <Card sx={{ maxWidth: 345 }} className="recipe-card">
+    <Card className="recipe-card">
       <CardActionArea>
         <CardHeader
           title={title}
-          subheader={category}
-          sx={{ textAlign: 'center' }}
+          subheader={
+          <Stack direction="row" spacing={1}>
+            <Chip label={category} />
+            <Chip label={cookbook} />
+          </Stack>
+          }
+          className="recipe-card-header"
         />
         <CardMedia
           component="img"
-          height="500"
+          height="300"
           image={"default-image.jpg"}
           alt="recipe image"
+          className="recipe-card-media"
         />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Created by: {creator}
+        <CardContent className="recipe-card-content">
+          <Typography 
+            gutterBottom 
+            variant="h6" 
+            component="div" 
+            className="recipe-card-creator"
+          >
+            Chef: {creator}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          <Typography 
+            variant="body2" 
+            className="recipe-card-date"
+          >
             Date: {formattedDate}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          <Typography 
+            variant="body2" 
+            className="recipe-card-text"
+          >
             {recipeText}
           </Typography>
         </CardContent>

@@ -6,11 +6,13 @@
 }
 
 .upload-button {
-    padding: 12px 24px; /* Bigger padding */
+    width: 70%; /* Upload button is smaller */
+    max-width: 350px;
+    padding: 8px 20px; /* Smaller than capture button */
     font-size: 18px;
-    background-color: #28a745;
+    background-color: #007bff;
     color: white;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
     text-align: center;
     border: none;
@@ -18,5 +20,5 @@
 }
 
 .upload-button:hover {
-    background-color: #218838;
+    background-color: #0056b3;
 }
