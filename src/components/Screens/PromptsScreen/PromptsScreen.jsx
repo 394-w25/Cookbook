@@ -24,16 +24,10 @@ export default function Questions() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      // const res = await fetch("https://news-menu.onrender.com/writejournal", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ answers })
-      // });
       const res = await axios.post(
         'https://us-central1-generationalcookbook.cloudfunctions.net/writejournal',
         { answers: answers }
       );
-      // const entry = await res.json();
       setJournalEntry(res.data.journal || "Could not generate journal entry.");
       setLoading(false);
 
