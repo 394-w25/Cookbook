@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useLocation } from "react-router-dom";
 import { CircularProgress } from '@mui/material';
 import RecipeScreen from '../RecipeScreen/RecipeScreen';
@@ -23,13 +24,17 @@ export default function Questions() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const res = await fetch("https://news-menu.onrender.com/writejournal", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers })
-      });
-      const entry = await res.json();
-      setJournalEntry(entry.journal || "Could not generate journal entry.");
+      // const res = await fetch("https://news-menu.onrender.com/writejournal", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ answers })
+      // });
+      const res = await axios.post(
+        'https://us-central1-generationalcookbook.cloudfunctions.net/writejournal',
+        { answers: answers }
+      );
+      // const entry = await res.json();
+      setJournalEntry(res.data.journal || "Could not generate journal entry.");
       setLoading(false);
 
       setShowRecipeScreen(true);
