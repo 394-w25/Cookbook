@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useLocation } from "react-router-dom";
 import { CircularProgress } from '@mui/material';
 import RecipeScreen from '../RecipeScreen/RecipeScreen';
+import { db } from '../../../utilities/firebase';
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import './PromptsScreen.css';
 
 export default function Questions() {
@@ -32,9 +34,37 @@ export default function Questions() {
       setLoading(false);
 
       setShowRecipeScreen(true);
+
+      const title = recipeText.split("\n")[0].replace("# ", "").trim();
+      await saveRecipeToDb(title, recipeText, res.data.journal, originalImage);
+
     } catch (err) {
       console.error("Error creating journal: " + err);
       setLoading(false);
+    }
+  };
+
+  const saveRecipeToDb = async (title, recipeText, journalEntry, originalImage) => {
+    try {
+      const collectionRef = collection(db, 'Recipes');
+      
+      const recipe_text = recipeText.split("\n").slice(1).join("\n").replace("##", ' ').trim();
+  
+      const recipe = {
+        Title: title,
+        Category: "Dinner",
+        Creator: "Anna Rose",
+        Image: originalImage,
+        JournalEntry: journalEntry,
+        cookbook: "Rose Family Cookbook",
+        Date: serverTimestamp(),
+        Recipe: recipe_text,
+      };
+  
+      await addDoc(collectionRef, recipe);
+      console.log('Recipe added!');
+    } catch (err) {
+      console.error("Error adding recipe:", err);
     }
   };
 
