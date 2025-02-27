@@ -8,18 +8,21 @@ import { useNavigate } from "react-router-dom";
 import { signInWithGoogle } from "@/utilities/firebase"
 import { createUserDocIfNotExists } from "@/utilities/createUserDocIfNotExists";
 
-const SignInScreen = () => {
+const SignInScreen = ({setUser}) => {
   const navigate = useNavigate();
 
   const logGoogleUser = async () => {
     try {
       const response = await signInWithGoogle();
 
+      setUser(response.user.displayName);
+      console.log("User is: ", response.user.displayName);
+      
       // 1) ensure there's a doc in "users/{uid}"
       await createUserDocIfNotExists(response.user);
 
       // 2) navigate to feed
-      navigate("/AddRecipe");
+      navigate("/home");
     } catch (error) {
       console.error("Error signing in with Google: ", error);
     }

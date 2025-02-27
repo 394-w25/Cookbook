@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardMedia, Typography, CardActionArea, CardHeader } from '@mui/material';
 import './RecipeComponent.css';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 
 function RecipeComponent({
+    recipeId,
     title,
     category,
     creator,
@@ -13,14 +15,20 @@ function RecipeComponent({
     cookbook,
     image
 }) {
-  console.log("Rendering recipe:", { title, category, creator, date, recipeText, cookbook, image });
+  console.log("Rendering recipe:", { recipeId, title, category, creator, date, recipeText, cookbook, image });
 
   const formattedDate = date.toString()
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/recipe/${recipeId}`);
+  };
 
   return (
     <div>
       <Card className="recipe-card">
-        <CardActionArea>
+        <CardActionArea onClick={handleClick}>
           <CardHeader
             subheader={
             <Stack direction="row" spacing={1}>

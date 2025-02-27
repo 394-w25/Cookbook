@@ -5,12 +5,15 @@ import { CircularProgress } from '@mui/material';
 import RecipeScreen from '../RecipeScreen/RecipeScreen';
 import { db } from '../../../utilities/firebase';
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import './PromptsScreen.css';
+
 
 export default function Questions() {
   const location = useLocation();
   const recipeText = location.state?.data || "";
   const originalImage = location.state?.image || null;
+
 
   const prompts = [
     "Who invented this recipe and when is it usually made?",
@@ -18,10 +21,12 @@ export default function Questions() {
     "What makes this recipe unique in your family?"
   ];
 
+
   const [answers, setAnswers] = useState(Array(prompts.length).fill(""));
   const [loading, setLoading] = useState(false);
   const [journalEntry, setJournalEntry] = useState("");
   const [showRecipeScreen, setShowRecipeScreen] = useState(false);
+
 
   const handleSubmit = async () => {
     try {
@@ -33,10 +38,19 @@ export default function Questions() {
       setJournalEntry(res.data.journal || "Could not generate journal entry.");
       setLoading(false);
 
+
       setShowRecipeScreen(true);
 
+
       const title = recipeText.split("\n")[0].replace("# ", "").trim();
-      await saveRecipeToDb(title, recipeText, res.data.journal, originalImage);
+
+
+
+
+      // const imageToUse = originalImage || await fetchRecipeImage(title);
+      const imageToUse = await fetchRecipeImage(title);
+      await saveRecipeToDb(title, recipeText, res.data.journal, imageToUse);
+
 
     } catch (err) {
       console.error("Error creating journal: " + err);
@@ -44,12 +58,41 @@ export default function Questions() {
     }
   };
 
+
+  const fetchRecipeImage = async (title) => {
+    try {
+      const accessKey = "XZ1GnWJ2tx4KH1E4r1P-Ux7rSN-iQQFFGJ8UAyuDJqg";
+      const response = await axios.get(
+        `https://api.unsplash.com/search/photos?query=${title}&client_id=${accessKey}&per_page=1`
+      );
+ 
+      if (response.data.results.length > 0) {
+        return response.data.results[0].urls.small;
+      } else {
+        return "https://via.placeholder.com/150";
+      }
+    } catch (error) {
+      console.error("Error fetching image: ", error);
+      return "https://via.placeholder.com/150";
+    }
+  };
+
+
+ 
   const saveRecipeToDb = async (title, recipeText, journalEntry, originalImage) => {
     try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (!user) {
+        console.error("No user is logged in.");
+        return;
+      }
+
       const collectionRef = collection(db, 'Recipes');
-      
-      const recipe_text = recipeText.split("\n").slice(1).join("\n").replace("##", ' ').trim();
-  
+
+      const recipe_text = recipeText.split("\n").slice(1).join("\n").trim();
+
       const recipe = {
         Title: title,
         Category: "Dinner",
@@ -59,14 +102,16 @@ export default function Questions() {
         cookbook: "Rose Family Cookbook",
         Date: serverTimestamp(),
         Recipe: recipe_text,
+        UserName: user.displayName,
       };
-  
+
       await addDoc(collectionRef, recipe);
-      console.log('Recipe added!');
+      console.log('Recipe added by:', user.displayName || user.email);
     } catch (err) {
       console.error("Error adding recipe:", err);
     }
-  };
+};
+
 
   if (showRecipeScreen) {
     // Render the final recipe with:
@@ -82,10 +127,12 @@ export default function Questions() {
     );
   }
 
+
   return (
     <div className="prompts-container">
       <h1>What's the Story?</h1>
       <p>Tell us more about your family’s memories & context for this recipe!</p>
+
 
       {prompts.map((prompt, idx) => (
         <div key={idx} className="prompt-block">
@@ -100,6 +147,7 @@ export default function Questions() {
           />
         </div>
       ))}
+
 
       {loading ? (
         <CircularProgress />

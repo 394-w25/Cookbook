@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 function NavigationBar() {
   const navigate = useNavigate();
-  const [value, setValue] = React.useState("add recipe");
+  const [value, setValue] = React.useState("home");
 
   const handleChange = (_, newValue) => {
     setValue(newValue);

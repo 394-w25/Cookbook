@@ -13,6 +13,7 @@ function TopBar() {
   const formatRouteName = (pathname) => {
     if (pathname === "/") return "Home"; 
     if (addRecipeRoutes.includes(pathname)) return "Add Recipe"; // Force these to be "Add Recipe"
+    if (pathname.includes("/recipe")) return "Recipe";
 
     // Default formatting for other routes
     const formattedName = pathname.replace("/", "").replace(/([A-Z])/g, ' $1').trim();

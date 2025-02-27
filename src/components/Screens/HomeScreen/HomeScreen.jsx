@@ -30,7 +30,7 @@ function HomeScreen() {
         const imageUrl = data.Image || "default-image-url";  // Fallback image URL (e.g., a placeholder image)
         
         recipesData.push({
-          id: doc.id,
+          recipeId: doc.id,
           title: data.Title,
           category: data.Category,
           creator: data.Creator,
@@ -53,7 +53,8 @@ function HomeScreen() {
       {recipes.length > 0 ? (
         recipes.map((recipe) => (
           <RecipeComponent
-            key={recipe.id}
+            key={recipe.recipeId}
+            recipeId = {recipe.recipeId}  //Pass the ID from the recipe data
             title={recipe.title}         // Pass the Title from the recipe data
             category={recipe.category}   // Pass the Category from the recipe data
             creator={recipe.creator}     // Pass the Creator from the recipe data
