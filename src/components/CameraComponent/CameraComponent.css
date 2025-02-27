@@ -174,3 +174,7 @@
     box-sizing: border-box; /* padding and border are included in width */
   }
   
+
+  .mic-icon {
+    transform: scale(1.5);
+  }

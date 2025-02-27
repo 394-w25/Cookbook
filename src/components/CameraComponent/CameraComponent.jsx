@@ -3,6 +3,7 @@ import { Camera } from 'react-camera-pro';
 import './CameraComponent.css';
 import axios from 'axios';
 import { Card, CardContent, CircularProgress } from '@mui/material';
+import MicIcon from '@mui/icons-material/Mic';
 import { useNavigate } from 'react-router-dom';
 import regeneratorRuntime from "regenerator-runtime";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
@@ -140,6 +141,19 @@ export default function CameraComponent() {
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
 
+  let micClicked = false;
+
+  const handleSpeechRecognition = () => {
+    if (!micClicked) {
+      SpeechRecognition.startListening();
+      micClicked = true;
+    }
+    else {
+      SpeechRecognition.stopListening();
+      micClicked = false;
+    }
+  };
+
   return (
     <div className="camera-container">
       <Card className="camera-card">
@@ -204,11 +218,8 @@ export default function CameraComponent() {
               {showEditableText && browserSupportsSpeechRecognition ? 
                 (<div>
                   <p>Microphone: {listening ? 'on' : 'off'}</p>
-                  <button onClick={SpeechRecognition.startListening}>Start</button>
-                  <button onClick={SpeechRecognition.stopListening}>Stop</button>
-                  <button onClick={resetTranscript}>Reset</button>
-                  {/* Append the transcript to the end of the extractedText */}
-                  <p>{transcript}</p>
+                  <MicIcon className='mic-icon' onClick={handleSpeechRecognition}>Start</MicIcon>
+                  {/* <p>{transcript}</p> */}
                 </div>) : 
                 (<p>Browser does not support speech recognition.</p>
                 )
