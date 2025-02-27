@@ -129,7 +129,7 @@
 
 
 import React from 'react';
-import './RecipePage.css';
+import './CookbookPage.css';
 
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -144,7 +144,7 @@ import { db } from "../../../utilities/firebase";
 // Function for parsing OpenAI prompting
 import parseMarkdown from "../../../utilities/parseRecipeIntoComponents";
 
-function RecipePage() {
+function CookbookPage() {
   async function getRecipeInfoFromDB(recipeId) {
     try {
       const docSnap = await getDocs(collection(db, "Recipes"));
@@ -231,4 +231,4 @@ function RecipePage() {
   );
 }
 
-export default RecipePage;
+export default CookbookPage;

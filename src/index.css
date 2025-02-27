@@ -13,6 +13,11 @@
   --secondary-color: #888; /* Example color */
 }
 
+/* Force MUI Typography to use global font */
+.MuiTypography-root {
+  font-family: var(--primary-font) !important;
+}
+
 /* Global Styles */
 * {
   font-family: var(--primary-font);

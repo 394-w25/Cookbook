@@ -4,7 +4,7 @@ import SignInScreen from './components/Screens/SignInScreen/SignInScreen';
 import AddRecipeScreen from './components/Screens/AddRecipeScreen/AddRecipeScreen';
 import CameraComponent from './components/CameraComponent/CameraComponent';
 import PromptsScreen from './components/Screens/PromptsScreen/PromptsScreen';
-import RecipePage from "./components/Screens/RecipePage/RecipePage";
+import CookbookPage from "./components/Screens/CookbookPage/CookbookPage";
 
 import {
   BrowserRouter as Router,
@@ -27,7 +27,7 @@ const App = () => {
           <Route path="/AddRecipe" element={<AddRecipeScreen />} />
           <Route path="/CameraComponent" element={<CameraComponent />} />
           <Route path="/prompts" element={<PromptsScreen />} />
-          <Route path="/recipe/:id" element={<RecipePage />} />
+          <Route path="/recipe/:id" element={<CookbookPage />} />
         </Route>
       </Routes>
     </Router>
