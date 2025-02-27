@@ -4,6 +4,8 @@ import './CameraComponent.css';
 import axios from 'axios';
 import { Card, CardContent, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import regeneratorRuntime from "regenerator-runtime";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 // Call your Cloud Function that processes the image with OpenAI
 const fetchOpenAIData = async (base64Image) => {
@@ -131,6 +133,13 @@ export default function CameraComponent() {
     navigate("/prompts", { state: { data: extractedText, image } });
   };
 
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
   return (
     <div className="camera-container">
       <Card className="camera-card">
@@ -185,12 +194,26 @@ export default function CameraComponent() {
               {showEditableText && (
                 <div className="recipe-text-area">
                   <textarea
-                    value={extractedText}
+                    value={extractedText + '\n\n' + transcript}
                     onChange={(e) => setExtractedText(e.target.value)}
                     placeholder="Edit your recipe text here..."
                   />
                 </div>
               )}
+
+              {showEditableText && browserSupportsSpeechRecognition ? 
+                (<div>
+                  <p>Microphone: {listening ? 'on' : 'off'}</p>
+                  <button onClick={SpeechRecognition.startListening}>Start</button>
+                  <button onClick={SpeechRecognition.stopListening}>Stop</button>
+                  <button onClick={resetTranscript}>Reset</button>
+                  {/* Append the transcript to the end of the extractedText */}
+                  <p>{transcript}</p>
+                </div>) : 
+                (<p>Browser does not support speech recognition.</p>
+                )
+              }
+
               <div className="retake-next-buttons">
                 <button className="upload-button" onClick={handleRetake}>
                   Retake
