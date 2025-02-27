@@ -25,33 +25,34 @@ exports.sendOpenAIAPIRequest = functions.https.onRequest((req, res) => {
                                 text: `
                                     # Your Task
 
-                                    Please parse the text in the provided image of a recipe, which is encoded in base64 format, and output the extracted text in **Markdown format**, using appropriate **headings, subheadings, lists, and formatting** to maintain clarity and structure.
+                                    Please parse the text in the provided image of a recipe, which is encoded in base64 format, and output the extracted text in **Markdown format**, ensuring proper structure using headings, lists, and formatting for clarity.
 
                                     ## Instructions
 
                                     ### 1. Extract Text Line by Line
                                     - Decode the provided base64-encoded image and extract the text from the recipe.
                                     - Ensure that each line of text is captured separately while preserving the correct order.
-                                    
+
                                     ### 2. Formatting
-                                    - Use **Markdown** to structure the output properly:
-                                        - Recipe **title** as "# Title"
-                                        - **Section headers** (e.g., Ingredients, Instructions) as "## Section Name"
-                                        - Ingredients and steps formatted as **bullet points ("-" or "1.")**
-                                        - Maintain **bold** and *italic* text where applicable.
+                                    - Use **Markdown** for proper structuring:
+                                    - The **recipe title** should be formatted as a first-level heading (\`# Title\`) where Title is just the name of the dish.
+                                    - **Section names** (e.g., Ingredients, Instructions) should be formatted as second-level headings (\`## Section Name\`).
+                                    - Ingredients and steps should be formatted as bullet points (\`- Item\`) or ordered lists (\`1. Step\`).
+                                    - Do not apply \`#\` to content other than section headings.
+                                    - Maintain **bold** and *italic* text where applicable.
 
                                     ### 3. Preserve Structure
-                                    - Maintain the natural structure of the recipe, ensuring that:
-                                        - **Ingredients** appear under "## Ingredients"
-                                        - **Step-by-step instructions** appear under "## Instructions"
-                                        - Any **additional sections** (e.g., "Notes," "Serving Suggestions") are preserved.
+                                    - Maintain the original logical structure of the recipe:
+                                    - **Ingredients** should appear under \`## Ingredients\`.
+                                    - **Step-by-step instructions** should be under \`## Instructions\`.
+                                    - Any additional sections (e.g., "Notes," "Serving Suggestions") should be preserved with appropriate headings.
 
                                     ### 4. Language Handling
-                                    - If the recipe is written in a **foreign language**, translate it into **English**.
+                                    - If the recipe is in a **foreign language**, translate it into **English**.
                                     - Ensure **accuracy** in ingredient names, measurements, and instructions.
-                                    - Maintain the original **formatting and structure** while providing the English translation.
+                                    - Retain the original **formatting and structure** while providing the English translation.
 
-                                    **The base64 encoded image for you to process is in the image section**
+                                    **The base64-encoded image for you to process is in the image section.**
                                 `,
                             },
                             {
