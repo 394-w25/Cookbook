@@ -56,12 +56,6 @@ function RecipeComponent({
             >
               Date: {formattedDate}
             </Typography>
-            <Typography 
-              variant="body2" 
-              className="recipe-card-text"
-            >
-              {recipeText}
-            </Typography>
           </CardContent>
         </CardActionArea>
       </Card>
