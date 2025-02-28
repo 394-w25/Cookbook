@@ -117,7 +117,7 @@ export default function Questions() {
         <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} id="file-upload" />
         <label htmlFor="file-upload" className="image-upload-box">
           {imagePreview ? (
-            <img src={imagePreview} alt="Food Preview" className="image-preview" />
+            <img src={imagePreview} alt="Food Preview" className="recipe-image" />
           ) : (
             <div className="food-photo-upload">
               <UploadIcon />
