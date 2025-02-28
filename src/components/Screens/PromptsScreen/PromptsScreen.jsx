@@ -6,12 +6,12 @@ import { db } from '../../../utilities/firebase';
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import './PromptsScreen.css';
+import UploadIcon from '@mui/icons-material/Upload';
 
 
 export default function Questions() {
   const location = useLocation();
   const recipeText = location.state?.data || "";
-  const originalImage = location.state?.image || null;
   const navigate = useNavigate();
 
   const prompts = [
@@ -22,6 +22,8 @@ export default function Questions() {
 
   const [answers, setAnswers] = useState(Array(prompts.length).fill(""));
   const [loading, setLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const handleSubmit = async () => {
     try {
@@ -36,8 +38,10 @@ export default function Questions() {
       const imageToUse = imagePreview || await fetchRecipeImage(title);
       await saveRecipeToDb(title, recipeText, res.data.journal, imageToUse);
 
-      // navigate to final recipe page
-      navigate('/final_recipe', {state: {recipeText: recipeText, journalEntry: res.data.journal, image: originalImage}});
+      const imageUrl = URL.createObjectURL(selectedImage);
+
+      // navigate to final recipe page with the selectedImage turned into a URL for easier display
+      navigate('/final_recipe', {state: {recipeText: recipeText, journalEntry: res.data.journal, image: imageUrl}});
 
     } catch (err) {
       console.error("Error creating journal: " + err);
@@ -94,13 +98,34 @@ export default function Questions() {
     } catch (err) {
       console.error("Error adding recipe:", err);
     }
-};
+  };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
 
   return (
     <div className="prompts-container">
       <h1>What's the Story?</h1>
       <p>Tell us more about your family’s memories & context for this recipe!</p>
 
+        <div className="image-upload-section">
+        <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} id="file-upload" />
+        <label htmlFor="file-upload" className="image-upload-box">
+          {imagePreview ? (
+            <img src={imagePreview} alt="Food Preview" className="image-preview" />
+          ) : (
+            <div className="food-photo-upload">
+              <UploadIcon />
+              food photo
+            </div>
+          )}
+        </label>
+      </div>
 
       {prompts.map((prompt, idx) => (
         <div key={idx} className="prompt-block">

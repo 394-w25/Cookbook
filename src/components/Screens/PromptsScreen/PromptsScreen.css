@@ -35,3 +35,18 @@
 .submit-button:hover {
   background-color: #0056b3;
 }
+
+.food-photo-upload {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 6em;
+  margin: 10px;
+  background-color: lightgray;
+}
+
+.image-preview {
+  height: 100%;
+  width: 100%;
+}
