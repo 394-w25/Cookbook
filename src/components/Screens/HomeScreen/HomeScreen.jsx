@@ -15,9 +15,7 @@ function HomeScreen() {
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        const dateValue = data.Date instanceof Timestamp 
-          ? data.Date.toDate() 
-          : null;
+        const dateValue = data.Date instanceof Timestamp ? data.Date.toDate() : null;
 
         recipesData.push({
           recipeId: doc.id,
@@ -33,13 +31,20 @@ function HomeScreen() {
         });
       });
 
-      setRecipes(recipesData);
+      const sortedRecipes = recipesData.sort((a, b) => {
+        if (!a.date) return 1;
+        if (!b.date) return -1;
+        return b.date - a.date;
+      });
+
+      setRecipes(sortedRecipes);
     };
 
     fetchRecipes();
   }, []);
 
   return (
+    <div className = "home-container">
     <Box className="recipes-list">
       {recipes.length > 0 ? (
         recipes.map((recipe) => (
@@ -61,6 +66,7 @@ function HomeScreen() {
         <p>Loading recipes...</p>
       )}
     </Box>
+    </div>
   );
 }
 
