@@ -2,13 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom";
 import { CircularProgress } from '@mui/material';
-import { db } from '../../../utilities/firebase';
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
 import './PromptsScreen.css';
 import UploadIcon from '@mui/icons-material/Upload';
 import parseMarkdown from '../../../utilities/parseRecipeIntoComponents';
-
 
 export default function Questions() {
   const location = useLocation();
@@ -27,8 +23,8 @@ export default function Questions() {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);  // Modal visibility state
-  const [generatingImage, setGeneratingImage] = useState(false); // Image generation state
+  const [modalOpen, setModalOpen] = useState(false);
+  const [generatingImage, setGeneratingImage] = useState(false);
 
   const handleSubmit = async () => {
     try {
@@ -40,16 +36,14 @@ export default function Questions() {
       setLoading(false);
 
       const imageToUse = imagePreview || await fetchRecipeImage(title);
-      await saveRecipeToDb(title, recipeText, res.data.journal, imageToUse);
 
       let imageUrl = "";
       if (selectedImage) {
         imageUrl = URL.createObjectURL(selectedImage);
       } else {
-        // If no uploaded image, fall back to the generated or fetched imagePreview
-        imageUrl = imagePreview || "https://via.placeholder.com/150";
+        imageUrl = imageToUse || "https://via.placeholder.com/150";
       }
-      
+
       navigate('/final_recipe', { 
         state: { 
           recipeText: recipeText, 
@@ -57,8 +51,6 @@ export default function Questions() {
           image: imageUrl 
         }
       });
-      
-
     } catch (err) {
       console.error("Error creating journal: " + err);
       setLoading(false);
@@ -71,7 +63,6 @@ export default function Questions() {
       const response = await axios.get(
         `https://api.unsplash.com/search/photos?query=${title}&client_id=${accessKey}&per_page=1`
       );
- 
       if (response.data.results.length > 0) {
         return response.data.results[0].urls.small;
       } else {
@@ -80,39 +71,6 @@ export default function Questions() {
     } catch (error) {
       console.error("Error fetching image: ", error);
       return "https://via.placeholder.com/150";
-    }
-  };
- 
-  const saveRecipeToDb = async (title, recipeText, journalEntry, originalImage) => {
-    try {
-      const auth = getAuth();
-      const user = auth.currentUser;
-
-      if (!user) {
-        console.error("No user is logged in.");
-        return;
-      }
-
-      const collectionRef = collection(db, 'Recipes');
-
-      const recipe_text = recipeText.split("\n").slice(1).join("\n").trim();
-
-      const recipe = {
-        Title: title,
-        Category: "Dinner",
-        Creator: "Anna Rose",
-        Image: originalImage,
-        JournalEntry: journalEntry,
-        cookbook: "Rose Family Cookbook",
-        Date: serverTimestamp(),
-        Recipe: recipe_text,
-        UserName: user.displayName,
-      };
-
-      await addDoc(collectionRef, recipe);
-      console.log('Recipe added by:', user.displayName || user.email);
-    } catch (err) {
-      console.error("Error adding recipe:", err);
     }
   };
 
@@ -129,11 +87,14 @@ export default function Questions() {
     try {
       setGeneratingImage(true);
       const title = recipeText.split("\n")[0].replace("# ", "").trim();
-      const response = await axios.post('https://us-central1-generationalcookbook.cloudfunctions.net/generateImage', {
-        title: title,
-        ingredients: ingredients,
-        steps: instructions
-      });
+      const response = await axios.post(
+        'https://us-central1-generationalcookbook.cloudfunctions.net/generateImage',
+        {
+          title,
+          ingredients,
+          steps: instructions
+        }
+      );
       setImagePreview(response.data.generatedImage);
       setGeneratingImage(false);
       setModalOpen(false);
@@ -149,23 +110,34 @@ export default function Questions() {
       <p>Tell us more about your family’s memories & context for this recipe!</p>
 
       <div className="image-upload-section" onClick={() => setModalOpen(true)}>
-          {imagePreview ? (
-            <img src={imagePreview} alt="Food Preview" className="recipe-image" />
-          ) : (
-            <div className="food-photo-upload">
-              <UploadIcon />
-              food photo
-            </div>
-          )}
+        {imagePreview ? (
+          <img src={imagePreview} alt="Food Preview" className="recipe-image" />
+        ) : (
+          <div className="food-photo-upload">
+            <UploadIcon />
+            food photo
+          </div>
+        )}
       </div>
 
-      {/* Modal */}
       <div className={`modal ${modalOpen ? 'open' : ''}`}>
-        <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} id="file-upload" />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          style={{ display: 'none' }}
+          id="file-upload"
+        />
         <div className="modal-content">
           <h2>Choose an Option</h2>
           <div className="modal-buttons">
-            <button className="add-photo-button" htmlFor="file-upload" onClick={() => document.getElementById('file-upload').click()}>Upload Food Photo</button>
+            <button
+              className="add-photo-button"
+              htmlFor="file-upload"
+              onClick={() => document.getElementById('file-upload').click()}
+            >
+              Upload Food Photo
+            </button>
             <button className="add-photo-button" onClick={handleImageGeneration}>
               {generatingImage ? <CircularProgress size={24} /> : "Generate Food Photo"}
             </button>
@@ -187,7 +159,6 @@ export default function Questions() {
           />
         </div>
       ))}
-
 
       {loading ? (
         <CircularProgress />

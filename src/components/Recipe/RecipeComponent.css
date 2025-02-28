@@ -1,60 +1,44 @@
 .recipe-card {
-    max-width: 345px;
-    margin: 20px;
-  }
-  
-  .recipe-card:hover {
-    transform: scale(1.05);
-  }
-  
-  /* Header styling */
-  .recipe-card-header {
-    text-align: center;
-    background-color: white;
-    color: white !important;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    padding: 16px;
-  }
+  width: 400px;
+  margin: 20px;
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+}
 
-  .recipe-card-header .MuiCardHeader-subheader {
-    color: black;
-    size: 250px;
-  }
-  
+.recipe-card:hover {
+  transform: scale(1.02);
+}
 
-  
-  /* Image styling */
-  .recipe-card-media {
-    object-fit: cover;
-    border-radius: 8px;
-  }
+.recipe-card-header {
+  text-align: center;
+  background-color: white;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  padding: 16px;
+}
 
-  
-  /* Content styling */
-  .recipe-card-content {
-    padding: 4px;
-    margin-bottom: 1rem;
-  }
-  
-  /* Typography for chef */
-  .recipe-card-creator {
-    color: rgba(37, 37, 37, 0.731) !important;
-    background-color: white;
-    font-size: small;
-    margin-top: 0;
-  }
-  
-  /* Date typography */
-  .recipe-card-date {
-    color: black;
-    background-color: white;
-    margin-bottom: 16px;
-  }
-  
-  /* Recipe text styling */
-  .recipe-card-text {
-    color: #212121;
-    line-height: 1.6;
-  }
-  
+.recipe-card-header .MuiCardHeader-subheader {
+  color: #333;
+}
+
+.recipe-card-media {
+  object-fit: cover;
+}
+
+.recipe-card-content {
+  padding: 16px;
+}
+
+.recipe-card-author {
+  margin-top: 4px;
+  color: #555;
+}
+
+.recipe-card-date {
+  margin-top: 4px;
+  color: #888;
+}
+
+.recipe-stats {
+  margin-top: 12px;
+}

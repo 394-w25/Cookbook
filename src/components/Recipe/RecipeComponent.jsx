@@ -1,73 +1,82 @@
-import * as React from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardMedia, Typography, CardActionArea, CardHeader } from '@mui/material';
+import {
+  Card,
+  CardActionArea,
+  CardHeader,
+  CardMedia,
+  CardContent,
+  Typography,
+  Stack,
+  Chip
+} from '@mui/material';
 import './RecipeComponent.css';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
 
 function RecipeComponent({
-    recipeId,
-    title,
-    category,
-    creator,
-    date,
-    recipeText,
-    cookbook,
-    image
+  recipeId,
+  title,
+  category,
+  author,
+  date,
+  cookbook,
+  image,
+  prepTime,
+  cookTime,
+  servingSize
 }) {
-  console.log("Rendering recipe:", { recipeId, title, category, creator, date, recipeText, cookbook, image });
-
-  const formattedDate = date.toString()
-
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/recipe/${recipeId}`);
   };
 
+  const formattedDate = date
+    ? new Date(date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "No date";
+
   return (
-    <div>
-      <Card className="recipe-card">
-        <CardActionArea onClick={handleClick}>
-          <CardHeader
-            subheader={
+    <Card className="recipe-card">
+      <CardActionArea onClick={handleClick}>
+        <CardHeader
+          subheader={
             <Stack direction="row" spacing={1}>
-              <Chip label={category} />
-              <Chip label={cookbook} />
+              {category && <Chip label={category} />}
+              {cookbook && <Chip label={cookbook} />}
             </Stack>
-            }
-            className="recipe-card-header"
-          />
+          }
+          className="recipe-card-header"
+        />
+        {image && (
           <CardMedia
             component="img"
-            height="200"
+            height="250"
             image={image}
             alt="recipe image"
             className="recipe-card-media"
           />
-          <CardContent className="recipe-card-content">
-            <Typography 
-              gutterBottom 
-              variant="h7" 
-              component="div"
-            >
-              {title}
-            </Typography>
-            <Typography
-              className="recipe-card-creator"
-            >
-              Chef: {creator}
-            </Typography>
-            <Typography 
-              variant="body2" 
-              className="recipe-card-date"
-            >
-              Date: {formattedDate}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    </div>
+        )}
+        <CardContent className="recipe-card-content">
+          <Typography variant="h5" component="div" gutterBottom>
+            {title}
+          </Typography>
+          <Typography variant="body2" className="recipe-card-author">
+            {author ? `Author: ${author}` : ""}
+          </Typography>
+          <Typography variant="body2" className="recipe-card-date">
+            {formattedDate}
+          </Typography>
+          <Stack direction="row" spacing={1} className="recipe-stats">
+            {servingSize && <Chip label={`Serves: ${servingSize}`} />}
+            {prepTime && <Chip label={`Prep: ${prepTime}`} />}
+            {cookTime && <Chip label={`Cook: ${cookTime}`} />}
+          </Stack>
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 }
 

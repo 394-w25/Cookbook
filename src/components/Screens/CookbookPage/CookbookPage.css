@@ -1,13 +1,12 @@
 .recipe-cookbook-container {
-  width: 600px; /* fixed width, chang if you want */
-  max-width: 90%; /* responsive for smaller screens */
-  margin: auto;
+  width: 600px;
+  max-width: 90%;
+  margin: 50px auto;
   padding: 20px;
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
-
 
 .recipe-header {
   text-align: center;
@@ -21,18 +20,18 @@
   text-align: center;
 }
 
-.recipe-description {
-  font-size: 16px;
-  color: #666;
-  margin-top: 8px;
-  text-align: left;
-}
-
 .recipe-meta {
   font-size: 14px;
   color: #888;
   margin-top: 5px;
   text-align: center;
+}
+
+.recipe-description {
+  font-size: 16px;
+  color: #666;
+  margin-top: 8px;
+  text-align: left;
 }
 
 .recipe-image {
@@ -56,11 +55,6 @@
   border-radius: 8px;
 }
 
-.recipe-ingredients ul,
-.recipe-instructions ol {
-  padding-left: 20px;
-}
-
 .section-title {
   font-size: 22px;
   font-weight: bold;
@@ -68,8 +62,8 @@
   margin-bottom: 10px;
 }
 
-.recipe-ingredients li,
-.recipe-instructions li {
+.ingredient-line,
+.instruction-line {
   font-size: 16px;
   margin-bottom: 8px;
 }
@@ -78,10 +72,25 @@
   .recipe-content {
     flex-direction: column;
   }
-
   .recipe-ingredients,
   .recipe-instructions {
     width: 100%;
     margin-bottom: 20px;
   }
+}
+
+.extra-sections {
+  margin: 20px;
+  padding: 20px;
+  background-color: #fafafa;
+  border-radius: 8px;
+}
+
+.extra-section-block:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.section-content {
+  margin-top: 8px;
+  white-space: pre-wrap;
 }

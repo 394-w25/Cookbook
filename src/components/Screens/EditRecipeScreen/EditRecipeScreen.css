@@ -1,0 +1,147 @@
+.final-recipe-container {
+  max-width: 600px;
+  margin: 50px auto;
+  text-align: left;
+  font-family: sans-serif;
+  padding: 2rem;
+  position: relative;
+}
+
+.final-recipe-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+.section-block {
+  margin-bottom: 2rem;
+}
+
+.large-title-row {
+  margin-bottom: 1.5rem;
+}
+
+.editable-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* The big title input */
+.large-title-input {
+  flex: 1;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  outline: none;
+  background: transparent;
+  padding: 5px;
+}
+
+/* For small subheader fields (Author, Serving, Prep, Cook) */
+.small-fields-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+.small-subtitle-input {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  background: transparent;
+  padding: 3px;
+  width: 100%;
+}
+
+.inline-label {
+  width: 80px;
+  text-align: right;
+  font-weight: bold;
+}
+
+/* Section headers (Story, Ingredients, Steps) */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.section-header h2 {
+  margin: 0;
+}
+
+.section-textarea {
+  width: 100%;
+  min-height: 60px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  resize: none;
+}
+
+.custom-section-title {
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: transparent;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+}
+
+/* Mic icon states */
+.mic-icon {
+  cursor: pointer;
+  color: #999;
+  transition: transform 0.2s;
+}
+
+.mic-icon:hover {
+  transform: scale(1.2);
+  color: black;
+}
+
+.mic-active {
+  color: red !important;
+}
+
+/* Delete button next to a section */
+.delete-button {
+  background: none;
+  color: red;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Add new section button */
+.add-section-button {
+  background-color: #fff;
+  border: 2px solid #ccc;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 2rem;
+}
+
+/* Done button at the bottom */
+.done-button-wrapper {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.done-button {
+  background-color: #007fff;
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
