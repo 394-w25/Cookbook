@@ -51,3 +51,64 @@
   border-radius: 8px;
   margin-bottom: 1rem;
 }
+
+/* This is for the modal overlay */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden; /* Hide the modal by default */
+  opacity: 0; /* Make it invisible */
+  transition: visibility 0s, opacity 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* When the modal is visible, set visibility to 'visible' and opacity to 1 */
+.modal.open {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* This is for the modal content */
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the buttons */
+button {
+  margin: 10px;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  background-color: #4CAF50; /* Green background */
+  color: white;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+button.close {
+  background-color: #f44336; /* Red background */
+  color: white;
+}
+
+button.close:hover {
+  background-color: #e53935; /* Slightly darker red on hover */
+}
+
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+}

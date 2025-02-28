@@ -7,12 +7,15 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import './PromptsScreen.css';
 import UploadIcon from '@mui/icons-material/Upload';
+import parseMarkdown from '../../../utilities/parseRecipeIntoComponents';
 
 
 export default function Questions() {
   const location = useLocation();
   const recipeText = location.state?.data || "";
   const navigate = useNavigate();
+
+  const { title, ingredients, instructions } = parseMarkdown(recipeText);
 
   const prompts = [
     "Who invented this recipe and when is it usually made?",
@@ -24,6 +27,8 @@ export default function Questions() {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);  // Modal visibility state
+  const [generatingImage, setGeneratingImage] = useState(false); // Image generation state
 
   const handleSubmit = async () => {
     try {
@@ -34,7 +39,6 @@ export default function Questions() {
       );
       setLoading(false);
 
-      const title = recipeText.split("\n")[0].replace("# ", "").trim();
       const imageToUse = imagePreview || await fetchRecipeImage(title);
       await saveRecipeToDb(title, recipeText, res.data.journal, imageToUse);
 
@@ -105,6 +109,25 @@ export default function Questions() {
     if (file) {
       setSelectedImage(file);
       setImagePreview(URL.createObjectURL(file));
+      setModalOpen(false);
+    }
+  };
+
+  const handleImageGeneration = async () => {
+    try {
+      setGeneratingImage(true);
+      const title = recipeText.split("\n")[0].replace("# ", "").trim();
+      const response = await axios.post('https://us-central1-generationalcookbook.cloudfunctions.net/generateImage', {
+        title: title,
+        ingredients: ingredients,
+        steps: instructions
+      });
+      setImagePreview(response.data.generatedImage);
+      setGeneratingImage(false);
+      setModalOpen(false);
+    } catch (error) {
+      console.error("Error generating image:", error);
+      setGeneratingImage(false);
     }
   };
 
@@ -113,9 +136,7 @@ export default function Questions() {
       <h1>What's the Story?</h1>
       <p>Tell us more about your family’s memories & context for this recipe!</p>
 
-        <div className="image-upload-section">
-        <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} id="file-upload" />
-        <label htmlFor="file-upload" className="image-upload-box">
+      <div className="image-upload-section" onClick={() => setModalOpen(true)}>
           {imagePreview ? (
             <img src={imagePreview} alt="Food Preview" className="recipe-image" />
           ) : (
@@ -124,7 +145,21 @@ export default function Questions() {
               food photo
             </div>
           )}
-        </label>
+      </div>
+
+      {/* Modal */}
+      <div className={`modal ${modalOpen ? 'open' : ''}`}>
+        <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} id="file-upload" />
+        <div className="modal-content">
+          <h2>Choose an Option</h2>
+          <div className="modal-buttons">
+            <button htmlFor="file-upload" onClick={() => document.getElementById('file-upload').click()}>Upload Food Photo</button>
+            <button onClick={handleImageGeneration}>
+              {generatingImage ? <CircularProgress size={24} /> : "Generate Food Photo"}
+            </button>
+            <button className="close" onClick={() => setModalOpen(false)}>Close</button>
+          </div>
+        </div>
       </div>
 
       {prompts.map((prompt, idx) => (
