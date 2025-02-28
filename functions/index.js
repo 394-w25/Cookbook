@@ -172,3 +172,39 @@ exports.writejournal = functions.https.onRequest(async (req, res) => {
         }
     });
 });
+
+exports.generateImage = functions.https.onRequest(async (req, res) => {
+    cors(req, res, async () => {
+        try {
+            const { title, ingredients, steps } = req.body; // Receive prompt from frontend
+
+            if (!title || !ingredients || !steps) {
+                return res.status(400).json({ error: "Must provide the recipe title, ingredients, and steps" });
+            }
+
+            const requestBody = {
+                model: "dall-e-3",
+                prompt: `Imagine you are a professional photographer.
+                Generate a high-quality, delicious-looking, home-cooked, image of this recipe of ${title}, 
+                given that it is made with these ingredients:
+                ${ingredients}
+                and follows these instructions:
+                ${steps}
+                Ensure that the food looks realistically made and the presentation is accurate to the recipe.`,
+                n: 1
+            };
+
+            const apiResponse = await axios.post("https://api.openai.com/v1/images/generations", requestBody, {
+                headers: {
+                    "Authorization": `Bearer ${API_KEY}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            res.status(200).json({ generatedImage: apiResponse.data.data[0].url });
+        } catch (error) {
+            console.error("Error calling OpenAI API:", error);
+            res.status(500).json({ error: "Failed to generate an image" });
+        }
+    });
+});
