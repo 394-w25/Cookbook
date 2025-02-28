@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CircularProgress } from '@mui/material';
-import RecipeScreen from '../RecipeScreen/RecipeScreen';
 import { db } from '../../../utilities/firebase';
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
@@ -13,7 +12,7 @@ export default function Questions() {
   const location = useLocation();
   const recipeText = location.state?.data || "";
   const originalImage = location.state?.image || null;
-
+  const navigate = useNavigate();
 
   const prompts = [
     "Who invented this recipe and when is it usually made?",
@@ -21,12 +20,8 @@ export default function Questions() {
     "What makes this recipe unique in your family?"
   ];
 
-
   const [answers, setAnswers] = useState(Array(prompts.length).fill(""));
   const [loading, setLoading] = useState(false);
-  const [journalEntry, setJournalEntry] = useState("");
-  const [showRecipeScreen, setShowRecipeScreen] = useState(false);
-
 
   const handleSubmit = async () => {
     try {
@@ -35,29 +30,20 @@ export default function Questions() {
         'https://us-central1-generationalcookbook.cloudfunctions.net/writejournal',
         { answers: answers }
       );
-      setJournalEntry(res.data.journal || "Could not generate journal entry.");
       setLoading(false);
 
-
-      setShowRecipeScreen(true);
-
-
       const title = recipeText.split("\n")[0].replace("# ", "").trim();
-
-
-
-
-      // const imageToUse = originalImage || await fetchRecipeImage(title);
-      const imageToUse = await fetchRecipeImage(title);
+      const imageToUse = imagePreview || await fetchRecipeImage(title);
       await saveRecipeToDb(title, recipeText, res.data.journal, imageToUse);
 
+      // navigate to final recipe page
+      navigate('/final_recipe', {state: {recipeText: recipeText, journalEntry: res.data.journal, image: originalImage}});
 
     } catch (err) {
       console.error("Error creating journal: " + err);
       setLoading(false);
     }
   };
-
 
   const fetchRecipeImage = async (title) => {
     try {
@@ -76,8 +62,6 @@ export default function Questions() {
       return "https://via.placeholder.com/150";
     }
   };
-
-
  
   const saveRecipeToDb = async (title, recipeText, journalEntry, originalImage) => {
     try {
@@ -111,22 +95,6 @@ export default function Questions() {
       console.error("Error adding recipe:", err);
     }
 };
-
-
-  if (showRecipeScreen) {
-    // Render the final recipe with:
-    // 1) original image
-    // 2) user-edited recipe text
-    // 3) the journal entry
-    return (
-      <RecipeScreen
-        recipeText={recipeText}
-        journalEntry={journalEntry}
-        image={originalImage}
-      />
-    );
-  }
-
 
   return (
     <div className="prompts-container">
