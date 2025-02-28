@@ -153,8 +153,8 @@ export default function Questions() {
         <div className="modal-content">
           <h2>Choose an Option</h2>
           <div className="modal-buttons">
-            <button htmlFor="file-upload" onClick={() => document.getElementById('file-upload').click()}>Upload Food Photo</button>
-            <button onClick={handleImageGeneration}>
+            <button className="add-photo-button" htmlFor="file-upload" onClick={() => document.getElementById('file-upload').click()}>Upload Food Photo</button>
+            <button className="add-photo-button" onClick={handleImageGeneration}>
               {generatingImage ? <CircularProgress size={24} /> : "Generate Food Photo"}
             </button>
             <button className="close" onClick={() => setModalOpen(false)}>Close</button>

@@ -85,7 +85,7 @@
 }
 
 /* Style for the buttons */
-button {
+.add-photo-button {
   margin: 10px;
   padding: 10px;
   cursor: pointer;
@@ -95,13 +95,18 @@ button {
   border-radius: 5px;
 }
 
-button:hover {
+.add-photo-button:hover {
   background-color: #45a049; /* Darker green on hover */
 }
 
 button.close {
+  margin: 10px;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
   background-color: #f44336; /* Red background */
   color: white;
+  border-radius: 5px;
 }
 
 button.close:hover {
