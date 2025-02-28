@@ -42,10 +42,22 @@ export default function Questions() {
       const imageToUse = imagePreview || await fetchRecipeImage(title);
       await saveRecipeToDb(title, recipeText, res.data.journal, imageToUse);
 
-      const imageUrl = URL.createObjectURL(selectedImage);
-
-      // navigate to final recipe page with the selectedImage turned into a URL for easier display
-      navigate('/final_recipe', {state: {recipeText: recipeText, journalEntry: res.data.journal, image: imageUrl}});
+      let imageUrl = "";
+      if (selectedImage) {
+        imageUrl = URL.createObjectURL(selectedImage);
+      } else {
+        // If no uploaded image, fall back to the generated or fetched imagePreview
+        imageUrl = imagePreview || "https://via.placeholder.com/150";
+      }
+      
+      navigate('/final_recipe', { 
+        state: { 
+          recipeText: recipeText, 
+          journalEntry: res.data.journal, 
+          image: imageUrl 
+        }
+      });
+      
 
     } catch (err) {
       console.error("Error creating journal: " + err);

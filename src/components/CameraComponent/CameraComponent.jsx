@@ -6,9 +6,10 @@ import { Card, CardContent, CircularProgress } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import { useNavigate } from 'react-router-dom';
 import regeneratorRuntime from "regenerator-runtime";
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import SpeechRecognition, {
+  useSpeechRecognition
+} from 'react-speech-recognition';
 
-// Call your Cloud Function that processes the image with OpenAI
 const fetchOpenAIData = async (base64Image) => {
   try {
     const response = await axios.post(
@@ -22,24 +23,69 @@ const fetchOpenAIData = async (base64Image) => {
   }
 };
 
+const parseRecipeSections = (markdown) => {
+  let title = '';
+  let ingredients = '';
+  let steps = '';
+
+  const lines = markdown.split('\n').map((line) => line.trim());
+  let currentSection = null;
+
+  for (let line of lines) {
+    if (line.startsWith('# ')) {
+      // Title line
+      title = line.replace('# ', '').trim();
+      currentSection = 'TITLE';
+    } else if (line.toLowerCase().startsWith('## ingredients')) {
+      currentSection = 'INGREDIENTS';
+    } else if (line.toLowerCase().startsWith('## instructions')) {
+      currentSection = 'STEPS';
+    } else {
+      if (currentSection === 'INGREDIENTS') {
+        ingredients += (ingredients ? '\n' : '') + line;
+      } else if (currentSection === 'STEPS') {
+        steps += (steps ? '\n' : '') + line;
+      }
+    }
+  }
+
+  return { title, ingredients, steps };
+};
+
 export default function CameraComponent() {
   const [image, setImage] = useState(null);
   const [error, setError] = useState('');
   const [hasPermission, setHasPermission] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
-  // Tracking overlay for scanning
   const [scanning, setScanning] = useState(false);
-  // The extracted text from the first OpenAI call
-  const [extractedText, setExtractedText] = useState('');
-  // Whether we show the editable text area
-  const [showEditableText, setShowEditableText] = useState(false);
+
+  // Display text fields only after scanning
+  const [showEditableFields, setShowEditableFields] = useState(false);
+
+  // Recipe fields
+  const [title, setTitle] = useState('');
+  const [ingredients, setIngredients] = useState('');
+  const [steps, setSteps] = useState('');
+
+  // Image enlargement toggle
+  const [isImageEnlarged, setIsImageEnlarged] = useState(false);
+
+  // Speech recognition
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
+  // Which field is active for voice?
+  const [activeField, setActiveField] = useState(null);
 
   const navigate = useNavigate();
   const cameraRef = useRef(null);
   const fileInputRef = useRef(null);
 
-  // Request camera permission on mount
+  // Camera permission
   useEffect(() => {
     const requestPermission = async () => {
       try {
@@ -57,14 +103,52 @@ export default function CameraComponent() {
     requestPermission();
   }, []);
 
-  // Process the base64 image with OpenAI
+  // Toggle mic for a given field
+  const handleToggleMic = (field) => {
+    if (!browserSupportsSpeechRecognition) return;
+
+    // If we click the same field again, that means we're stopping
+    if (activeField === field) {
+      // Stop
+      SpeechRecognition.stopListening();
+
+      // Append the entire transcript to the chosen field
+      if (field === 'title') {
+        setTitle(prev => (prev ? prev + ' ' : '') + transcript);
+      } else if (field === 'ingredients') {
+        setIngredients(prev => (prev ? prev + '\n' + transcript : transcript));
+      } else if (field === 'steps') {
+        setSteps(prev => (prev ? prev + '\n' + transcript : transcript));
+      }
+
+      // Reset & clear the field
+      resetTranscript();
+      setActiveField(null);
+    } else {
+      // If we're switching fields, stop any previous listening
+      if (activeField) {
+        SpeechRecognition.stopListening();
+        resetTranscript();
+      }
+      // Start fresh for the new field
+      setActiveField(field);
+      SpeechRecognition.startListening({ continuous: true });
+    }
+  };
+
   const processImage = async (base64Image) => {
     try {
-      setScanning(true); // Start scanning => show overlay
+      setScanning(true);
       const result = await fetchOpenAIData(base64Image);
       const text = result.choices[0]?.message?.content || 'No text extracted.';
-      setExtractedText(text);
-      setShowEditableText(true);
+      
+      // Parse
+      const { title, ingredients, steps } = parseRecipeSections(text);
+      setTitle(title);
+      setIngredients(ingredients);
+      setSteps(steps);
+
+      setShowEditableFields(true);
     } catch (err) {
       setError('Error processing image. Please retry.');
       console.error(err);
@@ -73,7 +157,6 @@ export default function CameraComponent() {
     }
   };
 
-  // Taking a photo with the camera
   const handleCapture = async () => {
     try {
       if (cameraRef.current) {
@@ -90,7 +173,6 @@ export default function CameraComponent() {
     }
   };
 
-  // Handling an uploaded file
   const handleImageUpload = async (base64DataUrl) => {
     try {
       setError('');
@@ -121,37 +203,28 @@ export default function CameraComponent() {
 
   const handleRetake = () => {
     setImage(null);
-    setExtractedText('');
-    setShowEditableText(false);
+    setShowEditableFields(false);
+    setTitle('');
+    setIngredients('');
+    setSteps('');
+    setIsImageEnlarged(false);
+    // Stop any active listening
+    SpeechRecognition.stopListening();
+    setActiveField(null);
+    resetTranscript();
   };
 
-  // “Next” => pass user’s final text + image to prompts
   const handleNext = () => {
-    if (!extractedText || extractedText.trim() === "") {
+    const combinedText = `# ${title}\n\n## Ingredients\n${ingredients}\n\n## Instructions\n${steps}`;
+    if (!combinedText.trim()) {
       console.error("No extracted text. Cannot proceed.");
       return;
     }
-    navigate("/prompts", { state: { data: extractedText, image } });
+    navigate("/prompts", { state: { data: combinedText, image } });
   };
 
-  const {
-    transcript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition
-  } = useSpeechRecognition();
-
-  let micClicked = false;
-
-  const handleSpeechRecognition = () => {
-    if (!micClicked) {
-      SpeechRecognition.startListening();
-      micClicked = true;
-    }
-    else {
-      SpeechRecognition.stopListening();
-      micClicked = false;
-    }
+  const toggleImageSize = () => {
+    setIsImageEnlarged(prev => !prev);
   };
 
   return (
@@ -159,16 +232,24 @@ export default function CameraComponent() {
       <Card className="camera-card">
         <CardContent className="camera-content">
           {isLoading ? (
-            // Show spinner while checking camera
             <div className="loading-container">
               <CircularProgress />
               <p>Awaiting camera access...</p>
             </div>
           ) : hasPermission ? (
             !image ? (
-              <Camera ref={cameraRef} className="camera-preview" aspectRatio={1} />
+              <Camera
+                ref={cameraRef}
+                className="camera-preview"
+                aspectRatio={1}
+              />
             ) : (
-              <div className={`image-wrapper ${showEditableText ? 'shrink' : ''}`}>
+              <div
+                className={`image-wrapper 
+                  ${showEditableFields && !isImageEnlarged ? 'shrink' : ''} 
+                  ${isImageEnlarged ? 'enlarged' : ''}`}
+                onClick={toggleImageSize}
+              >
                 <img
                   src={image}
                   alt="Captured or Uploaded Recipe"
@@ -186,7 +267,7 @@ export default function CameraComponent() {
             <p className="text-red-500">Camera access denied</p>
           )}
 
-          {/* Button area */}
+          {/* Buttons for capturing/uploading photo (only if no image yet) */}
           {!image ? (
             <div className="button-container">
               <div className="upload-wrapper">
@@ -197,7 +278,10 @@ export default function CameraComponent() {
                   ref={fileInputRef}
                   style={{ display: 'none' }}
                 />
-                <button onClick={() => fileInputRef.current.click()} className="upload-button">
+                <button
+                  onClick={() => fileInputRef.current.click()}
+                  className="upload-button"
+                >
                   Upload Photo
                 </button>
               </div>
@@ -205,34 +289,78 @@ export default function CameraComponent() {
             </div>
           ) : (
             <>
-              {showEditableText && (
-                <div className="recipe-text-area">
-                  <textarea
-                    value={extractedText + '\n\n' + transcript}
-                    onChange={(e) => setExtractedText(e.target.value)}
-                    placeholder="Edit your recipe text here..."
-                  />
+              {/* Editable Fields: Title, Ingredients, Steps */}
+              {showEditableFields && (
+                <div className="recipe-fields">
+                  {/* Title */}
+                  <div className="field-row">
+                    <label>Title</label>
+                    <div className="field-with-mic">
+                      <input
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="Recipe Title"
+                      />
+                      {browserSupportsSpeechRecognition && (
+                        <MicIcon
+                          className={`mic-icon ${activeField === 'title' ? 'mic-active' : ''}`}
+                          onClick={() => handleToggleMic('title')}
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Ingredients */}
+                  <div className="field-row">
+                    <label>Ingredients</label>
+                    <div className="field-with-mic">
+                      <textarea
+                        rows={4}
+                        value={ingredients}
+                        onChange={(e) => setIngredients(e.target.value)}
+                        placeholder="List of ingredients..."
+                      />
+                      {browserSupportsSpeechRecognition && (
+                        <MicIcon
+                          className={`mic-icon ${activeField === 'ingredients' ? 'mic-active' : ''}`}
+                          onClick={() => handleToggleMic('ingredients')}
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Steps */}
+                  <div className="field-row">
+                    <label>Steps</label>
+                    <div className="field-with-mic">
+                      <textarea
+                        rows={4}
+                        value={steps}
+                        onChange={(e) => setSteps(e.target.value)}
+                        placeholder="Step-by-step instructions..."
+                      />
+                      {browserSupportsSpeechRecognition && (
+                        <MicIcon
+                          className={`mic-icon ${activeField === 'steps' ? 'mic-active' : ''}`}
+                          onClick={() => handleToggleMic('steps')}
+                        />
+                      )}
+                    </div>
+                  </div>
                 </div>
               )}
 
-              {showEditableText && browserSupportsSpeechRecognition ? 
-                (<div>
-                  <p>Microphone: {listening ? 'on' : 'off'}</p>
-                  <MicIcon className='mic-icon' onClick={handleSpeechRecognition}>Start</MicIcon>
-                  {/* <p>{transcript}</p> */}
-                </div>) : 
-                (<p>Browser does not support speech recognition.</p>
-                )
-              }
-
+              {/* Retake & Next */}
               <div className="retake-next-buttons">
                 <button className="upload-button" onClick={handleRetake}>
                   Retake
                 </button>
-                {showEditableText && (
-                <button className="next-button" onClick={handleNext}>
-                  Next
-                </button>)}
+                {showEditableFields && (
+                  <button className="next-button" onClick={handleNext}>
+                    Next
+                  </button>
+                )}
               </div>
             </>
           )}
