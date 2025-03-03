@@ -4,16 +4,16 @@ import App from './App';
 
 describe('counter tests', () => {
     
-  test("Counter should be 0 at the start", () => {
-    render(<App />);
-    expect(screen.getByText('count is: 0')).toBeDefined();
-  });
+  // test("Sign in text", () => {
+  //   render(<App />);
+  //   expect(screen.getByText('Sign in with Google')).toBeDefined();
+  // });
 
-  test("Counter should increment by one when clicked", async () => {
+  test("Sign in button", async () => {
     render(<App />);
-    const counter = screen.getByRole('button');
-    fireEvent.click(counter);
-    expect(await screen.getByText('count is: 1')).toBeDefined();
+    const signIn = screen.getByRole('button');
+    // fireEvent.click(counter);
+    expect(await screen.getByText('Sign in with Google')).toBeDefined();
   });
 
 });
