@@ -44,7 +44,7 @@ export default function Questions() {
         imageUrl = imageToUse || "https://via.placeholder.com/150";
       }
 
-      navigate('/final_recipe', { 
+      navigate('/EditRecipe', { 
         state: { 
           recipeText: recipeText, 
           journalEntry: res.data.journal, 

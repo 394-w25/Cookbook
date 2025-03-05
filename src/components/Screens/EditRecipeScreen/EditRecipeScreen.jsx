@@ -6,6 +6,7 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import { db } from '../../../utilities/firebase';
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import ChatbotInputForm from '../../ChatbotInputForm/ChatbotInputForm';
 
 export default function EditRecipeScreen() {
   const location = useLocation();
@@ -33,6 +34,12 @@ export default function EditRecipeScreen() {
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
   const [activeField, setActiveField] = useState(null);
+
+  // useEffect(() => {
+  //   if (location.state?.updatedRecipe) {
+  //     setRecipe(location.state.updatedRecipe); // Update with chatbot modifications
+  //   }
+  // }, [location.state]);
 
   useEffect(() => {
     const lines = recipeText.split("\n");
@@ -327,6 +334,7 @@ export default function EditRecipeScreen() {
           Done
         </button>
       </div>
+      <ChatbotInputForm />
     </div>
   );
 }

@@ -6,6 +6,10 @@ import CameraComponent from './components/CameraComponent/CameraComponent';
 import PromptsScreen from './components/Screens/PromptsScreen/PromptsScreen';
 import CookbookPage from "./components/Screens/CookbookPage/CookbookPage";
 import EditRecipeScreen from './components/Screens/EditRecipeScreen/EditRecipeScreen';
+import VoiceRecordRecipeScreen from './components/Screens/VoiceRecordRecipeScreen/VoiceRecordRecipeScreen';
+import ChatbotScreen from './components/Screens/ChatbotScreen/ChatbotScreen';
+
+
 
 import {
   BrowserRouter as Router,
@@ -27,9 +31,11 @@ const App = () => {
           <Route path="/home" element={<HomeScreen />} />
           <Route path="/AddRecipe" element={<AddRecipeScreen />} />
           <Route path="/CameraComponent" element={<CameraComponent />} />
+          <Route path="/VoiceRecordRecipe" element={<VoiceRecordRecipeScreen />} />
           <Route path="/prompts" element={<PromptsScreen />} />
           <Route path="/recipe/:id" element={<CookbookPage />} />
-          <Route path="/final_recipe" element={<EditRecipeScreen />} />
+          <Route path="/EditRecipe" element={<EditRecipeScreen />} />
+          <Route path="/EditRecipeChatbot" element={<ChatbotScreen />} />
         </Route>
       </Routes>
     </Router>

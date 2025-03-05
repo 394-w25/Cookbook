@@ -1,0 +1,53 @@
+.chatbot-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    padding: 10px;
+    background-color: #fafafa;
+}
+
+.chatbot-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+}
+
+/* Common styles for all messages */
+.chat-message {
+    display: flex;
+    width: 100%;
+}
+
+/* User message aligns to the right */
+.chat-message.user {
+    justify-content: flex-end;
+}
+
+/* Bot message aligns to the left */
+.chat-message.bot {
+    justify-content: flex-start;
+}
+
+/* Chat bubble styling */
+.chat-bubble {
+    padding: 12px;
+    border-radius: 15px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+/* User messages */
+.chat-message.user .chat-bubble {
+    background-color: #e1f5fe;
+    text-align: left;
+}
+
+/* Bot messages */
+.chat-message.bot .chat-bubble {
+    background-color: #f1f1f1;
+    text-align: left;
+}
