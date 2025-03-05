@@ -8,26 +8,43 @@ import CookbookPage from "./components/Screens/CookbookPage/CookbookPage";
 import EditRecipeScreen from './components/Screens/EditRecipeScreen/EditRecipeScreen';
 import VoiceRecordRecipeScreen from './components/Screens/VoiceRecordRecipeScreen/VoiceRecordRecipeScreen';
 import ChatbotScreen from './components/Screens/ChatbotScreen/ChatbotScreen';
-
-
-
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from 'react-router-dom';
+import { auth } from "./utilities/firebase.js";
+import { onAuthStateChanged } from 'firebase/auth';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout/MainLayout';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+const RequireAuth = ({ children, user }) => {
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+};
 
 const App = () => {
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = useState(null);
+  const [authLoaded, setAuthLoaded] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (curUser) => {
+      setUser(curUser);
+      setAuthLoaded(true);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (!authLoaded) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<SignInScreen setUser = {setUser}/>} />
-
-        {/* wrap all other routes with MainLayout to have top bar and navbar */}
-        <Route element={<MainLayout />}>
+        <Route path="/" element={<SignInScreen setUser={setUser} />} />
+        
+        {/* authentication for all other routes */}
+        <Route element={<RequireAuth user={user}><MainLayout /></RequireAuth>}>
           <Route path="/home" element={<HomeScreen />} />
           <Route path="/AddRecipe" element={<AddRecipeScreen />} />
           <Route path="/CameraComponent" element={<CameraComponent />} />
