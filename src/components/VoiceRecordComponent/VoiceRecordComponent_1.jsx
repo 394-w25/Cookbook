@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./VoiceRecordComponent.css";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MicIcon from '@mui/icons-material/Mic';
@@ -10,15 +8,14 @@ import IconButton from '@mui/material/IconButton';
 import SoundWave from "./VoiceAssets/sound-wave.gif";
 
 export default function VoiceRecordComponent() {
-  const [recipe, setRecipe] = useState(""); // Initialize as an empty string
+  const [recipe, setRecipe] = useState(""); // Stores the recipe text
+  const lastTranscriptRef = useRef(""); // Keeps track of the last processed transcript
 
   const handleMicToggle = () => {
     if (!listening) {
-      resetTranscript(); // Reset transcript before starting to listen
       SpeechRecognition.startListening({ continuous: true });
     } else {
       SpeechRecognition.stopListening();
-      setRecipe((prevRecipe) => prevRecipe + " " + transcript);
     }
   };
 
@@ -28,6 +25,14 @@ export default function VoiceRecordComponent() {
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
+
+  useEffect(() => {
+    if (transcript && transcript !== lastTranscriptRef.current) {
+      const newContent = transcript.replace(lastTranscriptRef.current, "").trim();
+      setRecipe((prevRecipe) => prevRecipe + " " + newContent);
+      lastTranscriptRef.current = transcript; // Update last processed transcript
+    }
+  }, [transcript]);
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
@@ -57,9 +62,6 @@ export default function VoiceRecordComponent() {
             <MicIcon className={`mic-icon ${listening ? "mic-on" : "mic-off"}`} />
         </IconButton>
       </div>
-
-      <p className="transcription">{transcript}</p>
-
     </div>
   );
 }
