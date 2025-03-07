@@ -11,7 +11,8 @@ import ChatbotInputForm from '../../ChatbotInputForm/ChatbotInputForm';
 export default function EditRecipeScreen() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { recipeText = "", journalEntry = "", image = "" } = location.state || {};
+  let { recipeText = "", journalEntry = "", image = "" } = location.state || {};
+  const [img, setImg] = useState(image || "");
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [steps, setSteps] = useState("");
@@ -34,15 +35,21 @@ export default function EditRecipeScreen() {
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
   const [activeField, setActiveField] = useState(null);
+  
 
-  // useEffect(() => {
-  //   if (location.state?.updatedRecipe) {
-  //     setRecipe(location.state.updatedRecipe); // Update with chatbot modifications
-  //   }
-  // }, [location.state]);
-
-  console.log("recipe text!!!", recipeText);
-  console.log("Location state:", location.state);
+  useEffect(() => {
+    console.log("new state!", location.state);
+    if (location.state?.recipeText) {
+      recipeText = location.state.recipeText;
+    }
+    if (location.state?.journalEntry) {
+      setStory(location.state.journalEntry);
+    }
+    if (location.state?.image) {
+      setImg(location.state.image);
+    }
+  }, [location.state]);
+  
 
   useEffect(() => {
     const lines = recipeText.split("\n");
@@ -164,7 +171,7 @@ export default function EditRecipeScreen() {
     <div className="final-recipe-container">
       {image && (
         <img
-          src={image}
+          src={img}
           alt="Uploaded"
           className="final-recipe-image"
         />
@@ -337,7 +344,7 @@ export default function EditRecipeScreen() {
           Done
         </button>
       </div>
-      <ChatbotInputForm recipeText={recipeText} />
+      <ChatbotInputForm />
     </div>
   );
 }
