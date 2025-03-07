@@ -5,9 +5,26 @@ import "./ChatbotScreen.css";
 export default function ChatbotScreen() {
   const location = useLocation();
   const navigate = useNavigate();
-  const initialMessage = location.state?.initialMessage || "";
+  console.log("asdf", location.state);
+  const {image, initialMessage, journalEntry, recipeText} = location.state;
+  // const initialMessage = location.state?.initialMessage || "";
+  // const recipeText = location.state?.recipeText;
   const [messages, setMessages] = useState([]);
   const [updatedRecipe, setUpdatedRecipe] = useState(location.state?.recipe || {});
+
+
+  const fetchOpenAIData = async () => {
+    try {
+      const response = await axios.post(
+        '',
+        { image, initialMessage, journalEntry, recipeText }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Axios Network Error:', error);
+      throw error;
+    }
+  };  
 
   useEffect(() => {
     if (initialMessage) {
@@ -26,12 +43,7 @@ export default function ChatbotScreen() {
     }
   }, [initialMessage]);
 
-//   useEffect(() => {
-//     // Need to pass back the updated recipe to EditRecipeScreen, but the back button is in the topbar
-//     return () => {
-//       navigate("/EditRecipe", { state: { updatedRecipe } });
-//     };
-//   }, [navigate, updatedRecipe]);
+  
 
   return (
     <div className="chatbot-screen">

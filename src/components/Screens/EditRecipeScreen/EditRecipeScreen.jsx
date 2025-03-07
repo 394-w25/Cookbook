@@ -41,8 +41,12 @@ export default function EditRecipeScreen() {
   //   }
   // }, [location.state]);
 
+  console.log("recipe text!!!", recipeText);
+  console.log("Location state:", location.state);
+
   useEffect(() => {
     const lines = recipeText.split("\n");
+    console.log("recipe text in useeffect:", lines);
     let foundIngredients = [];
     let foundSteps = [];
     let foundTitle = "";

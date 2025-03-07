@@ -5,24 +5,24 @@ const cors = require("cors")({ origin: true });
 // import api keys from firebase config
 const API_KEY = functions.config().openai.key;
 
-exports.sendOpenAIAPIRequest = functions.https.onRequest((req, res) => {
-    cors(req, res, async () => {
-        try {
-            const { image } = req.body; // Receive base64 image string from frontend
+exports.parseImage = functions.https.onRequest((req, res) => {
+  cors(req, res, async () => {
+    try {
+      const { image } = req.body; // Receive base64 image string from frontend
 
-            if (!image) {
-                return res.status(400).json({ error: "No image provided" });
-            }
+      if (!image) {
+        return res.status(400).json({ error: "No image provided" });
+      }
 
-            const requestBody = {
-                model: "gpt-4o",
-                messages: [
-                    {
-                        role: "user",
-                        content: [
-                            {
-                                type: "text",
-                                text: `
+      const requestBody = {
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: `
                                     # Your Task
 
                                     Please parse the text in the provided image of a recipe, which is encoded in base64 format, and output the extracted text in **Markdown format**, ensuring proper structure using headings, lists, and formatting for clarity.
@@ -54,157 +54,265 @@ exports.sendOpenAIAPIRequest = functions.https.onRequest((req, res) => {
 
                                     **The base64-encoded image for you to process is in the image section.**
                                 `,
-                            },
-                            {
-                                type: "image_url",
-                                image_url: {
-                                    url: `data:image/jpeg;base64,${image}`, // Use base64 data from frontend
-                                },
-                            },
-                        ],
-                    }
-                ],
-                // Need to increase, it's cutting off some
-                max_tokens: 300,
-                temperature: 0.5
-            };
-
-            const apiResponse = await axios.post("https://api.openai.com/v1/chat/completions", requestBody, {
-                headers: {
-                    "Authorization": `Bearer ${API_KEY}`,
-                    "Content-Type": "application/json",
+              },
+              {
+                type: "image_url",
+                image_url: {
+                  url: `data:image/jpeg;base64,${image}`, // Use base64 data from frontend
                 },
-            });
+              },
+            ],
+          },
+        ],
+        // Need to increase, it's cutting off some
+        max_tokens: 300,
+        temperature: 0.5,
+      };
 
-            res.status(200).json(apiResponse.data);
-        } catch (error) {
-            console.error("Error calling OpenAI API:", error);
-            res.status(500).json({ error: "Failed to process image" });
+      const apiResponse = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+            "Content-Type": "application/json",
+          },
         }
-    });
+      );
+
+      res.status(200).json(apiResponse.data);
+    } catch (error) {
+      console.error("Error calling OpenAI API:", error);
+      res.status(500).json({ error: "Failed to process image" });
+    }
+  });
 });
 
 
-exports.sendOpenAIAPIRequestWOImage = functions.https.onRequest((req, res) => {
-    cors(req, res, async () => {
-        try {
-            const { prompt } = req.body; 
+exports.updateRecipeWithChatbot = functions.https.onRequest((req, res) => {
+  cors(req, res, async () => {
+    try {
+      const { image, initialMessage, journalEntry, recipeText } = req.body;
+      
+      console.log("image!", image);
+      console.log("initialMessage!", initialMessage);
+      console.log("journalEntry!", journalEntry);
+      console.log("recipeText!", recipeText);
 
-            if (!prompt) {
-                return res.status(400).json({ error: "No prompt provided" });
-            }
+      const requestBody = {
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are an assistant that modifies recipes based on user requests while strictly preserving the existing formatting.",
+          },
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: `# Modify Recipe
 
-            const requestBody = {
-                model: "gpt-4o",
-                messages: [
-                    {
-                        role: "user",
-                        content: [
-                            {
-                                type: "text",
-                                text: prompt,
-                            },
-                        ],
-                    }
-                ],
-                // Need to increase, it's cutting off some
-                max_tokens: 700,
-                temperature: 0.5
-            };
+            You will receive a recipe, a journal entry, and an image link. Your task is to modify the recipe, journal entry, or image based on the provided instruction.
 
-            const apiResponse = await axios.post("https://api.openai.com/v1/chat/completions", requestBody, {
-                headers: {
-                    "Authorization": `Bearer ${API_KEY}`,
-                    "Content-Type": "application/json",
-                },
-            });
+            ## Instructions:
+            - Carefully **follow the modification request** provided in the 'initialMessage'.
+            - Keep the **recipe title, ingredient structure, and instructions format exactly the same** unless instructed otherwise.
+            - Maintain **Markdown formatting**, including:
+            - # Title for the recipe name.
+            - ## Ingredients for ingredients.
+            - ## Instructions for steps.
+            - Use "-" for unordered lists and "1." for ordered lists.
+            - If an image change is requested, **replace the image URL** accordingly.
+            - Ensure modifications **stay logical and relevant**.
+            - Return the modified content in the exact same structure.
 
-            res.status(200).json(apiResponse.data);
-        } catch (error) {
-            console.error("Error calling OpenAI API:", error);
-            res.status(500).json({ error: "Failed to process question prompt" });
+            ## Recipe Before Modification:
+            ${recipeText}
+
+            ## Journal Entry Before Modification:
+            ${journalEntry}
+
+            ## Image Before Modification:
+            ${image}
+
+            ## Modification Request:
+            ${initialMessage}
+
+            ## Return Format:
+            - Recipe in the **same format**.
+            - Journal entry in the **same format**.
+            - Image as a URL string (if modified).
+
+            Modify accordingly and output the complete updated version.`,
+              },
+            ],
+          },
+        ],
+        max_tokens: 500,
+        temperature: 0.5,
+      };
+
+      const apiResponse = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+            "Content-Type": "application/json",
+          },
         }
-    });
+      );
+
+      res.status(200).json(apiResponse.data.choices[0].message.content);
+    } catch (error) {
+      console.error("Error calling OpenAI API:", error);
+      res
+        .status(500)
+        .json({ error: "Failed to process modification request." });
+    }
+  });
+});
+
+exports.sendOpenAIAPIRequestWOImage = functions.https.onRequest((req, res) => {
+  cors(req, res, async () => {
+    try {
+      const { prompt } = req.body;
+
+      if (!prompt) {
+        return res.status(400).json({ error: "No prompt provided" });
+      }
+
+      const requestBody = {
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: prompt,
+              },
+            ],
+          },
+        ],
+        // Need to increase, it's cutting off some
+        max_tokens: 700,
+        temperature: 0.5,
+      };
+
+      const apiResponse = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      res.status(200).json(apiResponse.data);
+    } catch (error) {
+      console.error("Error calling OpenAI API:", error);
+      res.status(500).json({ error: "Failed to process question prompt" });
+    }
+  });
 });
 
 exports.writejournal = functions.https.onRequest(async (req, res) => {
-    cors(req, res, async () => {
-        try {
-            const { answers } = req.body; // Receive answers as array from frontend
+  cors(req, res, async () => {
+    try {
+      const { answers } = req.body; // Receive answers as array from frontend
 
-            if (answers.length !== 3) {
-                return res.status(400).json({ error: "Need 3 answers" });
-            }
-            
-            const requestBody = {
-                model: "gpt-4o-mini",
-                messages: [
-                    {
-                        role: "system",
-                        content: `You are an experienced chef who can summarize answers to questions from user input. 
+      if (answers.length !== 3) {
+        return res.status(400).json({ error: "Need 3 answers" });
+      }
+
+      const requestBody = {
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content: `You are an experienced chef who can summarize answers to questions from user input. 
                         You are writing a journal entry based on answers. Make the entry feel organic while maintaining correctness based on the answers.`,
-                    },
-                    {
-                        role: "user",
-                        content: `Here are my answers to the questions:
+          },
+          {
+            role: "user",
+            content: `Here are my answers to the questions:
                             Q: Who invented this recipe and when is it usually made?
                             A: ${answers[0]}
                             Q: What is a memory that you associate with this recipe?
                             A: ${answers[1]}
                             Q: What makes this recipe unique in your family?
-                            A: ${answers[2]}`
-                    }
-                ],
-                max_tokens: 1024,
-            };
+                            A: ${answers[2]}`,
+          },
+        ],
+        max_tokens: 1024,
+      };
 
-            const apiResponse = await axios.post("https://api.openai.com/v1/chat/completions", requestBody, {
-                headers: {
-                    "Authorization": `Bearer ${API_KEY}`,
-                    "Content-Type": "application/json",
-                },
-            });
-
-            res.status(200).json({ journal: apiResponse.data.choices[0].message.content });
-        } catch (error) {
-            console.error("Error calling OpenAI API:", error);
-            res.status(500).json({ error: "Failed to process answers" });
+      const apiResponse = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+            "Content-Type": "application/json",
+          },
         }
-    });
+      );
+
+      res
+        .status(200)
+        .json({ journal: apiResponse.data.choices[0].message.content });
+    } catch (error) {
+      console.error("Error calling OpenAI API:", error);
+      res.status(500).json({ error: "Failed to process answers" });
+    }
+  });
 });
 
 exports.generateImage = functions.https.onRequest(async (req, res) => {
-    cors(req, res, async () => {
-        try {
-            const { title, ingredients, steps } = req.body; // Receive prompt from frontend
+  cors(req, res, async () => {
+    try {
+      const { title, ingredients, steps } = req.body; // Receive prompt from frontend
 
-            if (!title || !ingredients || !steps) {
-                return res.status(400).json({ error: "Must provide the recipe title, ingredients, and steps" });
-            }
+      if (!title || !ingredients || !steps) {
+        return res
+          .status(400)
+          .json({
+            error: "Must provide the recipe title, ingredients, and steps",
+          });
+      }
 
-            const requestBody = {
-                model: "dall-e-3",
-                prompt: `Imagine you are a professional photographer.
+      const requestBody = {
+        model: "dall-e-3",
+        prompt: `Imagine you are a professional photographer.
                 Generate a high-quality, delicious-looking, home-cooked, image of this recipe of ${title}, 
                 given that it is made with these ingredients:
                 ${ingredients}
                 and follows these instructions:
                 ${steps}
                 Ensure that the food looks realistically made and the presentation is accurate to the recipe.`,
-                n: 1
-            };
+        n: 1,
+      };
 
-            const apiResponse = await axios.post("https://api.openai.com/v1/images/generations", requestBody, {
-                headers: {
-                    "Authorization": `Bearer ${API_KEY}`,
-                    "Content-Type": "application/json",
-                },
-            });
-
-            res.status(200).json({ generatedImage: apiResponse.data.data[0].url });
-        } catch (error) {
-            console.error("Error calling OpenAI API:", error);
-            res.status(500).json({ error: "Failed to generate an image" });
+      const apiResponse = await axios.post(
+        "https://api.openai.com/v1/images/generations",
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+            "Content-Type": "application/json",
+          },
         }
-    });
+      );
+
+      res.status(200).json({ generatedImage: apiResponse.data.data[0].url });
+    } catch (error) {
+      console.error("Error calling OpenAI API:", error);
+      res.status(500).json({ error: "Failed to generate an image" });
+    }
+  });
 });

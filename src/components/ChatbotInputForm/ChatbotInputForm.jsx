@@ -12,8 +12,10 @@ export default function ChatbotInputForm() {
         if (input.trim() === "") return;
 
         if (location.pathname !== "/EditRecipeChatbot") {
-            navigate("/EditRecipeChatbot", { state: { initialMessage: input } });
+            navigate("/EditRecipeChatbot", { state: { ...(location.state || {}), initialMessage: input } });
         }
+        //Call open ai with location
+
         setInput("");
     };
 

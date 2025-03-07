@@ -13,7 +13,7 @@ import SpeechRecognition, {
 const fetchOpenAIData = async (base64Image) => {
   try {
     const response = await axios.post(
-      'https://us-central1-generationalcookbook.cloudfunctions.net/sendOpenAIAPIRequest',
+      'https://us-central1-generationalcookbook.cloudfunctions.net/parseImage',
       { image: base64Image }
     );
     return response.data;
