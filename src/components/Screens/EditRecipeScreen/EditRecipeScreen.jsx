@@ -46,7 +46,6 @@ export default function EditRecipeScreen() {
 
   useEffect(() => {
     const lines = recipeText.split("\n");
-    console.log("recipe text in useeffect:", lines);
     let foundIngredients = [];
     let foundSteps = [];
     let foundTitle = "";
@@ -338,7 +337,7 @@ export default function EditRecipeScreen() {
           Done
         </button>
       </div>
-      <ChatbotInputForm />
+      <ChatbotInputForm recipeText={recipeText} />
     </div>
   );
 }

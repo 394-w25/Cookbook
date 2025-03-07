@@ -65,7 +65,7 @@ exports.parseImage = functions.https.onRequest((req, res) => {
           },
         ],
         // Need to increase, it's cutting off some
-        max_tokens: 300,
+        max_tokens: 5000,
         temperature: 0.5,
       };
 
@@ -150,7 +150,7 @@ exports.updateRecipeWithChatbot = functions.https.onRequest((req, res) => {
             ],
           },
         ],
-        max_tokens: 500,
+        max_tokens: 16000,
         temperature: 0.5,
       };
 
@@ -173,52 +173,6 @@ exports.updateRecipeWithChatbot = functions.https.onRequest((req, res) => {
       res
         .status(500)
         .json({ error: "Failed to process modification request." });
-    }
-  });
-});
-
-exports.sendOpenAIAPIRequestWOImage = functions.https.onRequest((req, res) => {
-  cors(req, res, async () => {
-    try {
-      const { prompt } = req.body;
-
-      if (!prompt) {
-        return res.status(400).json({ error: "No prompt provided" });
-      }
-
-      const requestBody = {
-        model: "gpt-4o",
-        messages: [
-          {
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: prompt,
-              },
-            ],
-          },
-        ],
-        // Need to increase, it's cutting off some
-        max_tokens: 700,
-        temperature: 0.5,
-      };
-
-      const apiResponse = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
-        requestBody,
-        {
-          headers: {
-            Authorization: `Bearer ${API_KEY}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      res.status(200).json(apiResponse.data);
-    } catch (error) {
-      console.error("Error calling OpenAI API:", error);
-      res.status(500).json({ error: "Failed to process question prompt" });
     }
   });
 });
