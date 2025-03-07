@@ -3,10 +3,9 @@ import VoiceRecordComponent from "../../VoiceRecordComponent/VoiceRecordComponen
 import "./VoiceRecordRecipeScreen.css";
 
 export default function VoiceRecordRecipeScreen() {
-
-    return (
-        <div className="container">
-            <VoiceRecordComponent></VoiceRecordComponent>
-        </div>
-    )
+  return (
+    <div className="container">
+      <VoiceRecordComponent></VoiceRecordComponent>
+    </div>
+  );
 }
