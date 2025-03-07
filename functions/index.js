@@ -92,10 +92,10 @@ exports.parseImage = functions.https.onRequest((req, res) => {
 exports.updateRecipeWithChatbot = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     try {
-      const { image, initialMessage, journalEntry, recipeText } = req.body;
+      const { image, input, journalEntry, recipeText } = req.body;
       
       console.log("image!", image);
-      console.log("initialMessage!", initialMessage);
+      console.log("input!", input);
       console.log("journalEntry!", journalEntry);
       console.log("recipeText!", recipeText);
 
@@ -117,7 +117,7 @@ exports.updateRecipeWithChatbot = functions.https.onRequest((req, res) => {
             You will receive a recipe, a journal entry, and an image link. Your task is to modify the recipe, journal entry, or image based on the provided instruction.
 
             ## Instructions:
-            - Carefully **follow the modification request** provided in the 'initialMessage'.
+            - Carefully **follow the modification request** provided in the Modification Request.
             - Keep the **recipe title, ingredient structure, and instructions format exactly the same** unless instructed otherwise.
             - Maintain **Markdown formatting**, including:
             - # Title for the recipe name.
@@ -138,7 +138,7 @@ exports.updateRecipeWithChatbot = functions.https.onRequest((req, res) => {
             ${image}
 
             ## Modification Request:
-            ${initialMessage}
+            ${input}
 
             ## Return Format:
             - Recipe in the **same format**.
@@ -164,6 +164,8 @@ exports.updateRecipeWithChatbot = functions.https.onRequest((req, res) => {
           },
         }
       );
+
+      console.log(apiResponse);
 
       res.status(200).json(apiResponse.data.choices[0].message.content);
     } catch (error) {
