@@ -140,56 +140,55 @@ export default function VoiceRecordComponent() {
       <button onClick={handleRecipeUpload}>Submit</button>
 
       {showEditableFields && (
-                <div className="recipe-fields">
-                  {/* Title */}
-                  <div className="field-row">
-                    <label>Title</label>
-                    <div className="field-with-mic">
-                      <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Recipe Title"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Ingredients */}
-                  <div className="field-row">
-                    <label>Ingredients</label>
-                    <div className="field-with-mic">
-                      <textarea
-                        rows={4}
-                        value={ingredients}
-                        onChange={(e) => setIngredients(e.target.value)}
-                        placeholder="List of ingredients..."
-                      />
-                    </div>
-                  </div>
-
-                  {/* Steps */}
-                  <div className="field-row">
-                    <label>Steps</label>
-                    <div className="field-with-mic">
-                      <textarea
-                        rows={4}
-                        value={steps}
-                        onChange={(e) => setSteps(e.target.value)}
-                        placeholder="Step-by-step instructions..."
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div className="retake-next-buttons">
-                {showEditableFields && (
-                  <button className="next-button" onClick={handleNext}>
-                    Next
-                  </button>
-                )}
-              </div>
+        <div className="recipe-fields">
+          {/* Title */}
+          <div className="field-row">
+            <label>Title</label>
+            <div className="field-with-mic">
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Recipe Title"
+              />
             </div>
-            
+          </div>
+
+          {/* Ingredients */}
+          <div className="field-row">
+            <label>Ingredients</label>
+            <div className="field-with-mic">
+              <textarea
+                rows={4}
+                value={ingredients}
+                onChange={(e) => setIngredients(e.target.value)}
+                placeholder="List of ingredients..."
+              />
+            </div>
+          </div>
+
+          {/* Steps */}
+          <div className="field-row">
+            <label>Steps</label>
+            <div className="field-with-mic">
+              <textarea
+                rows={4}
+                value={steps}
+                onChange={(e) => setSteps(e.target.value)}
+                placeholder="Step-by-step instructions..."
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="retake-next-buttons">
+        {showEditableFields && (
+          <button className="next-button" onClick={handleNext}>
+            Next
+          </button>
+        )}
+      </div>
+    </div>
   );
 }
