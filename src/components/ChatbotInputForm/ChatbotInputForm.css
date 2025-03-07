@@ -1,9 +1,15 @@
-.chatbot-input-container {
+.input-container {
     position: fixed;
     bottom: 0;
     width: 100%;
     background: #fff;
-    border-top: 1px solid #ddd;
+    display: column;
+    justify-content: center;
+}
+
+.chatbot-input-container {
+    width: 100%;
+    background: #fff;
     padding: 10px;
     display: flex;
     justify-content: center;
@@ -36,4 +42,18 @@
 
 .send-button:hover {
     background-color: #0056b3;
+}
+
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.loading-spinner p {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #555;
 }

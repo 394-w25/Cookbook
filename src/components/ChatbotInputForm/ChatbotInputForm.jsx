@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Alert, CircularProgress } from "@mui/material";
 import "./ChatbotInputForm.css";
 import axios from "axios";
 
-export default function ChatbotInputForm( ) {
+export default function ChatbotInputForm() {
     const [input, setInput] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 
-    const {image, journalEntry, recipeText} = location.state;
+    const { image, journalEntry, recipeText } = location.state;
 
     const parseOpenAIResponse = (responseText) => {
         let recipeText = "";
         let journalEntry = "";
         let image = "";
-    
+
         const sections = responseText.split("## ");
-        
+
         sections.forEach((section) => {
             if (section.startsWith("Ingredients") || section.startsWith("Instructions")) {
                 recipeText += `## ${section}\n`;
@@ -26,61 +29,81 @@ export default function ChatbotInputForm( ) {
                 const imageMatch = section.match(/(https?:\/\/[^\s]+)/);
                 if (imageMatch) image = imageMatch[1];
             } else if (section.startsWith("# ")) {
-                recipeText = section + "\n" + recipeText; // Ensure title is included
+                recipeText = section + "\n" + recipeText;
             }
         });
-    
+
         return { recipeText, journalEntry, image };
     };
-    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (input.trim() === "") return;
-    
+
+        setLoading(true);
         setInput("");
-        const response = await fetchOpenAIData();
-        
-        // Parse response into structured format
-        const parsedData = parseOpenAIResponse(response.data);
-        
-        // Update state and navigate to EditRecipe with new data
-        const newState = { 
-            ...location.state, 
-            recipeText: parsedData.recipeText, 
-            journalEntry: parsedData.journalEntry, 
-            image: parsedData.image 
-        };
-    
-        navigate("/EditRecipe", { state: newState, replace: true });
+
+        try {
+            const response = await fetchOpenAIData();
+            const parsedData = parseOpenAIResponse(response.data);
+            const newState = {
+                ...location.state,
+                recipeText: parsedData.recipeText,
+                journalEntry: parsedData.journalEntry,
+                image: parsedData.image,
+            };
+
+            navigate("/EditRecipe", { state: newState, replace: true });
+            setShowAlert(true);
+        } catch (error) {
+            console.error("Error fetching AI data:", error);
+        } finally {
+            setLoading(false);
+        }
     };
-    
 
     const fetchOpenAIData = async () => {
-        try {
-          const response = await axios.post(
-            'https://us-central1-generationalcookbook.cloudfunctions.net/updateRecipeWithChatbot',
+        return axios.post(
+            "https://us-central1-generationalcookbook.cloudfunctions.net/updateRecipeWithChatbot",
             { image, input, journalEntry, recipeText }
-          );
-          return response;
-        } catch (error) {
-          console.error('Axios Network Error:', error);
-          throw error;
-        }
-      };
+        );
+    };
 
     return (
-        <div className="chatbot-input-container">
-            <form className="chatbot-input-form" onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Ask AI to customize the recipe..."
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    className="chatbot-input"
-                />
-                <button type="submit" className="send-button">Send</button>
-            </form>
+        <div className="input-container">
+            {showAlert && (
+                <Alert
+                    className="alert"
+                    variant="filled"
+                    severity="success"
+                    onClose={() => setShowAlert(false)}
+                >
+                    Updated recipe using AI!
+                </Alert>
+            )}
+
+            <div className="chatbot-input-container">
+                {loading ? (
+                    <div className="loading-spinner">
+                        <CircularProgress size={40} />
+                        <p>Processing your request...</p>
+                    </div>
+                ) : (
+                    <form className="chatbot-input-form" onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            placeholder="Ask AI to customize the recipe..."
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            className="chatbot-input"
+                            disabled={loading}
+                        />
+                        <button type="submit" className="send-button" disabled={loading}>
+                            {loading ? "Loading..." : "Send"}
+                        </button>
+                    </form>
+                )}
+            </div>
         </div>
     );
 }

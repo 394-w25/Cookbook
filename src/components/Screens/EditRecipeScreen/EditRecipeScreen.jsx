@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './EditRecipeScreen.css';
-import MicIcon from '@mui/icons-material/Mic';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { db } from '../../../utilities/firebase';
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
@@ -28,14 +26,6 @@ export default function EditRecipeScreen() {
     ingredients: true,
     steps: true,
   });
-  const {
-    transcript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition
-  } = useSpeechRecognition();
-  const [activeField, setActiveField] = useState(null);
-  
 
   useEffect(() => {
     console.log("new state!", location.state);
@@ -75,39 +65,6 @@ export default function EditRecipeScreen() {
     setIngredients(foundIngredients.join("\n").trim());
     setSteps(foundSteps.join("\n").trim());
   }, [recipeText]);
-
-  const handleToggleMic = (field) => {
-    if (!browserSupportsSpeechRecognition) return;
-    if (activeField === field) {
-      SpeechRecognition.stopListening();
-      if (field === "title") {
-        setTitle((prev) => (prev ? prev + " " + transcript : transcript));
-      } else if (field === "story") {
-        setStory((prev) => (prev ? prev + " " + transcript : transcript));
-      } else if (field === "ingredients") {
-        setIngredients((prev) => (prev ? prev + "\n" + transcript : transcript));
-      } else if (field === "steps") {
-        setSteps((prev) => (prev ? prev + "\n" + transcript : transcript));
-      } else {
-        setCustomSections((prev) =>
-          prev.map((section) =>
-            section.id === field
-              ? { ...section, content: section.content + " " + transcript }
-              : section
-          )
-        );
-      }
-      resetTranscript();
-      setActiveField(null);
-    } else {
-      if (activeField) {
-        SpeechRecognition.stopListening();
-        resetTranscript();
-      }
-      setActiveField(field);
-      SpeechRecognition.startListening({ continuous: true });
-    }
-  };
 
   const handleAddSection = () => {
     const id = Date.now().toString();
@@ -184,12 +141,6 @@ export default function EditRecipeScreen() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-            {browserSupportsSpeechRecognition && (
-              <MicIcon
-                className={`mic-icon ${activeField === "title" ? "mic-active" : ""}`}
-                onClick={() => handleToggleMic("title")}
-              />
-            )}
             <button className="delete-button" onClick={() => handleDeleteSection("title")}>
               X
             </button>
@@ -234,12 +185,6 @@ export default function EditRecipeScreen() {
         <div className="section-block">
           <div className="section-header">
             <h2>Story</h2>
-            {browserSupportsSpeechRecognition && (
-              <MicIcon
-                className={`mic-icon ${activeField === "story" ? "mic-active" : ""}`}
-                onClick={() => handleToggleMic("story")}
-              />
-            )}
             <button className="delete-button" onClick={() => handleDeleteSection("story")}>
               X
             </button>
@@ -256,12 +201,6 @@ export default function EditRecipeScreen() {
         <div className="section-block">
           <div className="section-header">
             <h2>Ingredients</h2>
-            {browserSupportsSpeechRecognition && (
-              <MicIcon
-                className={`mic-icon ${activeField === "ingredients" ? "mic-active" : ""}`}
-                onClick={() => handleToggleMic("ingredients")}
-              />
-            )}
             <button className="delete-button" onClick={() => handleDeleteSection("ingredients")}>
               X
             </button>
@@ -278,12 +217,6 @@ export default function EditRecipeScreen() {
         <div className="section-block">
           <div className="section-header">
             <h2>Steps</h2>
-            {browserSupportsSpeechRecognition && (
-              <MicIcon
-                className={`mic-icon ${activeField === "steps" ? "mic-active" : ""}`}
-                onClick={() => handleToggleMic("steps")}
-              />
-            )}
             <button className="delete-button" onClick={() => handleDeleteSection("steps")}>
               X
             </button>
@@ -311,12 +244,6 @@ export default function EditRecipeScreen() {
                 );
               }}
             />
-            {browserSupportsSpeechRecognition && (
-              <MicIcon
-                className={`mic-icon ${activeField === section.id ? "mic-active" : ""}`}
-                onClick={() => handleToggleMic(section.id)}
-              />
-            )}
             <button className="delete-button" onClick={() => handleDeleteSection(section.id)}>
               X
             </button>
@@ -344,7 +271,6 @@ export default function EditRecipeScreen() {
           Done
         </button>
       </div>
-      <ChatbotInputForm />
     </div>
   );
 }

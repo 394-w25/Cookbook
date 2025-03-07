@@ -70,17 +70,6 @@ export default function CameraComponent() {
   // Image enlargement toggle
   const [isImageEnlarged, setIsImageEnlarged] = useState(false);
 
-  // Speech recognition
-  const {
-    transcript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition
-  } = useSpeechRecognition();
-
-  // Which field is active for voice?
-  const [activeField, setActiveField] = useState(null);
-
   const navigate = useNavigate();
   const cameraRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -102,39 +91,6 @@ export default function CameraComponent() {
     };
     requestPermission();
   }, []);
-
-  // Toggle mic for a given field
-  const handleToggleMic = (field) => {
-    if (!browserSupportsSpeechRecognition) return;
-
-    // If we click the same field again, that means we're stopping
-    if (activeField === field) {
-      // Stop
-      SpeechRecognition.stopListening();
-
-      // Append the entire transcript to the chosen field
-      if (field === 'title') {
-        setTitle(prev => (prev ? prev + ' ' : '') + transcript);
-      } else if (field === 'ingredients') {
-        setIngredients(prev => (prev ? prev + '\n' + transcript : transcript));
-      } else if (field === 'steps') {
-        setSteps(prev => (prev ? prev + '\n' + transcript : transcript));
-      }
-
-      // Reset & clear the field
-      resetTranscript();
-      setActiveField(null);
-    } else {
-      // If we're switching fields, stop any previous listening
-      if (activeField) {
-        SpeechRecognition.stopListening();
-        resetTranscript();
-      }
-      // Start fresh for the new field
-      setActiveField(field);
-      SpeechRecognition.startListening({ continuous: true });
-    }
-  };
 
   const processImage = async (base64Image) => {
     try {
@@ -208,10 +164,6 @@ export default function CameraComponent() {
     setIngredients('');
     setSteps('');
     setIsImageEnlarged(false);
-    // Stop any active listening
-    SpeechRecognition.stopListening();
-    setActiveField(null);
-    resetTranscript();
   };
 
   const handleNext = () => {
@@ -302,12 +254,6 @@ export default function CameraComponent() {
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="Recipe Title"
                       />
-                      {browserSupportsSpeechRecognition && (
-                        <MicIcon
-                          className={`mic-icon ${activeField === 'title' ? 'mic-active' : ''}`}
-                          onClick={() => handleToggleMic('title')}
-                        />
-                      )}
                     </div>
                   </div>
 
@@ -321,12 +267,6 @@ export default function CameraComponent() {
                         onChange={(e) => setIngredients(e.target.value)}
                         placeholder="List of ingredients..."
                       />
-                      {browserSupportsSpeechRecognition && (
-                        <MicIcon
-                          className={`mic-icon ${activeField === 'ingredients' ? 'mic-active' : ''}`}
-                          onClick={() => handleToggleMic('ingredients')}
-                        />
-                      )}
                     </div>
                   </div>
 
@@ -340,12 +280,6 @@ export default function CameraComponent() {
                         onChange={(e) => setSteps(e.target.value)}
                         placeholder="Step-by-step instructions..."
                       />
-                      {browserSupportsSpeechRecognition && (
-                        <MicIcon
-                          className={`mic-icon ${activeField === 'steps' ? 'mic-active' : ''}`}
-                          onClick={() => handleToggleMic('steps')}
-                        />
-                      )}
                     </div>
                   </div>
                 </div>
