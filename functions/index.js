@@ -272,3 +272,72 @@ exports.generateImage = functions.https.onRequest(async (req, res) => {
     }
   });
 });
+
+exports.sendOpenAIAPIRequestWOImage = functions.https.onRequest((req, res) => {
+  cors(req, res, async () => {
+    try {
+      const { recipeText } = req.body;
+
+      if (!recipeText) {
+        return res.status(400).json({ error: "No recipe text provided" });
+      }
+
+      // Construct the structured prompt
+      const prompt = `
+      # **Your Task**  
+      Please parse the provided **recipe text** and output it in **Markdown format**, ensuring proper structure using headings, lists, and formatting for clarity.  
+
+      ## **Instructions**  
+
+      ### **1. Formatting**  
+      - Use **Markdown** for proper structuring:  
+        - The **recipe title** should be formatted as a first-level heading (\`# Title\`), where *Title* is the name of the dish.  
+        - **Section names** (e.g., Ingredients, Instructions) should be formatted as second-level headings (\`## Section Name\`).  
+        - Ingredients and steps should be formatted as bullet points (\`- Item\`) or ordered lists (\`1. Step\`).  
+        - Do not apply \`#\` to content other than section headings.  
+        - Maintain **bold** and *italic* text where applicable.  
+
+      ### **2. Preserve Structure**  
+      - Maintain the original logical structure of the recipe:  
+        - **Ingredients** should appear under \`## Ingredients\`.  
+        - **Step-by-step instructions** should be under \`## Instructions\`.  
+        - Any additional sections (e.g., "Notes," "Serving Suggestions") should be preserved with appropriate headings.  
+
+      **The provided text contains the full recipe for you to format accordingly.**
+
+      \n\n**Recipe Text:**\n\n${recipeText}
+      `;
+
+      // OpenAI API request body
+      const requestBody = {
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: prompt,
+              },
+            ],
+          },
+        ],
+        max_tokens: 700,
+        temperature: 0.5,
+      };
+
+      const apiResponse = await axios.post("https://api.openai.com/v1/chat/completions", requestBody, {
+        headers: {
+          "Authorization": `Bearer ${API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      res.status(200).json(apiResponse.data);
+    } catch (error) {
+      console.error("Error calling OpenAI API:", error);
+      res.status(500).json({ error: "Failed to process recipe text" });
+    }
+  });
+});
+
