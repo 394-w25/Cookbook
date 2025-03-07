@@ -297,7 +297,7 @@ export default function CameraComponent() {
                 )}
               </div>
             </>
-          )}
+          )} 
 
           {error && <div className="error-message">{error}</div>}
         </CardContent>

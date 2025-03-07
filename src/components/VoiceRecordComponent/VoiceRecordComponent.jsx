@@ -10,8 +10,10 @@ import IconButton from '@mui/material/IconButton';
 import SoundWave from "./VoiceAssets/sound-wave.gif";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function VoiceRecordComponent() {
+  const [isLoading, setIsLoading] = useState(false);
   const [recipe, setRecipe] = useState(""); // Initialize as an empty string
   // Display text fields only after scanning
   const [showEditableFields, setShowEditableFields] = useState(false);
@@ -76,6 +78,7 @@ export default function VoiceRecordComponent() {
   
   const handleRecipeUpload = async () => {
     try {
+      setIsLoading(true);
       const result = await fetchOpenAIData(recipe);
       const text = result.choices[0]?.message?.content || 'No text extracted.';
       const { title, ingredients, steps } = parseRecipeSections(text);
@@ -86,6 +89,8 @@ export default function VoiceRecordComponent() {
       setShowEditableFields(true);
     } catch (error) {
       console.error('Axios Network Error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -138,6 +143,12 @@ export default function VoiceRecordComponent() {
       <p className="transcription">{transcript}</p>
 
       <button onClick={handleRecipeUpload}>Submit</button>
+      {isLoading && (
+            <div className="loading-container">
+              <CircularProgress />
+              <p>Awaiting camera access...</p>
+            </div>
+      )}
 
       {showEditableFields && (
         <div className="recipe-fields">
