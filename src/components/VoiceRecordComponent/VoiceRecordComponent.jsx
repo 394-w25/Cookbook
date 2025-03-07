@@ -117,7 +117,10 @@ export default function VoiceRecordComponent() {
 
   return (
     <div>
-      <h3 className="voice-record-header">Tell us your recipe!</h3>
+      {!showEditableFields && !isLoading && (
+        <h3 className="voice-record-header">Tell us your recipe!</h3>
+      )}
+      {!showEditableFields && !isLoading && (
       <Box className="voice-record-text-box">
         <TextField
           label="Recipe"
@@ -131,22 +134,33 @@ export default function VoiceRecordComponent() {
           onChange={(e) => setRecipe(e.target.value)}
         />
       </Box>
+      )}
+
+      {showEditableFields && !isLoading && (
+        <p className="transcription">
+          {recipe}
+          </p>
+      )}
 
       { listening ? <img src={SoundWave} alt="Sound wave" className="sound-wave" /> : null }
 
+      {!showEditableFields && !isLoading && (
       <div className="mic-container">
         <IconButton onClick={handleMicToggle}>
             <MicIcon className={`mic-icon ${listening ? "mic-on" : "mic-off"}`} />
         </IconButton>
       </div>
+      )}
 
+      {!showEditableFields && !isLoading && (
       <p className="transcription">{transcript}</p>
+      )}
 
-      <button onClick={handleRecipeUpload}>Submit</button>
+      {!showEditableFields && !listening && !isLoading && (<button onClick={handleRecipeUpload}>Submit</button>)}
       {isLoading && (
             <div className="loading-container">
               <CircularProgress />
-              <p>Awaiting camera access...</p>
+              <p>Submitting your transcription...</p>
             </div>
       )}
 

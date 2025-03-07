@@ -44,13 +44,16 @@
     font-size: 3rem; /* Adjust size */
     transition: color 0.3s ease-in-out;
   }
+  .mic-icon:hover {
+    color: inherit;
+  }
   
   .mic-on {
-    color: red;
+    color: red !important;
   }
   
   .mic-off {
-    color: gray;
+    color: gray !important;
   }
   
   /* Center the microphone icon */
