@@ -1,13 +1,14 @@
 .bottom-nav {
     width: 100%;
     font-family: var(--primary-font) !important;
-    position: fixed; /* Change from relative to fixed */
+    position: absolute; /* Change from fixed to absolute */
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 1000; /* Ensure it stays on top of other content */
-    background-color: white; /* Add background color to prevent content showing through */
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Optional: adds subtle shadow for visual separation */
+    z-index: 1000;
+    background-color: white;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    height: 56px; /* Explicitly set height */
   }
   
 
