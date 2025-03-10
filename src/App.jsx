@@ -38,24 +38,26 @@ const App = () => {
     return <div>Loading...</div>;
   }
 
+  // App.jsx (wrap entire Routes inside the frame)
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<SignInScreen setUser={setUser} />} />
-        
-        {/* authentication for all other routes */}
-        <Route element={<RequireAuth user={user}><MainLayout /></RequireAuth>}>
-          <Route path="/home" element={<HomeScreen />} />
-          <Route path="/AddRecipe" element={<AddRecipeScreen />} />
-          <Route path="/CameraComponent" element={<CameraComponent />} />
-          <Route path="/VoiceRecordRecipe" element={<VoiceRecordRecipeScreen />} />
-          <Route path="/prompts" element={<PromptsScreen />} />
-          <Route path="/recipe/:id" element={<CookbookPage />} />
-          <Route path="/EditRecipe" element={<EditRecipeScreen />} />
-          <Route path="/EditRecipeChatbot" element={<ChatbotScreen />} />
-        </Route>
-      </Routes>
-    </Router>
+    <div className="mobile-frame">
+      <Router>
+        <Routes>
+          <Route path="/" element={<SignInScreen setUser={setUser} />} />
+
+          <Route element={<RequireAuth user={user}><MainLayout /></RequireAuth>}>
+            <Route path="/home" element={<HomeScreen />} />
+            <Route path="/AddRecipe" element={<AddRecipeScreen />} />
+            <Route path="/CameraComponent" element={<CameraComponent />} />
+            <Route path="/VoiceRecordRecipe" element={<VoiceRecordRecipeScreen />} />
+            <Route path="/prompts" element={<PromptsScreen />} />
+            <Route path="/recipe/:id" element={<CookbookPage />} />
+            <Route path="/EditRecipe" element={<EditRecipeScreen />} />
+            <Route path="/EditRecipeChatbot" element={<ChatbotScreen />} />
+          </Route>
+        </Routes>
+      </Router>
+    </div>
   );
 };
 

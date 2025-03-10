@@ -1,4 +1,4 @@
-/* Import Font */
+/* ========== Font Import ========== */
 @font-face {
   font-family: 'PatrickHand';
   src: url('./assets/fonts/PatrickHand-Regular.ttf') format('truetype');
@@ -6,42 +6,33 @@
   font-style: normal;
 }
 
-/* Global Theme Variables */
-:root {
-  --primary-font: 'PatrickHand', sans-serif;
-  --primary-color: #333; /* Example color */
-  --secondary-color: #888; /* Example color */
-}
-
-/* Force MUI Typography to use global font */
-.MuiTypography-root {
-  font-family: var(--primary-font) !important;
-}
-
-/* Global Styles */
-* {
-  font-family: var(--primary-font);
+/* ========== Base Reset ========== */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #000; /* To mimic mobile frame border */
+  font-family: 'PatrickHand', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  margin: 0;
+/* ========== Global Variables ========== */
+:root {
+  --primary-font: 'PatrickHand', sans-serif;
+  --primary-color: #333;
+  --secondary-color: #888;
+}
+
+/* ========== Global Font Enforcement ========== */
+.MuiTypography-root {
+  font-family: var(--primary-font) !important;
+}
+
+* {
   font-family: var(--primary-font);
-  color: var(--primary-color);
 }
 
 code {
   font-family: var(--primary-font);
-}
-
-.mobile-frame {
-  width: 390px; /* iPhone 12 Pro width */
-  height: 844px; /* iPhone 12 Pro height */
-  border: 12px solid black;
-  border-radius: 40px;
-  margin: 40px auto;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
-  overflow: hidden;
-  background: white;
 }

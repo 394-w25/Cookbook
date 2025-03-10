@@ -1,10 +1,10 @@
 .bottom-nav {
-    position: fixed;
-    bottom: 0;
     width: 100%;
-    z-index: 1000;
-    font-family: var(--primary-font) !important; /* Apply the font here */
-}
+    font-family: var(--primary-font) !important;
+    position: relative; /* Not fixed */
+    bottom: 0;
+  }
+  
 
 .bottom-nav a {
     font-family: var(--primary-font); /* Ensure links also use the font */

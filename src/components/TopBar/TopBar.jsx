@@ -21,7 +21,7 @@ function TopBar() {
   };
 
   return (
-    <AppBar className="top-bar">
+    <AppBar position="static" className="top-bar">
       <Toolbar className="top-bar-toolbar">
         {showBackButton && (
           <IconButton className="back-button" onClick={handleBack}>

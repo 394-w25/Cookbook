@@ -1,3 +1,9 @@
 .main-content {
-    margin-top: 72.5px;
-}
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 56px;    /* adjust for TopBar height */
+    margin-bottom: 56px; /* adjust for BottomNav height */
+    display: flex;
+    flex-direction: column;
+  }
+  
