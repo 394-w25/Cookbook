@@ -34,3 +34,14 @@ body {
 code {
   font-family: var(--primary-font);
 }
+
+.mobile-frame {
+  width: 390px; /* iPhone 12 Pro width */
+  height: 844px; /* iPhone 12 Pro height */
+  border: 12px solid black;
+  border-radius: 40px;
+  margin: 40px auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  overflow: hidden;
+  background: white;
+}
