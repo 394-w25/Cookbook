@@ -11,10 +11,11 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #000; /* To mimic mobile frame border */
+  background-color: #000;
   font-family: 'PatrickHand', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden; /* Added to prevent body scrolling */
 }
 
 /* ========== Global Variables ========== */

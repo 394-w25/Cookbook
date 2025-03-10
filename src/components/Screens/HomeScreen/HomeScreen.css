@@ -2,11 +2,9 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  flex: 1;
   padding: 16px;
-  overflow-y: auto;
   box-sizing: border-box;
-  height: 100%; /* Fills the main-content */
+  min-height: 100%; /* Changed from height: 100% */
 }
 
 .recipes-list {

@@ -18,11 +18,9 @@ function NavigationBar() {
 
   return (
     <BottomNavigation className="bottom-nav" value={value} showLabels onChange={handleChange}>
-        <BottomNavigationAction label="home" value="home" icon={<HomeIcon />} onClick={() => navigate("/home")}/>
-        <BottomNavigationAction label="recipe box" value="recipe box" icon={<RestaurantIcon />} />
+        <BottomNavigationAction label="my family" value="home" icon={<Diversity1 />} onClick={() => navigate("/home")}/>
         <BottomNavigationAction label="add recipe" value="add recipe" icon={<AddCircleOutlineIcon />} onClick={() => navigate("/AddRecipe")} />
-        <BottomNavigationAction label="cookbooks" value="cookbooks" icon={<MenuBookIcon />} />
-        <BottomNavigationAction label="my family" value="my family" icon={<Diversity1 />} />
+        <BottomNavigationAction label="recipe box" value="recipe box" icon={<RestaurantIcon />} />
     </BottomNavigation>
   );
 };
