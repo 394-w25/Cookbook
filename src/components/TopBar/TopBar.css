@@ -5,6 +5,7 @@
     padding: 5px;
     background-color: white !important;
     color: black !important;
+    position: relative;
 }
 
 .top-bar-toolbar {
@@ -20,7 +21,10 @@
 }
 
 .top-bar-title {
-    flex-grow: 1;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     text-align: center;
     font-size: 18px;
 }

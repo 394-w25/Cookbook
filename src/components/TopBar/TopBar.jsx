@@ -15,9 +15,10 @@ function TopBar() {
   };
 
   const formatRouteName = (pathname) => {
-    if (pathname === "/") return "Home"; 
-    if (pathname.includes("recipe")) return "Recipe";
-    return pathname.replace("/", "").replace(/([A-Z])/g, ' $1').trim();
+    if (pathname === "/") return "recipe box";
+    if (pathname === "/home") return "recipe box";
+    if (pathname.includes("recipe")) return "recipe";
+    return pathname.replace("/", "").replace(/([A-Z])/g, ' $1').trim().toLowerCase();
   };
 
   return (

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import './AddRecipeScreen.css';
 import scanImage from '@/assets/images/scanpic.png';
 import recImage from '@/assets/images/recpic.png';
+import typeImage from '@/assets/images/typepic.png';
+
 
 
 function AddRecipeScreen() {
@@ -24,6 +26,14 @@ function AddRecipeScreen() {
         </div>
         <div className="card-right">
           <span className="card-text">Voice record recipe</span>
+        </div>
+      </div>
+      <div className="card" onClick={() => navigate("/prompts")}>
+        <div className="card-left">
+          <img src={typeImage} alt="Type Image" className="card-image" />
+        </div>
+        <div className="card-right">
+          <span className="card-text">Type the recipe</span>
         </div>
       </div>
     </div>
