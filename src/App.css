@@ -55,7 +55,7 @@ body {
 .mobile-frame {
   width: 350px;
   height: 804px;
-  margin: 0px auto;
+  margin: 10px auto;
   border: 12px solid black;
   border-radius: 40px;
   box-shadow: 0 0 20px rgba(0,0,0,0.5);
