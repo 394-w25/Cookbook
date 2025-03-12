@@ -6,9 +6,6 @@ import { Card, CardContent, CircularProgress } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import { useNavigate } from 'react-router-dom';
 import regeneratorRuntime from "regenerator-runtime";
-import SpeechRecognition, {
-  useSpeechRecognition
-} from 'react-speech-recognition';
 
 const fetchOpenAIData = async (base64Image) => {
   try {
