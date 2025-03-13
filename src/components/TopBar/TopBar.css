@@ -1,17 +1,17 @@
 .top-bar {
+    position: absolute; /* Same as .bottom-nav */
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    z-index: 1000;
     display: flex;
     align-items: center;
     font-size: 24px;
     padding: 5px;
     background-color: white !important;
     color: black !important;
-    position: absolute; /* ✅ CHANGE THIS from 'relative' to 'absolute' */
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 56px; /* Match the height used in .main-content */
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* ✅ now visible */
   }
   
 

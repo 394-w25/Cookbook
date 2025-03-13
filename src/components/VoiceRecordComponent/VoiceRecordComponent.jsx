@@ -116,7 +116,7 @@ export default function VoiceRecordComponent() {
   }
 
   return (
-    <div>
+<div className="voice-record-wrapper">
       {!showEditableFields && !isLoading && (
         <h3 className="voice-record-header">Tell us your recipe!</h3>
       )}

@@ -12,14 +12,23 @@
 }
 
 .voice-record-text-box {
-    display: flex;
-    flex-direction: column;
-    width: 100%; /* Make it responsive */
-    min-width: 800px;
-    max-width: 1000px; /* Limit maximum width */
-    height: auto; /* Allow height to adjust dynamically */
-    padding: 16px; /* Add padding for better spacing */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;         /* ✅ never exceed container */
+  padding: 12px;
+  box-sizing: border-box;  /* ✅ include padding in width */
 }
+
+.field-row input,
+.field-row textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  font-size: 16px;
+}
+
 
 .voice-record-text-field {
     width: 100%; /* Ensures the text field spans the width of the box */
@@ -61,9 +70,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 55px; /* Adjust spacing */
-    transform: scale(4); /* Adjust size */
+    margin-top: 24px;
+    transform: scale(2); /* ✅ Smaller scale */
   }
+
+  @media (max-width: 400px) {
+    .mic-container {
+      transform: scale(1.5);
+    }
+  }
+    
   
   .transcription {
     display: flex;
@@ -81,3 +97,14 @@
     justify-content: center;
     align-items: center;
   }
+
+  .voice-record-wrapper {
+    width: 100%;
+    max-width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
