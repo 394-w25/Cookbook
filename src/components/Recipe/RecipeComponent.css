@@ -1,6 +1,7 @@
 .recipe-card {
-  width: 400px;
-  margin: 20px;
+  width: 100%;                 /* Make it responsive inside grid */
+  max-width: 320px;            /* Safe margin inside 350px mobile-frame */
+  margin: 10px auto;           /* Center and reduce spacing */
   border-radius: 12px;
   transition: transform 0.2s ease;
 }
@@ -23,6 +24,7 @@
 
 .recipe-card-media {
   object-fit: cover;
+  height: 200px;               /* Reduced height for better fit */
 }
 
 .recipe-card-content {
@@ -41,4 +43,6 @@
 
 .recipe-stats {
   margin-top: 12px;
+  flex-wrap: wrap;             /* Allow chips to wrap if needed */
+  justify-content: center;
 }

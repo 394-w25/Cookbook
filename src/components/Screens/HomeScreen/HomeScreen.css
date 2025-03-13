@@ -1,22 +1,23 @@
 .home-container {
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  padding: 16px;
+  height: 100%;  /* Fill the .main-content */
+  padding: 10px;
   box-sizing: border-box;
-  min-height: 100%; /* Changed from height: 100% */
+  overflow-y: auto; /* Allow scrolling */
 }
 
 .recipes-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr; /* 👈 One card per row */
   gap: 10px;
   padding: 10px;
   justify-items: center;
 }
 
-/* Responsive behavior */
-@media (max-width: 900px) {
+
+/* Responsive for narrow screens */
+@media (max-width: 400px) {
   .recipes-list {
     grid-template-columns: repeat(1, 1fr);
   }
