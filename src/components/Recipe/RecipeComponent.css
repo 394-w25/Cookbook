@@ -1,8 +1,10 @@
 .recipe-card {
-  width: 100%;                 /* Make it responsive inside grid */
-  max-width: 320px;            /* Safe margin inside 350px mobile-frame */
-  margin: 10px auto;           /* Center and reduce spacing */
-  border-radius: 12px;
+  width: 100%;
+  max-width: 350px;
+  margin: 10px auto;
+  border-radius: 12px !important;
+  box-shadow: none;
+  border: 2px solid #ddd;
   transition: transform 0.2s ease;
 }
 
@@ -10,40 +12,40 @@
   transform: scale(1.02);
 }
 
-.recipe-card-header {
-  text-align: center;
-  background-color: white;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  padding: 16px;
-}
-
-.recipe-card-header .MuiCardHeader-subheader {
-  color: #333;
-}
-
 .recipe-card-media {
   object-fit: cover;
-  height: 200px;               /* Reduced height for better fit */
+  height: 200px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 .recipe-card-content {
   padding: 16px;
+  background-color: #EEEEEE;
 }
 
-.recipe-card-author {
-  margin-top: 4px;
+.recipe-card-title {
+  text-align: left;
+  font-weight: bold;
+}
+
+.recipe-author {
   color: #555;
 }
 
-.recipe-card-date {
-  margin-top: 4px;
-  color: #888;
+.author-name {
+  font-weight: bold;
+  color: #666;
 }
 
 .recipe-stats {
   margin-top: 12px;
-  flex-wrap: wrap;             /* Allow chips to wrap if needed */
-  justify-content: center;
-  row-gap: 8px; /* Adjust as needed */
+  display: flex;
+  gap: 8px;
+}
+
+.recipe-chip {
+  background-color: white !important;
+  border: black;
+  font-weight: bold;
 }

@@ -3,26 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import {
   Card,
   CardActionArea,
-  CardHeader,
   CardMedia,
   CardContent,
   Typography,
   Stack,
-  Chip
+  Chip,
 } from '@mui/material';
 import './RecipeComponent.css';
 
 function RecipeComponent({
   recipeId,
   title,
-  category,
   author,
-  date,
-  cookbook,
   image,
   prepTime,
-  cookTime,
-  servingSize
+  servingSize,
 }) {
   const navigate = useNavigate();
 
@@ -30,40 +25,27 @@ function RecipeComponent({
     navigate(`/recipe/${recipeId}`);
   };
 
-  const formattedDate = date
-    ? new Date(date).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "No date";
-
   return (
     <Card className="recipe-card">
       <CardActionArea onClick={handleClick}>
         {image && (
           <CardMedia
             component="img"
-            height="250"
             image={image}
             alt="recipe image"
             className="recipe-card-media"
           />
         )}
         <CardContent className="recipe-card-content">
-          <Typography variant="h5" component="div" gutterBottom>
+          <Typography variant="h6" component="div" className="recipe-card-title">
             {title}
           </Typography>
-          <Typography variant="body2" className="recipe-card-author">
-            {author ? `Author: ${author}` : ""}
-          </Typography>
-          <Typography variant="body2" className="recipe-card-date">
-            {formattedDate}
+          <Typography variant="body2" className="recipe-author">
+            Creator: <span className="author-name">{author}</span>
           </Typography>
           <Stack direction="row" spacing={1} className="recipe-stats">
-            {servingSize && <Chip label={`Serves: ${servingSize}`} />}
-            {prepTime && <Chip label={`Prep: ${prepTime}`} />}
-            {cookTime && <Chip label={`Cook: ${cookTime}`} />}
+            {servingSize && <Chip sx={{ border: 2 }} label={`Serves ${servingSize}`} className="recipe-chip" />}
+            {prepTime && <Chip sx={{ border: 2 }} label={`${prepTime} min`} className="recipe-chip" />}
           </Stack>
         </CardContent>
       </CardActionArea>
