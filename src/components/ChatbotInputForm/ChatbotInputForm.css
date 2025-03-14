@@ -5,11 +5,24 @@
     bottom: 0;
     width: 100%;
     background: #fff;
-    display: column;
+    display: flex; /* Change from column to flex */
+    flex-direction: column; /* Align elements in a column */
+    align-items: center; /* Center-align horizontally */
+    justify-content: center; /* Center-align vertically */
+}
+
+.chatbot-icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    padding: 5px;
 }
 
 .chatbot-input-container {
+    min-width: 300px;
     width: 100%;
     background: #fff;
     padding: 10px;
@@ -18,7 +31,7 @@
 }
 
 .chatbot-input-form {
-    width: 90%;
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -27,9 +40,9 @@
 .chatbot-input {
     flex-grow: 1;
     padding: 12px;
-    border-radius: 20px;
+    border-radius: 15px;
     border: 1px solid #ccc;
-    font-size: 16px;
+    font-size: 12px;
 }
 
 .send-button {

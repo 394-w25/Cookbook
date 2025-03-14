@@ -7,7 +7,7 @@ import "./MainLayout.css";
 const MainLayout = () => {
   const location = useLocation();
 
-  const hideNavScreens = ["/EditRecipe", "/EditRecipeChatbot"];
+  const hideNavScreens = ["/EditRecipeChatbot"];
 
   const showNav = !hideNavScreens.includes(location.pathname);
 

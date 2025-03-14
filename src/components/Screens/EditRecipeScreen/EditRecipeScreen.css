@@ -1,6 +1,9 @@
 .final-recipe-container {
+  display: flex;  /* Ensure flex container */
+  flex-direction: column;  /* Align items in a column */
+  align-items: center;  /* Center all contents horizontally */
   max-width: 600px;
-  margin: 50px auto;
+  margin: 50px auto 5px;
   margin-bottom: 5px;
   text-align: left;
   font-family: sans-serif;
@@ -79,6 +82,7 @@
 
 .section-textarea {
   width: 100%;
+  min-width: 200px;
   min-height: 60px;
   border: 1px solid #ccc;
   border-radius: 6px;

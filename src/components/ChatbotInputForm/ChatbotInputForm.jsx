@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Alert, CircularProgress } from "@mui/material";
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import "./ChatbotInputForm.css";
 import axios from "axios";
 
@@ -90,6 +91,9 @@ export default function ChatbotInputForm() {
                     </div>
                 ) : (
                     <form className="chatbot-input-form" onSubmit={handleSubmit}>
+                        <button type="submit" className="chatbot-icon-button" disabled={loading}>
+                            <AutoFixHighIcon className="new-chatbot-icon" />
+                        </button>
                         <input
                             type="text"
                             placeholder="Ask AI to customize the recipe..."
@@ -98,9 +102,6 @@ export default function ChatbotInputForm() {
                             className="chatbot-input"
                             disabled={loading}
                         />
-                        <button type="submit" className="send-button" disabled={loading}>
-                            {loading ? "Loading..." : "Send"}
-                        </button>
                     </form>
                 )}
             </div>
