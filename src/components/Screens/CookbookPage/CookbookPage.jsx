@@ -63,12 +63,20 @@ function CookbookPage() {
           {recipe.Title || "Untitled Recipe"}
         </Typography>
         {(recipe.Author || recipe.ServingSize || recipe.PrepTime || recipe.CookTime) && (
-          <Typography variant="body2" className="recipe-meta">
-            {recipe.Author && `Author: ${recipe.Author}`}
-            {recipe.ServingSize && `Serves: ${recipe.ServingSize}`}
-            {recipe.PrepTime && `Prep Time: ${recipe.PrepTime}`}
-            {recipe.CookTime && `Cook Time: ${recipe.CookTime}`}
-          </Typography>
+          <div>
+              <Typography variant="body2" className="recipe-meta">
+                {recipe.Author && `Author: ${recipe.Author}`}
+              </Typography>
+              <Typography variant="body2" className="recipe-meta">
+                {recipe.ServingSize && `Serves: ${recipe.ServingSize}`}
+              </Typography>
+              <Typography variant="body2" className="recipe-meta">
+                {recipe.PrepTime && `Prep Time: ${recipe.PrepTime}`}
+              </Typography>
+              <Typography variant="body2" className="recipe-meta">
+                {recipe.CookTime && `Cook Time: ${recipe.CookTime}`}
+              </Typography>
+          </div>
         )}
         <hr />
         <Typography variant="h5" className="section-title"
