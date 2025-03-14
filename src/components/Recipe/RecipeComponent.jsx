@@ -41,15 +41,6 @@ function RecipeComponent({
   return (
     <Card className="recipe-card">
       <CardActionArea onClick={handleClick}>
-        <CardHeader
-          subheader={
-            <Stack direction="row" spacing={1}>
-              {category && <Chip label={category} />}
-              {cookbook && <Chip label={cookbook} />}
-            </Stack>
-          }
-          className="recipe-card-header"
-        />
         {image && (
           <CardMedia
             component="img"
