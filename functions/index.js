@@ -192,7 +192,9 @@ exports.writejournal = functions.https.onRequest(async (req, res) => {
           {
             role: "system",
             content: `You are an experienced chef who can summarize answers to questions from user input. 
-                        You are writing a journal entry based on answers. Make the entry feel organic while maintaining correctness based on the answers.`,
+                        You are writing a journal entry based on answers. Make the entry feel organic while maintaining correctness based on the answers.
+                        Only include the body of the journal entry. Do not include miscellaneous elements such as the journal title, date, or signature.
+                        `,
           },
           {
             role: "user",
