@@ -17,7 +17,7 @@ const MainLayout = () => {
       <div className="main-content">
         <Outlet />
       </div>
-      {/* {showNav ? <NavigationBar /> : <ChatbotInputForm />} Conditionally show ChatbotInputForm */}
+      {showNav ? <NavigationBar /> : <ChatbotInputForm />} 
     </div>
   );
 };
