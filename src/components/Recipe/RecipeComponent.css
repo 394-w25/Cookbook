@@ -45,4 +45,5 @@
   margin-top: 12px;
   flex-wrap: wrap;             /* Allow chips to wrap if needed */
   justify-content: center;
+  row-gap: 8px; /* Adjust as needed */
 }
