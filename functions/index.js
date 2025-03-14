@@ -286,30 +286,28 @@ exports.sendOpenAIAPIRequestWOImage = functions.https.onRequest((req, res) => {
 
       // Construct the structured prompt
       const prompt = `
-        # **Your Task**  
-        Please parse the provided **recipe text** and output it in **Markdown format**, ensuring a properly structured format using only headings.  
+      # **Your Task**  
+      Please parse the provided **recipe text** and output it in **Markdown format**, ensuring proper structure using headings, lists, and formatting for clarity.  
 
-        ## **Instructions**  
+      ## **Instructions**  
 
-        ### **1. Formatting Rules**  
-        The recipe should be structured using **Markdown headings** without bullet points or lists:  
+      ### **1. Formatting**  
+      - Use **Markdown** for proper structuring:  
+        - The **recipe title** should be formatted as a first-level heading (\`# Title\`), where *Title* is the name of the dish.  
+        - **Section names** (e.g., Ingredients, Instructions) should be formatted as second-level headings (\`## Section Name\`).  
+        - Ingredients and steps should be formatted as bullet points (\`- Item\`) or ordered lists (\`1. Step\`).  
+        - Do not apply \`#\` to content other than section headings.  
+        - Maintain **bold** and *italic* text where applicable.  
 
-        - The **recipe title** should be a first-level heading:  
-          \`# Recipe Title\`  
-        - **Section names** (e.g., Ingredients, Instructions) should be second-level headings:  
-          \`## Ingredients\`  
-          \`## Instructions\`  
-        - **Each ingredient** and **each step** should be placed on a new line as plain text, without lists or special formatting.  
-
-        ### **2. Preserve Logical Structure**  
-        - Maintain the original structure of the recipe.  
-        - **Ingredients** should be under \`## Ingredients\`.  
-        - **Instructions** should be under \`## Instructions\`.  
+      ### **2. Preserve Structure**  
+      - Maintain the original logical structure of the recipe:  
+        - **Ingredients** should appear under \`## Ingredients\`.  
+        - **Step-by-step instructions** should be under \`## Instructions\`.  
         - Any additional sections (e.g., "Notes," "Serving Suggestions") should be preserved with appropriate headings.  
 
-        **Ensure there are no bullet points, numbered lists, or other symbols in the output. Only use Markdown headings to separate content.**  
+      **The provided text contains the full recipe for you to format accordingly.**
 
-        \n\n**Recipe Text:**\n\n${recipeText}
+      \n\n**Recipe Text:**\n\n${recipeText}
       `;
 
 

@@ -64,9 +64,9 @@ function CookbookPage() {
         </Typography>
         {(recipe.Author || recipe.ServingSize || recipe.PrepTime || recipe.CookTime) && (
           <Typography variant="body2" className="recipe-meta">
-            {recipe.Author && `Author: ${recipe.Author}  |  `}
-            {recipe.ServingSize && `Serves: ${recipe.ServingSize}  |  `}
-            {recipe.PrepTime && `Prep Time: ${recipe.PrepTime}  |  `}
+            {recipe.Author && `Author: ${recipe.Author}`}
+            {recipe.ServingSize && `Serves: ${recipe.ServingSize}`}
+            {recipe.PrepTime && `Prep Time: ${recipe.PrepTime}`}
             {recipe.CookTime && `Cook Time: ${recipe.CookTime}`}
           </Typography>
         )}
