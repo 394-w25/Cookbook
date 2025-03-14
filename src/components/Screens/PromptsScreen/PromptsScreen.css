@@ -1,6 +1,6 @@
 .prompts-container {
   max-width: 600px; 
-  margin: 50px auto;
+  margin: 0px auto;
   text-align: left;
   font-family: var(--primary-font, sans-serif);
   padding: 2rem;
