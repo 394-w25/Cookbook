@@ -7,13 +7,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
     padding: 10px;
 }
 
 .voice-record-text-box {
   display: flex;
   flex-direction: column;
+  border-radius: 20px;
+  overflow-y: auto;
   width: 100%;
   max-width: 100%;         /* ✅ never exceed container */
   padding: 12px;
@@ -28,7 +29,6 @@
   padding: 8px;
   font-size: 16px;
 }
-
 
 .voice-record-text-field {
     width: 100%; /* Ensures the text field spans the width of the box */
@@ -52,6 +52,9 @@
 .mic-icon {
     font-size: 3rem; /* Adjust size */
     transition: color 0.3s ease-in-out;
+    display:flex;
+    justify-content: center;
+    align-items: center;
   }
   .mic-icon:hover {
     color: inherit;
@@ -70,7 +73,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 24px;
+    margin: 24px;
     transform: scale(2); /* ✅ Smaller scale */
   }
 

@@ -96,13 +96,17 @@ export default function VoiceRecordComponent() {
 
   const handleMicToggle = () => {
     if (!listening) {
-      resetTranscript(); // Reset transcript before starting to listen
+      resetTranscript();
       SpeechRecognition.startListening({ continuous: true });
     } else {
+      // Save current visible text (recipe + transcript) into state
+      setRecipe(prev => (prev + " " + transcript).trim());
       SpeechRecognition.stopListening();
-      setRecipe((prevRecipe) => prevRecipe + " " + transcript);
+      resetTranscript();
     }
   };
+  
+  
 
   const {
     transcript,
@@ -114,6 +118,7 @@ export default function VoiceRecordComponent() {
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
+
 
   return (
 <div className="voice-record-wrapper">
@@ -130,17 +135,12 @@ export default function VoiceRecordComponent() {
           multiline
           rows={10}
           variant="filled"
-          value={recipe || "Waiting for speech input..."}
+          value={recipe + (listening ? " " + transcript : "")}
           onChange={(e) => setRecipe(e.target.value)}
         />
       </Box>
       )}
 
-      {/* {showEditableFields && !isLoading && (
-        <p className="transcription">
-          {recipe}
-          </p>
-      )} */}
 
       { listening ? <img src={SoundWave} alt="Sound wave" className="sound-wave" /> : null }
 
@@ -152,9 +152,10 @@ export default function VoiceRecordComponent() {
       </div>
       )}
 
-      {!showEditableFields && !isLoading && (
-      <p className="transcription">{transcript}</p>
-      )}
+      {/* {!showEditableFields && !isLoading && (
+        <p className="transcription">{transcript}</p>
+      )} */}
+
 
       {!showEditableFields && !listening && !isLoading && (<button className="submit-transcription" onClick={handleRecipeUpload}>Submit</button>)}
       {isLoading && (
