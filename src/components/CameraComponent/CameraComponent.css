@@ -4,8 +4,6 @@
     align-items: center;
     justify-content: flex-start;
     min-height: 10vh;
-    padding-top: 3em;
-    padding-bottom: 5em;
     border-radius: 15px;
     gap: 10px;
   }

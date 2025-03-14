@@ -7,6 +7,9 @@ import Grid from '@mui/material/Grid';
 import { useParams } from 'react-router-dom';
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../utilities/firebase";
+import ReactMarkdown from 'react-markdown';
+
+
 
 function CookbookPage() {
   async function getRecipeInfoFromDB(recipeId) {
@@ -40,7 +43,21 @@ function CookbookPage() {
   }
 
   return (
-    <Card className="recipe-cookbook-container">
+    <Card className="recipe-cookbook-container"
+    sx={{
+      boxShadow: "none",
+    }}
+    >
+
+      {recipe.Image && (
+        <CardMedia
+          component="img"
+          image={recipe.Image}
+          alt="Recipe Image"
+          className="recipe-image"
+        />
+      )}
+      
       <div className="recipe-header">
         <Typography variant="h3" className="recipe-title">
           {recipe.Title || "Untitled Recipe"}
@@ -54,6 +71,15 @@ function CookbookPage() {
           </Typography>
         )}
         <hr />
+        <Typography variant="h5" className="section-title"
+        sx={{
+          textAlign: 'left',
+          marginTop: '30px',
+          marginBottom: '10px'
+        }}
+        >
+            Story
+          </Typography>
         {recipe.Story && (
           <Typography variant="body1" className="recipe-description">
             {recipe.Story}
@@ -66,44 +92,28 @@ function CookbookPage() {
         )}
       </div>
 
-      {recipe.Image && (
-        <CardMedia
-          component="img"
-          image={recipe.Image}
-          alt="Recipe Image"
-          className="recipe-image"
-        />
-      )}
-
-      <Grid container spacing={3} className="recipe-content">
-        <Grid item xs={12} md={5} className="recipe-ingredients">
           <Typography variant="h5" className="section-title">
             Ingredients
           </Typography>
           {recipe.Ingredients
-            ? recipe.Ingredients.split("\n").map((line, idx) => (
-                <Typography key={idx} variant="body1" className="ingredient-line">
-                  {line}
-                </Typography>
-              ))
+            ? 
+                <ReactMarkdown>
+                  {recipe.Ingredients}
+                </ReactMarkdown>
             : <Typography variant="body1">No ingredients provided.</Typography>
           }
-        </Grid>
 
-        <Grid item xs={12} md={7} className="recipe-instructions">
+          <br/>
+
           <Typography variant="h5" className="section-title">
             Instructions
           </Typography>
-          {recipe.Steps
-            ? recipe.Steps.split("\n").map((step, idx) => (
-                <Typography key={idx} variant="body1" className="instruction-line">
-                  {step}
-                </Typography>
-              ))
+          {recipe.Steps ? 
+            <ReactMarkdown>
+            {recipe.Steps}
+            </ReactMarkdown>
             : <Typography variant="body1">No steps provided.</Typography>
           }
-        </Grid>
-      </Grid>
 
       {Array.isArray(recipe.CustomSections) && recipe.CustomSections.length > 0 && (
         <div className="extra-sections">
