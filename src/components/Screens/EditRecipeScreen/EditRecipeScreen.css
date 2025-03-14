@@ -145,3 +145,14 @@
   font-size: 1.2rem;
   cursor: pointer;
 }
+
+
+
+.chatbot-input-form-container {
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  margin-top: 1.5rem; /* Adds space below the "Done" button */
+  margin-bottom: 2rem; /* Provides breathing space at the bottom */
+  padding: 0 1rem; /* Adds some padding */
+}
+

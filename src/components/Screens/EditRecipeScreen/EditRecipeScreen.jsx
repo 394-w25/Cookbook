@@ -266,11 +266,17 @@ export default function EditRecipeScreen() {
       <button className="add-section-button" onClick={handleAddSection}>
         + Add New Section
       </button>
+      
       <div className="done-button-wrapper">
         <button className="done-button" onClick={handleDone}>
           Done
         </button>
       </div>
+
+      <div className="chatbot-input-form-container">
+        <ChatbotInputForm/>
+      </div>
+
     </div>
   );
 }
