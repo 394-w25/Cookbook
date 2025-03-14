@@ -82,21 +82,22 @@
   text-align: center;
   width: 300px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 /* Style for the buttons */
 .add-photo-button {
+  background-color: rgb(116, 135, 255);
   margin: 10px;
   padding: 10px;
   cursor: pointer;
   border: none;
-  background-color: #4CAF50; /* Green background */
   color: white;
   border-radius: 5px;
 }
 
 .add-photo-button:hover {
-  background-color: #45a049; /* Darker green on hover */
+  background-color: rgb(116, 135, 255);
 }
 
 button.close {
@@ -116,4 +117,17 @@ button.close:hover {
 .modal-buttons {
   display: flex;
   flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+}
+
+.close-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #333;
 }

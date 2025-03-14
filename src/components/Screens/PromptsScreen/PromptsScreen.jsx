@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { CircularProgress } from '@mui/material';
 import './PromptsScreen.css';
 import UploadIcon from '@mui/icons-material/Upload';
+import CloseIcon from '@mui/icons-material/Close';
 import parseMarkdown from '../../../utilities/parseRecipeIntoComponents';
 
 export default function Questions() {
@@ -129,7 +130,8 @@ export default function Questions() {
           id="file-upload"
         />
         <div className="modal-content">
-          <h2>Choose an Option</h2>
+            <CloseIcon className="close-icon" onClick={() => setModalOpen(false)} />
+            <h2>Choose an Option</h2>
           <div className="modal-buttons">
             <button
               className="add-photo-button"
@@ -141,7 +143,6 @@ export default function Questions() {
             <button className="add-photo-button" onClick={handleImageGeneration}>
               {generatingImage ? <CircularProgress size={24} /> : "Generate Food Photo"}
             </button>
-            <button className="close" onClick={() => setModalOpen(false)}>Close</button>
           </div>
         </div>
       </div>
