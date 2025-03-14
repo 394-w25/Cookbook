@@ -136,11 +136,11 @@ export default function VoiceRecordComponent() {
       </Box>
       )}
 
-      {showEditableFields && !isLoading && (
+      {/* {showEditableFields && !isLoading && (
         <p className="transcription">
           {recipe}
           </p>
-      )}
+      )} */}
 
       { listening ? <img src={SoundWave} alt="Sound wave" className="sound-wave" /> : null }
 
