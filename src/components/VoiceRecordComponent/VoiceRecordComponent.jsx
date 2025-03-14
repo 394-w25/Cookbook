@@ -156,7 +156,7 @@ export default function VoiceRecordComponent() {
       <p className="transcription">{transcript}</p>
       )}
 
-      {!showEditableFields && !listening && !isLoading && (<button onClick={handleRecipeUpload}>Submit</button>)}
+      {!showEditableFields && !listening && !isLoading && (<button className="submit-transcription" onClick={handleRecipeUpload}>Submit</button>)}
       {isLoading && (
             <div className="loading-container">
               <CircularProgress />
