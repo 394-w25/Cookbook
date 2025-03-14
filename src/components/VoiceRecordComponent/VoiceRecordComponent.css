@@ -2,7 +2,9 @@
     display: flex;
     align-items: center;
 }
-
+.retake-next-buttons {
+  padding: 10px;
+}
 .voice-record-header {
     display: flex;
     justify-content: space-between;
@@ -21,7 +23,9 @@
   box-sizing: border-box;  /* ✅ include padding in width */
 }
 
-.field-row input,
+.field-row input {
+  padding: 8px;
+}
 .field-row textarea {
   width: 100%;
   max-width: 100%;
@@ -43,7 +47,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 200px;
+    height: 100px;
     /* background-color: #f0f0f0; */
     border-radius: 5px;
     margin-top: 16px;
@@ -83,7 +87,6 @@
     }
   }
     
-  
   .transcription {
     display: flex;
     justify-content: center;

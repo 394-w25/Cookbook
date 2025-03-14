@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import "./VoiceRecordComponent.css";
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -207,7 +207,6 @@ export default function VoiceRecordComponent() {
           </div>
         </div>
       )}
-
       <div className="retake-next-buttons">
         {showEditableFields && (
           <button className="next-button" onClick={handleNext}>
