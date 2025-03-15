@@ -139,14 +139,14 @@ To get a local copy up and running follow these simple example steps. -->
   ```sh
   npm install npm@latest -g
   ``` -->
-* Node.js and npm\
-Go here to get node.js and the package manager npm: [https://nodejs.org/en](https://nodejs.org/en)
+#### Node.js and npm
+* []() Go here to get node.js and the package manager npm: [https://nodejs.org/en](https://nodejs.org/en)
 
-* Firebase\
-Sign into Firebase using your Gmail and make a new project: [https://firebase.google.com](https://firebase.google.com)
-*[]() Set the project up for hosting and Firestore on a webapp.
-*[]() Once the project is created, enable authentication (Google-sign in).
-*[]() Check your project settings for the config deets:
+#### Firebase
+* []() Sign into Firebase using your Gmail and make a new project: [https://firebase.google.com](https://firebase.google.com)
+* []() Set the project up for hosting and Firestore on a webapp.
+* []() Once the project is created, enable authentication (Google-sign in).
+* []() Check your project settings for the config deets:
 ```
 const firebaseConfig = {
   apiKey: "api-key",
@@ -160,33 +160,33 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 ```
-Go into **firebase.js** in the **src folder** and replace the parameters with your new project's.\
-No initial data needs to be stored in Firestore.
+* []() Go into **firebase.js** in the **src folder** and replace the parameters with your new project's.
+* []() No initial data needs to be stored in Firestore.
 
-* Google Cloud Functions\
-This service automatically comes with Firebase. Enable the API services for your Firebase project: [https://cloud.google.com/functions](https://cloud.google.com/functions)\
-You will store the OpenAI key in the environment variables.\
-For adding functions:
+#### Google Cloud Functions
+* []() This service automatically comes with Firebase. Enable the API services for your Firebase project: [https://cloud.google.com/functions](https://cloud.google.com/functions)
+* []() You will store the OpenAI key in the environment variables.
+* []() Get an OpenAI API Key at [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+* []() For adding functions:
 ```sh
 cd functions
 ```
 ```sh
 npm install
 ```
-Add the functions to **index.js**.\
-Deploy the functions:
+* []() Add the functions to **index.js**.\
+* []() Deploy the functions:
 ```sh
 firebase deploy --only functions
 ```
 
 ### Installation
 
-1. Get an OpenAI API Key at [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
-2. Clone the repo
+1. Clone the repo
    ```sh
    git clone https://github.com/394-w25/Cookbook.git
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    npm install
    ```
@@ -199,11 +199,11 @@ firebase deploy --only functions
    git remote set-url origin 394-w25/Cookbook
    git remote -v # confirm the changes
    ``` -->
-4. Start the app on localhost
+3. Start the app on localhost
     ```sh
     npm start
     ```
-5. Go to http://localhost:5173, the default port.
+4. Go to http://localhost:5173, the default port.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
