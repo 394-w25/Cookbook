@@ -7,13 +7,13 @@ import { collection, getDocs } from "firebase/firestore";
 import { get } from "firebase/database";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDYukqVFalAd_6iaeN3XOp91oqD5OQXOf0",
-    authDomain: "generationalcookbook.firebaseapp.com",
-    projectId: "generationalcookbook",
-    storageBucket: "generationalcookbook.firebasestorage.app",
-    messagingSenderId: "515362323199",
-    appId: "1:515362323199:web:eae85bd6c6ef8080322aca",
-    measurementId: "G-999KWF7C9Z"
+    apiKey: "API_KEY",
+    authDomain: "AUTH_DOMAIN",
+    projectId: "PROJECT_ID",
+    storageBucket: "STORAGE_BUCKET",
+    messagingSenderId: "MESSAGING_SENDER_ID",
+    appId: "APP_ID",
+    measurementId: "MEASUREMENT_ID"
   };
 
 // Initialize Firebase
